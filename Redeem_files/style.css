@@ -26,54 +26,53 @@ body {
 .banner {
   background: linear-gradient(135deg, #0f6b3a, #0c5a31);
   padding: 16px 24px;
-  border-radius: 20px;
+  border-radius: 12px;
   width: 100%;
-  max-width: 550px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-  transition: transform 0.2s;
+  max-width: 500px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .banner-left {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
   flex-wrap: wrap;
 }
 
-.gift {
-  font-size: 42px;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
-  cursor: pointer;
+.banner-icon {
+  font-size: 28px;
+  font-weight: 400;
+  opacity: 0.9;
 }
 
 .banner-line1 {
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-weight: 500;
+  font-size: 1rem;
 }
 
 .banner-line1 strong {
-  background: rgba(0, 0, 0, 0.35);
-  padding: 3px 10px;
-  border-radius: 40px;
-  font-weight: 800;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 700;
 }
 
 .banner-line2 {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  margin-top: 6px;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-top: 4px;
 }
 
 .title {
-  font-size: 58px;
-  font-weight: 800;
-  margin: 5px 0;
+  font-size: 56px;
+  font-weight: 700;
+  margin: 10px 0 5px;
   text-transform: lowercase;
-  background: linear-gradient(120deg, #fff, #c4baff);
+  letter-spacing: -0.5px;
+  background: linear-gradient(120deg, #fff, #b0aaff);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  letter-spacing: -1px;
 }
 
 .card {
@@ -81,47 +80,46 @@ body {
   flex-direction: column;
   gap: 14px;
   width: 100%;
-  max-width: 500px;
-  background: rgba(8, 8, 18, 0.5);
-  backdrop-filter: blur(4px);
-  padding: 10px 0;
-  border-radius: 28px;
+  max-width: 460px;
+  background: rgba(10, 10, 20, 0.5);
+  backdrop-filter: blur(2px);
+  padding: 8px 0;
+  border-radius: 16px;
 }
 
 input {
-  height: 56px;
+  height: 52px;
   padding: 0 18px;
-  border-radius: 18px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: #0c0c18e6;
+  background: #0a0a14e6;
   color: white;
-  font-size: 17px;
-  font-weight: 500;
+  font-size: 16px;
   transition: all 0.2s;
 }
 
 input:focus {
   outline: none;
-  border-color: #6d4aff;
-  box-shadow: 0 0 0 3px rgba(109, 74, 255, 0.3);
+  border-color: #5a3eff;
+  box-shadow: 0 0 0 2px rgba(90, 62, 255, 0.3);
 }
 
 .btn {
-  height: 56px;
+  height: 52px;
   border: none;
-  border-radius: 18px;
+  border-radius: 12px;
   background: linear-gradient(95deg, #5a3eff, #3525b0);
   color: white;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.1s linear;
-  box-shadow: 0 6px 0 #1c1470;
+  box-shadow: 0 4px 0 #1c1470;
 }
 
 .btn:active {
   transform: translateY(2px);
-  box-shadow: 0 3px 0 #1c1470;
+  box-shadow: 0 2px 0 #1c1470;
 }
 
 .hint {
@@ -129,46 +127,47 @@ input:focus {
   font-size: 0.85rem;
   color: #f9b84a;
   font-weight: 500;
-  min-height: 48px;
-  background: rgba(0, 0, 0, 0.3);
+  min-height: 44px;
+  background: rgba(0, 0, 0, 0.2);
   padding: 8px 12px;
-  border-radius: 60px;
+  border-radius: 40px;
 }
 
 .icons {
   display: flex;
-  gap: 28px;
-  margin-top: 15px;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 10px 28px;
-  border-radius: 60px;
-  backdrop-filter: blur(6px);
+  gap: 24px;
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 24px;
+  border-radius: 40px;
+  backdrop-filter: blur(4px);
 }
 
 .icon {
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
-  opacity: 0.85;
+  opacity: 0.7;
   transition: 0.2s;
-  background: rgba(25, 25, 55, 0.7);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 50%;
   cursor: pointer;
 }
 
 .icon:hover {
-  transform: scale(1.08);
+  transform: scale(1.05);
   opacity: 1;
   background: #5a3eff;
 }
 
 .icon svg {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
+  fill: white;
 }
 
-/* ----- OFFERWALL MODAL (Taprain style) ----- */
+/* ----- OFFERWALL MODAL (clean) ----- */
 .offerwall-modal {
   position: fixed;
   top: 0;
@@ -176,7 +175,7 @@ input:focus {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -184,7 +183,6 @@ input:focus {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0.2s, opacity 0.2s ease;
-  font-family: system-ui, sans-serif;
 }
 
 .offerwall-modal.active {
@@ -193,21 +191,21 @@ input:focus {
 }
 
 .offerwall-panel {
-  background: linear-gradient(145deg, #121225, #080813);
-  border-radius: 40px;
+  background: #0f0f1a;
+  border-radius: 24px;
   width: 92%;
-  max-width: 780px;
-  max-height: 88vh;
+  max-width: 720px;
+  max-height: 85vh;
   overflow-y: auto;
-  border: 1px solid rgba(90, 62, 255, 0.5);
-  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.6);
-  animation: floatUp 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+  border: 1px solid rgba(90, 62, 255, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: fadeUp 0.25s ease;
 }
 
-@keyframes floatUp {
+@keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(35px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -216,52 +214,46 @@ input:focus {
 }
 
 .offerwall-header {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 20px 26px;
+  padding: 20px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 40px 40px 0 0;
   text-align: center;
 }
 
 .offerwall-header h2 {
-  font-size: 1.8rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #FFD966, #FFB347);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: -0.3px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fff;
 }
 
 .offerwall-sub {
-  font-size: 1rem;
-  color: #ddd;
-  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-top: 8px;
 }
 
 .progress-area {
-  background: #0a0a16cc;
-  margin: 18px 24px;
-  padding: 14px 18px;
-  border-radius: 60px;
+  background: #0a0a12;
+  margin: 20px 24px;
+  padding: 12px 18px;
+  border-radius: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  border: 1px solid rgba(255, 215, 0, 0.2);
 }
 
 .progress-text {
-  font-weight: bold;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .progress-bar-bg {
   flex: 1;
-  height: 10px;
+  height: 6px;
   background: #2c2c46;
-  border-radius: 20px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -269,16 +261,16 @@ input:focus {
   width: 0%;
   height: 100%;
   background: linear-gradient(90deg, #f0b429, #ff9f4a);
-  border-radius: 20px;
+  border-radius: 10px;
   transition: width 0.25s ease;
 }
 
 .reward-badge-status {
   background: #2a1f4e;
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 /* offers list */
@@ -286,92 +278,91 @@ input:focus {
   padding: 8px 24px 30px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .task-card {
-  background: rgba(15, 15, 30, 0.8);
-  border-radius: 28px;
-  padding: 18px 22px;
+  background: #0c0c18;
+  border-radius: 20px;
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 14px;
-  border: 1px solid rgba(90, 62, 255, 0.3);
+  gap: 12px;
+  border: 1px solid rgba(90, 62, 255, 0.2);
   transition: all 0.2s;
 }
 
 .task-card:hover {
-  background: #1a1a2e;
-  border-color: #6d4aff;
-  transform: scale(1.01);
+  background: #121220;
+  border-color: #5a3eff;
 }
 
 .task-info {
   display: flex;
-  gap: 18px;
+  gap: 16px;
   align-items: center;
   flex: 2;
 }
 
 .task-icon {
-  width: 52px;
-  height: 52px;
-  background: #2a235a;
-  border-radius: 30px;
+  width: 44px;
+  height: 44px;
+  background: #1e1a3a;
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 22px;
+  font-weight: 500;
 }
 
 .task-details h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   margin-bottom: 4px;
 }
 
 .task-details p {
-  font-size: 0.8rem;
-  opacity: 0.75;
+  font-size: 0.75rem;
+  opacity: 0.7;
 }
 
 .start-btn {
-  background: linear-gradient(95deg, #3c2cd4, #251c88);
+  background: #2d2a5a;
   border: none;
   color: white;
-  font-weight: 800;
-  padding: 10px 28px;
-  border-radius: 40px;
-  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: 0.2s;
-  min-width: 110px;
+  min-width: 90px;
 }
 
 .start-btn.completed {
   background: #2b6e3c;
   cursor: default;
   opacity: 0.7;
-  transform: none;
 }
 
 .start-btn:not(.completed):hover {
-  background: #7058ff;
+  background: #5a3eff;
   transform: scale(1.02);
 }
 
 .close-modal {
   position: absolute;
-  top: 20px;
-  right: 24px;
+  top: 16px;
+  right: 20px;
   background: rgba(255, 70, 70, 0.2);
   border: none;
   color: white;
-  font-size: 28px;
-  width: 44px;
-  height: 44px;
+  font-size: 24px;
+  width: 36px;
+  height: 36px;
   border-radius: 30px;
   cursor: pointer;
   transition: 0.2s;
@@ -383,9 +374,9 @@ input:focus {
 
 .offerwall-footer-note {
   text-align: center;
-  padding: 8px 20px 22px;
-  font-size: 0.75rem;
-  opacity: 0.6;
+  padding: 8px 20px 20px;
+  font-size: 0.7rem;
+  opacity: 0.5;
 }
 
 @media (max-width: 600px) {
@@ -406,7 +397,7 @@ input:focus {
   }
 }
 
-/* Toast notification (dynamic) */
+/* Toast notification */
 .custom-toast {
   position: fixed;
   bottom: 25px;
@@ -414,13 +405,13 @@ input:focus {
   transform: translateX(-50%);
   background: #2c2c54;
   color: white;
-  padding: 12px 24px;
-  border-radius: 60px;
-  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 40px;
+  font-weight: 500;
   z-index: 9999;
   backdrop-filter: blur(8px);
-  box-shadow: 0 5px 15px black;
-  font-size: 0.9rem;
+  box-shadow: 0 4px 12px black;
+  font-size: 0.85rem;
   white-space: nowrap;
 }
 @media (max-width: 500px) {
