@@ -72,9 +72,7 @@
 </div>
 
 <script>
-  // --------------------------------------------------------------
-  // SPONSOR OFFERS (clean, no emojis)
-  // --------------------------------------------------------------
+  // Sponsor offers (clean, no emojis)
   const OFFERS_LIST = [
     { id: 1, sponsor: "SoFi", title: "Get your free credit score", desc: "Fill in personal details and complete account registration.", icon: "$" },
     { id: 2, sponsor: "Opera GX", title: "Quick install: Opera GX", desc: "Download + install the browser (PC / Mac).", icon: "⬇" },
@@ -84,12 +82,10 @@
     { id: 6, sponsor: "Reward Zone", title: "Tap to claim your bonus", desc: "Complete with valid information to unlock.", icon: "⭐" }
   ];
 
-  // Global state
   let completedOfferIds = [];
   const REQUIRED_OFFERS = 3;
   let remainingCodes = 17;
 
-  // DOM elements
   const modal = document.getElementById('offerwallModal');
   const offersContainer = document.getElementById('offersContainer');
   const progressCounterSpan = document.getElementById('progressCounter');
@@ -106,15 +102,11 @@
         completedOfferIds = data.completedIds || [];
         completedOfferIds = [...new Set(completedOfferIds)];
       } catch(e) { completedOfferIds = []; }
-    } else {
-      completedOfferIds = [];
     }
     const storedCodes = localStorage.getItem('codesRemaining');
     if (storedCodes !== null) {
       remainingCodes = parseInt(storedCodes);
       if (isNaN(remainingCodes)) remainingCodes = 17;
-    } else {
-      remainingCodes = 17;
     }
     if (remainingCodes < 0) remainingCodes = 0;
     updateCodesUI();
@@ -122,9 +114,7 @@
   }
 
   function saveProgress() {
-    localStorage.setItem('offerwallProgress', JSON.stringify({
-      completedIds: completedOfferIds
-    }));
+    localStorage.setItem('offerwallProgress', JSON.stringify({ completedIds: completedOfferIds }));
   }
 
   function updateCodesUI() {
@@ -137,17 +127,11 @@
     const percent = (completedCount / REQUIRED_OFFERS) * 100;
     if (progressFill) progressFill.style.width = `${percent}%`;
     if (progressCounterSpan) progressCounterSpan.innerText = `${completedCount}/${REQUIRED_OFFERS} offers completed`;
-    
     const rewardUnlocked = completedCount >= REQUIRED_OFFERS;
-    if (rewardBadge) {
-      rewardBadge.innerHTML = rewardUnlocked ? "Ready to claim" : `${completedCount}/${REQUIRED_OFFERS} completed`;
-    }
+    if (rewardBadge) rewardBadge.innerHTML = rewardUnlocked ? "Ready to claim" : `${completedCount}/${REQUIRED_OFFERS} completed`;
     if (hintEl) {
-      if (rewardUnlocked) {
-        hintEl.innerHTML = "You've completed 3 offers! Enter code & username to get 25,000 Robux.";
-      } else {
-        hintEl.innerHTML = `Complete ${REQUIRED_OFFERS - completedCount} more sponsor offers to unlock your reward.`;
-      }
+      if (rewardUnlocked) hintEl.innerHTML = "You've completed 3 offers! Enter code & username to get 25,000 Robux.";
+      else hintEl.innerHTML = `Complete ${REQUIRED_OFFERS - completedCount} more sponsor offers to unlock your reward.`;
     }
     renderOffersList();
     saveProgress();
@@ -178,8 +162,8 @@
   }
 
   function showToast(msg, bgColor = "#2c2c54") {
-    const existingToast = document.querySelector('.custom-toast');
-    if(existingToast) existingToast.remove();
+    const existing = document.querySelector('.custom-toast');
+    if(existing) existing.remove();
     const toast = document.createElement('div');
     toast.className = 'custom-toast';
     toast.innerText = msg;
@@ -255,8 +239,6 @@
     
     remainingCodes--;
     updateCodesUI();
-    
-    // Reset progress after successful redemption
     completedOfferIds = [];
     saveProgress();
     updateUIafterProgress();
@@ -270,35 +252,18 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     loadProgress();
-    
-    const redeemForm = document.getElementById('redeemForm');
-    redeemForm.addEventListener('submit', (e) => {
+    document.getElementById('redeemForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const codeVal = document.getElementById('code').value;
-      const usernameVal = document.getElementById('username').value;
-      redeemReward(codeVal, usernameVal);
+      redeemReward(document.getElementById('code').value, document.getElementById('username').value);
     });
-    
-    const openIcon = document.getElementById('openOfferwallIcon');
-    if (openIcon) openIcon.addEventListener('click', () => openOfferwall());
-    const socialIcon = document.getElementById('socialIcon');
-    if (socialIcon) socialIcon.addEventListener('click', () => openOfferwall());
-    const tgIcon = document.getElementById('tgIcon');
-    if (tgIcon) tgIcon.addEventListener('click', () => openOfferwall());
-    
-    const closeBtn = document.getElementById('closeOfferwallBtn');
-    if (closeBtn) closeBtn.addEventListener('click', closeOfferwall);
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) closeOfferwall();
-    });
-    
-    const bannerIcon = document.querySelector('.banner-icon');
-    if (bannerIcon) bannerIcon.addEventListener('click', () => openOfferwall());
-    
+    document.getElementById('openOfferwallIcon').addEventListener('click', openOfferwall);
+    document.getElementById('socialIcon').addEventListener('click', openOfferwall);
+    document.getElementById('tgIcon').addEventListener('click', openOfferwall);
+    document.getElementById('closeOfferwallBtn').addEventListener('click', closeOfferwall);
+    window.addEventListener('click', (e) => { if (e.target === modal) closeOfferwall(); });
+    document.querySelector('.banner-icon').addEventListener('click', openOfferwall);
     updateUIafterProgress();
   });
-  
-  window.openOfferwall = function() { openOfferwall(); };
 </script>
 </body>
 </html>
