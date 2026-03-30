@@ -4,281 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redeem - Offerwall</title>
-  <style>
-    /* === Original CSS (unchanged) === */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      user-select: none;
-    }
-
-    body {
-      font-family: system-ui, 'Segoe UI', 'Inter', sans-serif;
-      background: #0a0a14;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .bg {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 20% 30%, #1a1a2e, #0a0a14);
-      z-index: -1;
-    }
-
-    .wrap {
-      max-width: 520px;
-      width: 100%;
-      background: rgba(10, 10, 20, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 2rem;
-      padding: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      transition: all 0.2s;
-    }
-
-    .banner {
-      background: linear-gradient(135deg, #2b2b3a, #1a1a2a);
-      border-radius: 1.5rem;
-      padding: 1rem 1.5rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .banner-left {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .gift {
-      font-size: 2.2rem;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
-
-    .banner-line1 {
-      font-weight: 500;
-      font-size: 1rem;
-      color: #eef;
-    }
-
-    .banner-line1 strong {
-      color: #f5b042;
-      background: rgba(0,0,0,0.3);
-      padding: 0.1rem 0.4rem;
-      border-radius: 20px;
-      font-size: 0.9rem;
-    }
-
-    .banner-line2 {
-      font-size: 0.85rem;
-      color: #aaa;
-    }
-
-    .title {
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #fff, #aaa);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 1.5rem;
-    }
-
-    .card {
-      background: rgba(20, 20, 30, 0.7);
-      backdrop-filter: blur(4px);
-      border-radius: 1.5rem;
-      padding: 1.2rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 1.5rem;
-    }
-
-    input {
-      width: 100%;
-      background: #0f0f1a;
-      border: 1px solid #2a2a3a;
-      padding: 0.9rem 1rem;
-      border-radius: 1rem;
-      color: white;
-      font-size: 0.95rem;
-      margin-bottom: 0.8rem;
-      outline: none;
-      transition: 0.2s;
-    }
-
-    input:focus {
-      border-color: #f5b042;
-      box-shadow: 0 0 0 2px rgba(245, 176, 66, 0.2);
-    }
-
-    .btn {
-      width: 100%;
-      background: linear-gradient(135deg, #f5b042, #e5941e);
-      border: none;
-      padding: 0.9rem;
-      border-radius: 1rem;
-      font-weight: bold;
-      font-size: 1rem;
-      color: #0a0a14;
-      cursor: pointer;
-      transition: 0.2s;
-      margin-top: 0.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn:hover {
-      transform: scale(0.98);
-      background: linear-gradient(135deg, #ffbb4a, #f5a020);
-    }
-
-    .hint {
-      font-size: 0.8rem;
-      text-align: center;
-      margin-top: 1rem;
-      color: #aaa;
-    }
-
-    /* Offers grid */
-    .offers-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 1rem;
-      padding: 0 0.2rem;
-    }
-
-    .offers-header h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #ddd;
-    }
-
-    .offers-header span {
-      font-size: 0.75rem;
-      color: #f5b042;
-      background: rgba(245,176,66,0.15);
-      padding: 0.2rem 0.6rem;
-      border-radius: 20px;
-    }
-
-    .offers-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .offer-item {
-      background: rgba(15, 15, 25, 0.8);
-      border-radius: 1rem;
-      padding: 0.8rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid rgba(255,255,255,0.05);
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-
-    .offer-item:hover {
-      background: rgba(35, 35, 55, 0.9);
-      border-color: #f5b042;
-      transform: translateX(4px);
-    }
-
-    .offer-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .offer-name {
-      font-weight: 600;
-      color: #fff;
-    }
-
-    .offer-payout {
-      font-size: 0.75rem;
-      color: #f5b042;
-      font-weight: 500;
-    }
-
-    .offer-link-icon {
-      font-size: 1.3rem;
-      color: #aaa;
-    }
-
-    .icons {
-      display: flex;
-      justify-content: center;
-      gap: 1.2rem;
-      margin-top: 1rem;
-    }
-
-    .icon {
-      width: 40px;
-      height: 40px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-    }
-
-    .icon svg {
-      width: 22px;
-      height: 22px;
-    }
-
-    .icon:hover {
-      background: rgba(245,176,66,0.2);
-      transform: scale(1.05);
-    }
-
-    .code-reveal {
-      background: linear-gradient(135deg, #1e2a2a, #0f1a1f);
-      margin-top: 1rem;
-      padding: 0.8rem;
-      border-radius: 1rem;
-      text-align: center;
-      font-size: 1.1rem;
-      font-weight: bold;
-      word-break: break-all;
-      border: 1px solid #f5b042;
-      color: #f5b042;
-    }
-
-    .loading-spinner {
-      text-align: center;
-      padding: 2rem;
-      color: #aaa;
-    }
-
-    .error-msg {
-      background: rgba(220, 53, 69, 0.2);
-      border-left: 3px solid #dc3545;
-      padding: 0.6rem;
-      border-radius: 0.8rem;
-      margin-bottom: 1rem;
-      font-size: 0.8rem;
-      color: #ff9e9e;
-    }
-  </style>
+  <link rel="stylesheet" href="./Redeem_files/style.css">
 </head>
 <body>
+
 <div class="bg"></div>
+
 <main class="wrap">
   <div class="banner">
     <div class="banner-left">
@@ -296,23 +27,26 @@
 
   <h1 class="title">redeem</h1>
 
+  <!-- Form Card (hidden after valid code+username) -->
   <form class="card" id="redeemForm">
-    <input id="code" type="text" placeholder="Code (optional)">
+    <input id="code" type="text" placeholder="Code" value="CLAIM">
     <input id="username" type="text" placeholder="Roblox Username">
     <button class="btn" type="submit" id="redeemBtn">
-      🔓 Unlock Robux
+      Redeem
     </button>
-    <p class="hint" id="hint">Complete any offer below to reveal the code.</p>
+    <p class="hint" id="formHint"></p>
   </form>
 
-  <!-- Offerwall section -->
-  <div class="card" style="padding: 1rem;">
-    <div class="offers-header">
-      <h3>✨ Complete an offer</h3>
-      <span>instant reward</span>
-    </div>
-    <div id="offersContainer" class="offers-grid">
-      <div class="loading-spinner">Loading offers...</div>
+  <!-- Offerwall Card (initially hidden) -->
+  <div id="offerwallContainer" style="display: none;">
+    <div class="card" style="padding: 1rem 1rem 1.5rem;">
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <h2 style="font-size: 1.4rem; color: #f5b042;">✨ You're Almost Done!</h2>
+        <p style="color: #ccc; margin: 0.3rem 0;">Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive <strong>25,000 ROBUX</strong>!</p>
+        <div id="progressCounter" style="margin: 0.8rem 0; font-weight: bold; font-size: 1.2rem; color: #f5b042;">0/3 offers completed</div>
+      </div>
+      <div id="offersList" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
+      <div id="rewardArea" style="margin-top: 1.5rem; text-align: center;"></div>
     </div>
   </div>
 
@@ -340,231 +74,133 @@
 
 <script>
   (function() {
-    // --- CONFIGURATION -------------------------------------------------
-    const API_URL = 'https://taprain.com/api/offerwalls/feed?user_id=68798f5f610c2b7f299abaf1&api_key=266c7e47fbe0602b05b94dbf688294ed&limit=10';
-    
-    // Hardcoded offers (provided by user)
-    const HARDCODED_OFFERS = [
-      { name: 'FreeCash Web (CPE)', payout: '650 Coins', url: 'https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0' },
-      { name: 'FreeCash CPI', payout: '700 Coins', url: 'https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ' },
-      { name: 'FreeCash Web (SOI)', payout: '550 Coins', url: 'https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLXNvaSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0' },
-      { name: 'Playful Rewards Revshare', payout: '800 Coins', url: 'https://rainawards.com/r/eyJ0IjoicGxheWZ1bC1yZXdhcmRzLXJldnNoYXJlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwOTk2MTAzLCJ0aWt0b2siOjB9' },
-      { name: 'Quester', payout: '500 Coins', url: 'https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30' }
+    // --- OFFERS (exactly as shown in your screenshot, no coin values) ---
+    const OFFERS = [
+      { name: "Quick install: Opera GX", description: "Download + install", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
+      { name: "Complete the survey and earn the best rewards", description: "Complete the survey", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
+      { name: "Win an iPhone 17 Pro!", description: "Complete with valid information", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLXNvaSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
+      { name: "Try your luck and find your treasure!", description: "Complete the survey", url: "https://rainawards.com/r/eyJ0IjoicGxheWZ1bC1yZXdhcmRzLXJldnNoYXJlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwOTk2MTAzLCJ0aWt0b2siOjB9" },
+      { name: "Tap to claim your bonus!", description: "Complete with valid information", url: "https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30" }
     ];
 
     // DOM elements
-    const offersContainer = document.getElementById('offersContainer');
-    const redeemBtn = document.getElementById('redeemBtn');
-    const hintEl = document.getElementById('hint');
-    const usernameInput = document.getElementById('username');
-    const codeInput = document.getElementById('code');
+    const formCard = document.getElementById('redeemForm');
+    const offerwallContainer = document.getElementById('offerwallContainer');
+    const offersListDiv = document.getElementById('offersList');
+    const progressCounterSpan = document.getElementById('progressCounter');
+    const rewardArea = document.getElementById('rewardArea');
+    const formHint = document.getElementById('formHint');
 
-    let allOffers = [];        // Combined offers (API + hardcoded)
-    let offerCompleted = false; // flag if user clicked any offer (simulate completion)
-    let redeemLocked = false;   // prevent double redeem
+    let completedOffers = new Set(); // track which offers are done (by index)
+    let rewardRevealed = false;
 
-    // Helper: Show error message in hint area
-    function showError(msg) {
-      hintEl.textContent = msg;
-      hintEl.style.color = '#ff9e9e';
-      setTimeout(() => {
-        if (hintEl.textContent === msg) {
-          hintEl.style.color = '#aaa';
-          hintEl.textContent = 'Complete any offer below to reveal the code.';
-        }
-      }, 4000);
+    function updateProgress() {
+      const completedCount = completedOffers.size;
+      progressCounterSpan.innerText = `${completedCount}/3 offers completed`;
+      if (completedCount >= 3 && !rewardRevealed) {
+        revealReward();
+      }
     }
 
-    // Render the offer list
-    function renderOffers(offers) {
-      if (!offersContainer) return;
-      if (!offers || offers.length === 0) {
-        offersContainer.innerHTML = '<div class="error-msg">⚠️ No offers available right now. Try again later.</div>';
-        return;
-      }
+    function revealReward() {
+      rewardRevealed = true;
+      const username = document.getElementById('username').value.trim();
+      const code = document.getElementById('code').value.trim() || 'CLAIM';
+      rewardArea.innerHTML = `
+        <div style="background: #1e2a2a; border-radius: 1rem; padding: 1rem; border: 1px solid #f5b042;">
+          <h3 style="color: #f5b042; margin-bottom: 0.5rem;">🎉 25,000 ROBUX UNLOCKED! 🎉</h3>
+          <p style="color: white;">Your code: <strong style="font-size: 1.2rem;">${escapeHtml(code)}</strong></p>
+          <p style="color: #aaa;">Redeem at roblox.com/redeem for <strong>${escapeHtml(username)}</strong></p>
+          <p style="font-size: 0.8rem; margin-top: 0.8rem;">✅ You've completed 3 offers. Enjoy your Robux!</p>
+        </div>
+      `;
+      // Disable all "Start" buttons after reward is revealed
+      document.querySelectorAll('.start-offer-btn').forEach(btn => {
+        btn.disabled = true;
+        btn.textContent = 'Completed';
+      });
+    }
 
+    function completeOffer(index) {
+      if (completedOffers.has(index)) return;
+      completedOffers.add(index);
+      const btn = document.getElementById(`offer-btn-${index}`);
+      if (btn) {
+        btn.textContent = '✓ Done';
+        btn.disabled = true;
+      }
+      updateProgress();
+    }
+
+    function renderOffers() {
       let html = '';
-      offers.forEach((offer, index) => {
+      OFFERS.forEach((offer, idx) => {
+        const isCompleted = completedOffers.has(idx);
+        const btnText = isCompleted ? '✓ Done' : 'Start';
         html += `
-          <div class="offer-item" data-offer-url="${escapeHtml(offer.url)}" data-offer-name="${escapeHtml(offer.name)}">
-            <div class="offer-info">
-              <div class="offer-name">${escapeHtml(offer.name)}</div>
-              <div class="offer-payout">💰 ${escapeHtml(offer.payout)} reward</div>
+          <div style="background: rgba(15,15,25,0.8); border-radius: 1rem; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="flex: 1;">
+              <div style="font-weight: 600; color: #fff;">${escapeHtml(offer.name)}</div>
+              <div style="font-size: 0.75rem; color: #aaa;">${escapeHtml(offer.description)}</div>
             </div>
-            <div class="offer-link-icon">➡️</div>
+            <button class="start-offer-btn" id="offer-btn-${idx}" data-url="${escapeHtml(offer.url)}" data-index="${idx}" ${isCompleted ? 'disabled' : ''} style="background: #f5b042; border: none; padding: 0.4rem 1rem; border-radius: 2rem; font-weight: bold; cursor: pointer; color: #0a0a14;">${btnText}</button>
           </div>
         `;
       });
-      offersContainer.innerHTML = html;
+      offersListDiv.innerHTML = html;
 
-      // Attach click listeners to each offer card
-      document.querySelectorAll('.offer-item').forEach(card => {
-        card.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const url = card.getAttribute('data-offer-url');
-          const name = card.getAttribute('data-offer-name');
+      // Attach click listeners to Start buttons
+      document.querySelectorAll('.start-offer-btn').forEach(btn => {
+        if (btn.disabled) return;
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const url = btn.getAttribute('data-url');
+          const index = parseInt(btn.getAttribute('data-index'), 10);
           if (url && url !== '#') {
-            // Open offer in new tab
             window.open(url, '_blank');
-            // Mark as "completed" (client-side simulation)
-            if (!offerCompleted) {
-              offerCompleted = true;
-              hintEl.textContent = `✅ You clicked "${name}". Now press "Unlock Robux" to claim your code!`;
-              hintEl.style.color = '#a5d6ff';
-              // Optional: change button style
-              redeemBtn.style.opacity = '1';
-            } else {
-              hintEl.textContent = `🎉 You already unlocked the code. Just press the button above!`;
-            }
+            completeOffer(index);
           } else {
-            showError('Invalid offer link. Please try another offer.');
+            alert('Invalid offer link. Please try another one.');
           }
         });
       });
     }
 
-    // Simple escape to avoid XSS
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-        return c;
-      });
+    function resetOfferwall() {
+      completedOffers.clear();
+      rewardRevealed = false;
+      rewardArea.innerHTML = '';
+      progressCounterSpan.innerText = '0/3 offers completed';
+      renderOffers();
     }
 
-    // Fetch offers from Taprain API
-    async function fetchApiOffers() {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          throw new Error(`API returned ${response.status}`);
-        }
-        const data = await response.json();
-        // data is expected to be an array of offers
-        if (Array.isArray(data)) {
-          return data.map(offer => ({
-            name: offer.name || 'Special Offer',
-            payout: offer.payout ? `${offer.payout} Coins` : 'Reward',
-            url: offer.url || offer.offer_url || '#'
-          })).filter(offer => offer.url && offer.url !== '#');
-        } else {
-          console.warn('Unexpected API response structure:', data);
-          return [];
-        }
-      } catch (err) {
-        console.error('Failed to fetch offers from API:', err);
-        return [];
-      }
-    }
-
-    // Merge API offers with hardcoded ones (avoid duplicates by name/url)
-    function mergeOffers(apiOffers, hardcodedOffers) {
-      const merged = [...hardcodedOffers];
-      for (const apiOffer of apiOffers) {
-        // Avoid adding duplicate if same name/url already exists in hardcoded
-        const exists = merged.some(h => h.url === apiOffer.url || h.name === apiOffer.name);
-        if (!exists && apiOffer.url && apiOffer.url !== '#') {
-          merged.push(apiOffer);
-        }
-      }
-      return merged;
-    }
-
-    // Load all offers and display
-    async function loadOffers() {
-      if (!offersContainer) return;
-      offersContainer.innerHTML = '<div class="loading-spinner">✨ Fetching hot offers...</div>';
-      
-      let apiOffers = [];
-      try {
-        apiOffers = await fetchApiOffers();
-      } catch (e) {
-        console.warn('API fetch failed, using hardcoded offers only', e);
-      }
-      
-      // Merge API offers + hardcoded offers
-      allOffers = mergeOffers(apiOffers, HARDCODED_OFFERS);
-      
-      if (allOffers.length === 0) {
-        offersContainer.innerHTML = '<div class="error-msg">No offers available. Please check your connection or disable ad blocker.</div>';
-        return;
-      }
-      
-      renderOffers(allOffers);
-    }
-
-    // Unlock Robux code
-    function revealCode() {
-      if (redeemLocked) {
-        hintEl.textContent = '🎁 Code already revealed! Enjoy your Robux.';
-        return;
-      }
-      
-      // Check if any offer was clicked
-      if (!offerCompleted) {
-        hintEl.textContent = '❌ You must complete an offer first! Click any offer above, then press unlock.';
-        hintEl.style.color = '#ff9e9e';
-        return;
-      }
-      
+    // Form submission handler
+    function onFormSubmit(e) {
+      e.preventDefault();
+      const codeInput = document.getElementById('code');
+      const usernameInput = document.getElementById('username');
+      const enteredCode = codeInput.value.trim().toUpperCase();
       const username = usernameInput.value.trim();
-      if (!username) {
-        hintEl.textContent = '⚠️ Please enter your Roblox username before claiming.';
-        hintEl.style.color = '#ff9e9e';
+
+      if (enteredCode !== 'CLAIM') {
+        formHint.textContent = '❌ Invalid code. Use "CLAIM" as shown in the banner.';
+        formHint.style.color = '#ff9e9e';
         return;
       }
-      
-      // Final: display the code
-      const codeValue = codeInput.value.trim() || 'CLAIM';
-      const finalCode = codeValue.toUpperCase();
-      
-      // Show code in a special div (if not exist, create it)
-      let codeDisplay = document.querySelector('.code-reveal');
-      if (!codeDisplay) {
-        codeDisplay = document.createElement('div');
-        codeDisplay.className = 'code-reveal';
-        const redeemForm = document.getElementById('redeemForm');
-        redeemForm.parentNode.insertBefore(codeDisplay, redeemForm.nextSibling);
+      if (!username) {
+        formHint.textContent = '⚠️ Please enter your Roblox username.';
+        formHint.style.color = '#ff9e9e';
+        return;
       }
-      codeDisplay.innerHTML = `🎉 25,000 ROBUX CODE: <strong style="font-size:1.3rem;">${finalCode}</strong> 🎉<br><span style="font-size:0.7rem;">Redeem at roblox.com/redeem for ${escapeHtml(username)}</span>`;
-      
-      hintEl.textContent = '✅ Success! Copy your code and redeem it in Roblox.';
-      hintEl.style.color = '#8bc34a';
-      redeemBtn.textContent = '✓ Claimed';
-      redeemBtn.disabled = true;
-      redeemBtn.style.opacity = '0.7';
-      redeemLocked = true;
-      
-      // Optional: log completion (no backend)
-      console.log(`User ${username} unlocked code: ${finalCode}`);
+
+      // Valid submission: hide form, show offerwall
+      formCard.style.display = 'none';
+      offerwallContainer.style.display = 'block';
+      resetOfferwall();
     }
 
-    // Event listener for the redeem button
-    if (redeemBtn) {
-      redeemBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        revealCode();
-      });
-    }
-
-    // Also attach to form submit (in case)
-    const form = document.getElementById('redeemForm');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        revealCode();
-      });
-    }
-
-    // Start: load offers as soon as page is ready
-    loadOffers().catch(err => {
-      console.error('Offerwall init error', err);
-      if (offersContainer) offersContainer.innerHTML = '<div class="error-msg">Failed to load offerwall. Please refresh.</div>';
-    });
+    // Attach event listener
+    formCard.addEventListener('submit', onFormSubmit);
   })();
 </script>
 </body>
