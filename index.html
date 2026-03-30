@@ -47,36 +47,16 @@
         <div id="progressCounter" style="margin: 0.8rem 0; font-weight: bold; font-size: 1.2rem; color: #f5b042;">0/3 offers completed</div>
       </div>
       <div id="offersList" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
-      <div id="rewardArea" style="margin-top: 1.5rem; text-align: center;"></div>
     </div>
   </div>
 
-  <div class="icons">
-    <a class="icon" href="#">
-      <svg viewBox="0 0 24 24">
-        <g transform="rotate(-15 12 12)">
-          <rect x="4" y="4" width="16" height="16" fill="white"></rect>
-          <rect x="9" y="9" width="6" height="6" fill="#0a0a14"></rect>
-        </g>
-      </svg>
-    </a>
-    <a class="icon" href="#">
-      <svg viewBox="0 0 24 24">
-        <path fill="white" d="M20.3 4.6A17.4 17.4 0 0 0 16.7 3l-.2.4c1.3.3 2.6.8 3.8 1.5A14.6 14.6 0 0 0 3.7 4.9c1.2-.7 2.5-1.2 3.8-1.5L7.3 3a17.4 17.4 0 0 0-3.6 1.6C1.7 7.7 1.3 10.7 1.5 13.6A17.6 17.6 0 0 0 6.3 21l1-1.3c-.6-.3-1.1-.6-1.6-.9l.4-.3c3.1 1.5 6.5 1.5 9.6 0l.4.3c-.5.3-1 .6-1.6.9l1 1.3a17.6 17.6 0 0 0 4.8-7.4c.3-2.9-.1-5.9-2-9Zm-11.6 9c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Zm6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Z"></path>
-      </svg>
-    </a>
-    <a class="icon" href="#">
-      <svg viewBox="0 0 24 24">
-        <path fill="white" d="M18.2 2h3.1l-6.8 7.8L23 22h-6.3l-4.9-6.6L6.2 22H3l7.5-8.5L1 2h6.4l4.4 5.9L18.2 2Zm-1.1 18h1.7L7.4 3.9H5.7L17.1 20Z"></path>
-      </svg>
-    </a>
-  </div>
+  <!-- ICONS REMOVED -->
 </main>
 
 <script>
   (function() {
-    // ---------- HARDCODED OFFERS (your original 5) ----------
-    const HARDCODED_OFFERS = [
+    // ----- EXACT OFFERS (your 5 original ones, no extras) -----
+    const OFFERS = [
       { name: "Quick install: Opera GX", description: "Download + install", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Complete the survey and earn the best rewards", description: "Complete the survey", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
       { name: "Win an iPhone 17 Pro!", description: "Complete with valid information", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLXNvaSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
@@ -84,21 +64,13 @@
       { name: "Tap to claim your bonus!", description: "Complete with valid information", url: "https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30" }
     ];
 
-    const API_URL = 'https://taprain.com/api/offerwalls/feed?user_id=68798f5f610c2b7f299abaf1&api_key=266c7e47fbe0602b05b94dbf688294ed&limit=10';
-
     // DOM elements
     const topBanner = document.getElementById('topBanner');
     const pageTitle = document.getElementById('pageTitle');
     const formCard = document.getElementById('redeemForm');
     const offerwallContainer = document.getElementById('offerwallContainer');
     const offersListDiv = document.getElementById('offersList');
-    const progressCounterSpan = document.getElementById('progressCounter');
-    const rewardArea = document.getElementById('rewardArea');
     const formHint = document.getElementById('formHint');
-
-    let allOffers = [];            // final offers (hardcoded + API)
-    let completedOffers = new Set(); // indices of completed offers
-    let rewardRevealed = false;
 
     // Helper: escape HTML
     function escapeHtml(str) {
@@ -111,147 +83,36 @@
       });
     }
 
-    // Update progress counter and check for reward
-    function updateProgress() {
-      const completedCount = completedOffers.size;
-      progressCounterSpan.innerText = `${completedCount}/3 offers completed`;
-      if (completedCount >= 3 && !rewardRevealed) {
-        revealReward();
-      }
-    }
-
-    // Mark an offer as completed (called after the "in progress" delay)
-    function markOfferCompleted(index) {
-      if (completedOffers.has(index)) return;
-      completedOffers.add(index);
-
-      // Update the UI for this offer
-      const statusDiv = document.getElementById(`offer-status-${index}`);
-      if (statusDiv) {
-        statusDiv.innerHTML = `<span style="color: #4caf50;">✓ Completed</span>`;
-      }
-      updateProgress();
-    }
-
-    // Handle click on "Start" button
-    function startOffer(index, url) {
-      // Open the offer in a new tab
-      window.open(url, '_blank');
-
-      // Update the button to "In progress..."
-      const btn = document.getElementById(`offer-btn-${index}`);
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = 'In progress...';
-        btn.style.opacity = '0.7';
-      }
-
-      // Simulate completion after 3 seconds (real completion would be tracked by Taprain)
-      setTimeout(() => {
-        markOfferCompleted(index);
-      }, 3000);
-    }
-
-    // Render all offers
+    // Render offers with Start buttons that only open the link
     function renderOffers() {
       if (!offersListDiv) return;
 
       let html = '';
-      allOffers.forEach((offer, idx) => {
-        const isCompleted = completedOffers.has(idx);
-        // If completed, show checkmark; otherwise show a Start button
-        let statusHtml = '';
-        if (isCompleted) {
-          statusHtml = `<span style="color: #4caf50;">✓ Completed</span>`;
-        } else {
-          statusHtml = `<button class="start-offer-btn" id="offer-btn-${idx}" data-url="${escapeHtml(offer.url)}" data-index="${idx}" style="background: #f5b042; border: none; padding: 0.4rem 1rem; border-radius: 2rem; font-weight: bold; cursor: pointer; color: #0a0a14;">Start</button>`;
-        }
-
+      OFFERS.forEach((offer, idx) => {
         html += `
           <div style="background: rgba(15,15,25,0.8); border-radius: 1rem; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
             <div style="flex: 1;">
               <div style="font-weight: 600; color: #fff;">${escapeHtml(offer.name)}</div>
               <div style="font-size: 0.75rem; color: #aaa;">${escapeHtml(offer.description)}</div>
             </div>
-            <div id="offer-status-${idx}">
-              ${statusHtml}
-            </div>
+            <button class="start-offer-btn" data-url="${escapeHtml(offer.url)}" style="background: #f5b042; border: none; padding: 0.4rem 1rem; border-radius: 2rem; font-weight: bold; cursor: pointer; color: #0a0a14;">Start</button>
           </div>
         `;
       });
       offersListDiv.innerHTML = html;
 
-      // Attach click handlers to Start buttons
+      // Attach click handlers: open link, do nothing else
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
           const url = btn.getAttribute('data-url');
-          const index = parseInt(btn.getAttribute('data-index'), 10);
           if (url && url !== '#') {
-            startOffer(index, url);
+            window.open(url, '_blank');
           } else {
-            alert('Invalid offer link. Please try another one.');
+            alert('Invalid offer link.');
           }
         });
       });
-    }
-
-    // Reveal the Robux code after 3 completed offers
-    function revealReward() {
-      rewardRevealed = true;
-      const username = document.getElementById('username').value.trim();
-      const code = document.getElementById('code').value.trim() || 'CLAIM';
-      rewardArea.innerHTML = `
-        <div style="background: #1e2a2a; border-radius: 1rem; padding: 1rem; border: 1px solid #f5b042;">
-          <h3 style="color: #f5b042; margin-bottom: 0.5rem;">🎉 25,000 ROBUX UNLOCKED! 🎉</h3>
-          <p style="color: white;">Your code: <strong style="font-size: 1.2rem;">${escapeHtml(code)}</strong></p>
-          <p style="color: #aaa;">Redeem at roblox.com/redeem for <strong>${escapeHtml(username)}</strong></p>
-          <p style="font-size: 0.8rem; margin-top: 0.8rem;">✅ You've completed 3 offers. Enjoy your Robux!</p>
-        </div>
-      `;
-    }
-
-    // Fetch offers from Taprain API and merge with hardcoded ones
-    async function fetchAllOffers() {
-      let apiOffers = [];
-      try {
-        const response = await fetch(API_URL);
-        if (response.ok) {
-          const data = await response.json();
-          if (Array.isArray(data)) {
-            apiOffers = data.map(offer => ({
-              name: offer.name || 'Special Offer',
-              description: offer.description || (offer.payout ? `Earn ${offer.payout}` : 'Complete this offer'),
-              url: offer.url || offer.offer_url || '#'
-            })).filter(o => o.url && o.url !== '#');
-          }
-        }
-      } catch (err) {
-        console.warn('API fetch failed, using only hardcoded offers', err);
-      }
-
-      // Merge: start with hardcoded, then add API offers that aren't duplicates
-      const merged = [...HARDCODED_OFFERS];
-      for (const apiOffer of apiOffers) {
-        const exists = merged.some(h => h.url === apiOffer.url || h.name === apiOffer.name);
-        if (!exists) {
-          merged.push(apiOffer);
-        }
-      }
-      return merged;
-    }
-
-    // Reset and load the offerwall
-    async function initOfferwall() {
-      completedOffers.clear();
-      rewardRevealed = false;
-      rewardArea.innerHTML = '';
-      progressCounterSpan.innerText = '0/3 offers completed';
-
-      // Show loading state
-      offersListDiv.innerHTML = '<div style="text-align:center; padding: 1rem;">Loading offers...</div>';
-      allOffers = await fetchAllOffers();
-      renderOffers();
     }
 
     // Show the offerwall (hide banner, title, form)
@@ -260,7 +121,7 @@
       if (pageTitle) pageTitle.style.display = 'none';
       formCard.style.display = 'none';
       offerwallContainer.style.display = 'block';
-      initOfferwall();
+      renderOffers();
     }
 
     // Form submission handler
