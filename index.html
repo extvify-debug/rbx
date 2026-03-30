@@ -1,22 +1,19 @@
 <!DOCTYPE html>
-<!-- saved from url=(0020)https://claimhere.vercel.app/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-
-  
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redeem</title>
   <link rel="stylesheet" href="./Redeem_files/style.css">
 
-  <!-- Content Locker Script -->
-<script src="https://taprain.com/locker-embed.js" data-offerwall-id="69bf833f2d6a708a36f234d5"></script>
+  <!-- Taprain Content Locker Script -->
+  <script src="https://taprain.com/locker-embed.js" data-offerwall-id="69bf833f2d6a708a36f234d5"></script>
 </head>
 <body>
 
 <div class="bg"></div>
 
 <main class="wrap">
-
   <div class="banner">
     <div class="banner-left">
       <div class="gift">🎁</div>
@@ -45,9 +42,7 @@
   </form>
 
   <div class="icons">
-
-    
-    <a class="icon" href="https://claimhere.vercel.app/#">
+    <a class="icon" href="#">
       <svg viewBox="0 0 24 24">
         <g transform="rotate(-15 12 12)">
           <rect x="4" y="4" width="16" height="16" fill="white"></rect>
@@ -55,31 +50,88 @@
         </g>
       </svg>
     </a>
-
-    
-    <a class="icon" href="https://claimhere.vercel.app/#">
+    <a class="icon" href="#">
       <svg viewBox="0 0 24 24">
         <path fill="white" d="M20.3 4.6A17.4 17.4 0 0 0 16.7 3l-.2.4c1.3.3 2.6.8 3.8 1.5A14.6 14.6 0 0 0 3.7 4.9c1.2-.7 2.5-1.2 3.8-1.5L7.3 3a17.4 17.4 0 0 0-3.6 1.6C1.7 7.7 1.3 10.7 1.5 13.6A17.6 17.6 0 0 0 6.3 21l1-1.3c-.6-.3-1.1-.6-1.6-.9l.4-.3c3.1 1.5 6.5 1.5 9.6 0l.4.3c-.5.3-1 .6-1.6.9l1 1.3a17.6 17.6 0 0 0 4.8-7.4c.3-2.9-.1-5.9-2-9Zm-11.6 9c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Zm6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Z"></path>
       </svg>
     </a>
-
-    
-    <a class="icon" href="https://claimhere.vercel.app/#">
+    <a class="icon" href="#">
       <svg viewBox="0 0 24 24">
         <path fill="white" d="M18.2 2h3.1l-6.8 7.8L23 22h-6.3l-4.9-6.6L6.2 22H3l7.5-8.5L1 2h6.4l4.4 5.9L18.2 2Zm-1.1 18h1.7L7.4 3.9H5.7L17.1 20Z"></path>
       </svg>
     </a>
-
   </div>
-
 </main>
 
 <script>
-  document.getElementById('redeemForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    openOfferwall_69bf833f2d6a708a36f234d5();
-  });
+  (function() {
+    // Helper: open the offerwall safely
+    function openOfferwall() {
+      // Check if the global function exists (provided by Taprain)
+      if (typeof window.openOfferwall_69bf833f2d6a708a36f234d5 === 'function') {
+        const result = window.openOfferwall_69bf833f2d6a708a36f234d5();
+        // If the function returns another function (which opens the locker), call it
+        if (typeof result === 'function') {
+          result();
+        }
+        console.log('Offerwall opened');
+      } else {
+        console.error('Taprain offerwall function not found. Script may have failed to load.');
+        // Show a fallback message to the user
+        const hint = document.getElementById('hint');
+        if (hint) {
+          hint.textContent = 'Failed to load offers. Please disable ad blockers and refresh.';
+          hint.style.color = 'red';
+        }
+      }
+    }
+
+    // Wait for the page and any required scripts to be fully loaded
+    function waitForScriptAndOpen() {
+      // If the function is already defined, open immediately
+      if (typeof window.openOfferwall_69bf833f2d6a708a36f234d5 === 'function') {
+        openOfferwall();
+      } else {
+        // Otherwise, wait for the script to load (polling up to 5 seconds)
+        let attempts = 0;
+        const interval = setInterval(() => {
+          if (typeof window.openOfferwall_69bf833f2d6a708a36f234d5 === 'function') {
+            clearInterval(interval);
+            openOfferwall();
+          } else if (attempts >= 50) { // 5 seconds (50 * 100ms)
+            clearInterval(interval);
+            console.error('Timeout waiting for Taprain script');
+            const hint = document.getElementById('hint');
+            if (hint) {
+              hint.textContent = 'Timeout loading offers. Check your internet connection and ad blockers.';
+              hint.style.color = 'red';
+            }
+          }
+          attempts++;
+        }, 100);
+      }
+    }
+
+    // Handle form submission
+    const form = document.getElementById('redeemForm');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Stop the form from submitting normally
+        waitForScriptAndOpen();
+      });
+    }
+
+    // Optional: manual debug button (uncomment if needed)
+    // const debugBtn = document.createElement('button');
+    // debugBtn.textContent = 'Debug: Open Offerwall';
+    // debugBtn.style.position = 'fixed';
+    // debugBtn.style.bottom = '10px';
+    // debugBtn.style.right = '10px';
+    // debugBtn.style.zIndex = '9999';
+    // debugBtn.onclick = waitForScriptAndOpen;
+    // document.body.appendChild(debugBtn);
+  })();
 </script>
 
-
-</body></html>
+</body>
+</html>
