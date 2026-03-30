@@ -11,7 +11,7 @@
 <div class="bg"></div>
 
 <main class="wrap">
-  <!-- BANNER – will be hidden when offerwall shows -->
+  <!-- BANNER – hidden when offerwall appears -->
   <div class="banner" id="topBanner">
     <div class="banner-left">
       <div class="gift">🎁</div>
@@ -75,14 +75,16 @@
 
 <script>
   (function() {
-    // ----- OFFERS (exactly as in your screenshot, no coin values) -----
-    const OFFERS = [
+    // ---------- HARDCODED OFFERS (your original 5) ----------
+    const HARDCODED_OFFERS = [
       { name: "Quick install: Opera GX", description: "Download + install", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Complete the survey and earn the best rewards", description: "Complete the survey", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
       { name: "Win an iPhone 17 Pro!", description: "Complete with valid information", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLXNvaSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Try your luck and find your treasure!", description: "Complete the survey", url: "https://rainawards.com/r/eyJ0IjoicGxheWZ1bC1yZXdhcmRzLXJldnNoYXJlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwOTk2MTAzLCJ0aWt0b2siOjB9" },
       { name: "Tap to claim your bonus!", description: "Complete with valid information", url: "https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30" }
     ];
+
+    const API_URL = 'https://taprain.com/api/offerwalls/feed?user_id=68798f5f610c2b7f299abaf1&api_key=266c7e47fbe0602b05b94dbf688294ed&limit=10';
 
     // DOM elements
     const topBanner = document.getElementById('topBanner');
@@ -94,9 +96,22 @@
     const rewardArea = document.getElementById('rewardArea');
     const formHint = document.getElementById('formHint');
 
-    let completedOffers = new Set();  // indices of completed offers
+    let allOffers = [];            // final offers (hardcoded + API)
+    let completedOffers = new Set(); // indices of completed offers
     let rewardRevealed = false;
 
+    // Helper: escape HTML
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    // Update progress counter and check for reward
     function updateProgress() {
       const completedCount = completedOffers.size;
       progressCounterSpan.innerText = `${completedCount}/3 offers completed`;
@@ -105,6 +120,83 @@
       }
     }
 
+    // Mark an offer as completed (called after the "in progress" delay)
+    function markOfferCompleted(index) {
+      if (completedOffers.has(index)) return;
+      completedOffers.add(index);
+
+      // Update the UI for this offer
+      const statusDiv = document.getElementById(`offer-status-${index}`);
+      if (statusDiv) {
+        statusDiv.innerHTML = `<span style="color: #4caf50;">✓ Completed</span>`;
+      }
+      updateProgress();
+    }
+
+    // Handle click on "Start" button
+    function startOffer(index, url) {
+      // Open the offer in a new tab
+      window.open(url, '_blank');
+
+      // Update the button to "In progress..."
+      const btn = document.getElementById(`offer-btn-${index}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'In progress...';
+        btn.style.opacity = '0.7';
+      }
+
+      // Simulate completion after 3 seconds (real completion would be tracked by Taprain)
+      setTimeout(() => {
+        markOfferCompleted(index);
+      }, 3000);
+    }
+
+    // Render all offers
+    function renderOffers() {
+      if (!offersListDiv) return;
+
+      let html = '';
+      allOffers.forEach((offer, idx) => {
+        const isCompleted = completedOffers.has(idx);
+        // If completed, show checkmark; otherwise show a Start button
+        let statusHtml = '';
+        if (isCompleted) {
+          statusHtml = `<span style="color: #4caf50;">✓ Completed</span>`;
+        } else {
+          statusHtml = `<button class="start-offer-btn" id="offer-btn-${idx}" data-url="${escapeHtml(offer.url)}" data-index="${idx}" style="background: #f5b042; border: none; padding: 0.4rem 1rem; border-radius: 2rem; font-weight: bold; cursor: pointer; color: #0a0a14;">Start</button>`;
+        }
+
+        html += `
+          <div style="background: rgba(15,15,25,0.8); border-radius: 1rem; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="flex: 1;">
+              <div style="font-weight: 600; color: #fff;">${escapeHtml(offer.name)}</div>
+              <div style="font-size: 0.75rem; color: #aaa;">${escapeHtml(offer.description)}</div>
+            </div>
+            <div id="offer-status-${idx}">
+              ${statusHtml}
+            </div>
+          </div>
+        `;
+      });
+      offersListDiv.innerHTML = html;
+
+      // Attach click handlers to Start buttons
+      document.querySelectorAll('.start-offer-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const url = btn.getAttribute('data-url');
+          const index = parseInt(btn.getAttribute('data-index'), 10);
+          if (url && url !== '#') {
+            startOffer(index, url);
+          } else {
+            alert('Invalid offer link. Please try another one.');
+          }
+        });
+      });
+    }
+
+    // Reveal the Robux code after 3 completed offers
     function revealReward() {
       rewardRevealed = true;
       const username = document.getElementById('username').value.trim();
@@ -117,76 +209,58 @@
           <p style="font-size: 0.8rem; margin-top: 0.8rem;">✅ You've completed 3 offers. Enjoy your Robux!</p>
         </div>
       `;
-      // Disable all "Start" buttons
-      document.querySelectorAll('.start-offer-btn').forEach(btn => {
-        btn.disabled = true;
-        btn.textContent = 'Completed';
-      });
     }
 
-    function completeOffer(index) {
-      if (completedOffers.has(index)) return;
-      completedOffers.add(index);
-      const btn = document.getElementById(`offer-btn-${index}`);
-      if (btn) {
-        btn.textContent = '✓ Done';
-        btn.disabled = true;
-      }
-      updateProgress();
-    }
-
-    function renderOffers() {
-      if (!offersListDiv) return;
-      let html = '';
-      OFFERS.forEach((offer, idx) => {
-        const isCompleted = completedOffers.has(idx);
-        const btnText = isCompleted ? '✓ Done' : 'Start';
-        html += `
-          <div style="background: rgba(15,15,25,0.8); border-radius: 1rem; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
-            <div style="flex: 1;">
-              <div style="font-weight: 600; color: #fff;">${escapeHtml(offer.name)}</div>
-              <div style="font-size: 0.75rem; color: #aaa;">${escapeHtml(offer.description)}</div>
-            </div>
-            <button class="start-offer-btn" id="offer-btn-${idx}" data-url="${escapeHtml(offer.url)}" data-index="${idx}" ${isCompleted ? 'disabled' : ''} style="background: #f5b042; border: none; padding: 0.4rem 1rem; border-radius: 2rem; font-weight: bold; cursor: pointer; color: #0a0a14;">${btnText}</button>
-          </div>
-        `;
-      });
-      offersListDiv.innerHTML = html;
-
-      // Attach click handlers to Start buttons
-      document.querySelectorAll('.start-offer-btn').forEach(btn => {
-        if (btn.disabled) return;
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const url = btn.getAttribute('data-url');
-          const index = parseInt(btn.getAttribute('data-index'), 10);
-          if (url && url !== '#') {
-            window.open(url, '_blank');
-            completeOffer(index);
-          } else {
-            alert('Invalid offer link. Please try another one.');
+    // Fetch offers from Taprain API and merge with hardcoded ones
+    async function fetchAllOffers() {
+      let apiOffers = [];
+      try {
+        const response = await fetch(API_URL);
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data)) {
+            apiOffers = data.map(offer => ({
+              name: offer.name || 'Special Offer',
+              description: offer.description || (offer.payout ? `Earn ${offer.payout}` : 'Complete this offer'),
+              url: offer.url || offer.offer_url || '#'
+            })).filter(o => o.url && o.url !== '#');
           }
-        });
-      });
+        }
+      } catch (err) {
+        console.warn('API fetch failed, using only hardcoded offers', err);
+      }
+
+      // Merge: start with hardcoded, then add API offers that aren't duplicates
+      const merged = [...HARDCODED_OFFERS];
+      for (const apiOffer of apiOffers) {
+        const exists = merged.some(h => h.url === apiOffer.url || h.name === apiOffer.name);
+        if (!exists) {
+          merged.push(apiOffer);
+        }
+      }
+      return merged;
     }
 
-    function resetOfferwall() {
+    // Reset and load the offerwall
+    async function initOfferwall() {
       completedOffers.clear();
       rewardRevealed = false;
       rewardArea.innerHTML = '';
       progressCounterSpan.innerText = '0/3 offers completed';
+
+      // Show loading state
+      offersListDiv.innerHTML = '<div style="text-align:center; padding: 1rem;">Loading offers...</div>';
+      allOffers = await fetchAllOffers();
       renderOffers();
     }
 
-    // Show the offerwall and hide everything else
+    // Show the offerwall (hide banner, title, form)
     function showOfferwall() {
-      // Hide banner, title, and form
       if (topBanner) topBanner.style.display = 'none';
       if (pageTitle) pageTitle.style.display = 'none';
       formCard.style.display = 'none';
-      // Show offerwall container
       offerwallContainer.style.display = 'block';
-      resetOfferwall();
+      initOfferwall();
     }
 
     // Form submission handler
@@ -208,24 +282,12 @@
         return;
       }
 
-      // Valid submission: show offerwall
       showOfferwall();
     }
 
     // Attach event listener
     if (formCard) {
       formCard.addEventListener('submit', onFormSubmit);
-    }
-
-    // Helper to escape HTML
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      });
     }
   })();
 </script>
