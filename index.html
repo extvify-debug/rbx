@@ -11,7 +11,8 @@
 <div class="bg"></div>
 
 <main class="wrap">
-  <div class="banner">
+  <!-- BANNER – will be hidden when offerwall shows -->
+  <div class="banner" id="topBanner">
     <div class="banner-left">
       <div class="gift">🎁</div>
       <div>
@@ -25,9 +26,9 @@
     </div>
   </div>
 
-  <h1 class="title">redeem</h1>
+  <h1 class="title" id="pageTitle">redeem</h1>
 
-  <!-- Form Card (hidden after valid code+username) -->
+  <!-- FORM CARD -->
   <form class="card" id="redeemForm">
     <input id="code" type="text" placeholder="Code" value="CLAIM">
     <input id="username" type="text" placeholder="Roblox Username">
@@ -37,7 +38,7 @@
     <p class="hint" id="formHint"></p>
   </form>
 
-  <!-- Offerwall Card (initially hidden) -->
+  <!-- OFFERWALL CARD (hidden initially) -->
   <div id="offerwallContainer" style="display: none;">
     <div class="card" style="padding: 1rem 1rem 1.5rem;">
       <div style="text-align: center; margin-bottom: 1rem;">
@@ -74,7 +75,7 @@
 
 <script>
   (function() {
-    // --- OFFERS (exactly as shown in your screenshot, no coin values) ---
+    // ----- OFFERS (exactly as in your screenshot, no coin values) -----
     const OFFERS = [
       { name: "Quick install: Opera GX", description: "Download + install", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Complete the survey and earn the best rewards", description: "Complete the survey", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
@@ -84,6 +85,8 @@
     ];
 
     // DOM elements
+    const topBanner = document.getElementById('topBanner');
+    const pageTitle = document.getElementById('pageTitle');
     const formCard = document.getElementById('redeemForm');
     const offerwallContainer = document.getElementById('offerwallContainer');
     const offersListDiv = document.getElementById('offersList');
@@ -91,7 +94,7 @@
     const rewardArea = document.getElementById('rewardArea');
     const formHint = document.getElementById('formHint');
 
-    let completedOffers = new Set(); // track which offers are done (by index)
+    let completedOffers = new Set();  // indices of completed offers
     let rewardRevealed = false;
 
     function updateProgress() {
@@ -114,7 +117,7 @@
           <p style="font-size: 0.8rem; margin-top: 0.8rem;">✅ You've completed 3 offers. Enjoy your Robux!</p>
         </div>
       `;
-      // Disable all "Start" buttons after reward is revealed
+      // Disable all "Start" buttons
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
         btn.disabled = true;
         btn.textContent = 'Completed';
@@ -133,6 +136,7 @@
     }
 
     function renderOffers() {
+      if (!offersListDiv) return;
       let html = '';
       OFFERS.forEach((offer, idx) => {
         const isCompleted = completedOffers.has(idx);
@@ -149,7 +153,7 @@
       });
       offersListDiv.innerHTML = html;
 
-      // Attach click listeners to Start buttons
+      // Attach click handlers to Start buttons
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
         if (btn.disabled) return;
         btn.addEventListener('click', (e) => {
@@ -174,6 +178,17 @@
       renderOffers();
     }
 
+    // Show the offerwall and hide everything else
+    function showOfferwall() {
+      // Hide banner, title, and form
+      if (topBanner) topBanner.style.display = 'none';
+      if (pageTitle) pageTitle.style.display = 'none';
+      formCard.style.display = 'none';
+      // Show offerwall container
+      offerwallContainer.style.display = 'block';
+      resetOfferwall();
+    }
+
     // Form submission handler
     function onFormSubmit(e) {
       e.preventDefault();
@@ -193,14 +208,25 @@
         return;
       }
 
-      // Valid submission: hide form, show offerwall
-      formCard.style.display = 'none';
-      offerwallContainer.style.display = 'block';
-      resetOfferwall();
+      // Valid submission: show offerwall
+      showOfferwall();
     }
 
     // Attach event listener
-    formCard.addEventListener('submit', onFormSubmit);
+    if (formCard) {
+      formCard.addEventListener('submit', onFormSubmit);
+    }
+
+    // Helper to escape HTML
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
   })();
 </script>
 </body>
