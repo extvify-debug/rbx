@@ -165,15 +165,9 @@ input {
   transition: all 0.2s;
 }
 
-.start-offer-btn:hover:not(:disabled) {
+.start-offer-btn:hover {
   transform: scale(1.02);
   background: linear-gradient(135deg, #5f3cff, #3a25b8);
-}
-
-.start-offer-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
 }
 
 .offerwall-footer {
