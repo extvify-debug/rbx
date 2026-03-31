@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redeem</title>
-  <link rel="stylesheet" href="./Redeem_files/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -14,7 +14,7 @@
   <!-- BANNER – hidden when offerwall appears -->
   <div class="banner" id="topBanner">
     <div class="banner-left">
-      <div class="gift">🎁</div>
+      <div class="gift-text">◆</div>
       <div>
         <div class="banner-line1">
           25,000 Robux Code: <strong>CLAIM</strong>
@@ -40,29 +40,54 @@
 
   <!-- OFFERWALL CARD (hidden initially) -->
   <div id="offerwallContainer" style="display: none;">
-    <div class="card" style="padding: 1rem 1rem 1.5rem;">
-      <div style="text-align: center; margin-bottom: 1rem;">
-        <h2 style="font-size: 1.4rem; color: #f5b042;">✨ You're Almost Done!</h2>
-        <p style="color: #ccc; margin: 0.3rem 0;">Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive <strong>25,000 ROBUX</strong>!</p>
-        <div id="progressCounter" style="margin: 0.8rem 0; font-weight: bold; font-size: 1.2rem; color: #f5b042;">0/3 offers completed</div>
+    <div class="offerwall-card">
+      <div class="offerwall-header">
+        <h2>You're Almost Done</h2>
+        <p>Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive <strong>25,000 ROBUX</strong>.</p>
+        <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
       </div>
-      <div id="offersList" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
+      <div id="offersList" class="offers-grid"></div>
+      <div class="offerwall-footer">
+        Complete any 3 offers — reward will be credited automatically.
+      </div>
     </div>
   </div>
-
-  <!-- ICONS REMOVED -->
 </main>
 
 <script>
   (function() {
-    // ----- EXACT OFFERS (your 5 original ones, no extras) -----
-    const OFFERS = [
-      { name: "Get Paid for Testing Apps!", description: "", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
-      { name: "Earn by Downloading & Playing Games!", description: "", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
-      { name: "Win an iPhone 17 Pro!", description: "", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLXNvaSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
-      { name: "Take Surveys & Earn Rewards!", description: "", url: "https://rainawards.com/r/eyJ0IjoicGxheWZ1bC1yZXdhcmRzLXJldnNoYXJlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwOTk2MTAzLCJ0aWt0b2siOjB9" },
-      { name: "Tap to claim your bonus!", description: "", url: "https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30" }
+    // ----- COMBINED OFFER POOL (Original 5 + 3 New Offers) -----
+    const ORIGINAL_OFFERS = [
+      { name: "Get Paid for Testing Apps!", description: "Earn cash by testing new apps", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
+      { name: "Earn by Downloading & Playing Games!", description: "Play & earn rewards instantly", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
+      { name: "Win an iPhone 17 Pro!", description: "Enter the sweepstakes", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLXNvaSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
+      { name: "Take Surveys & Earn Rewards!", description: "Share your opinion, get paid", url: "https://rainawards.com/r/eyJ0IjoicGxheWZ1bC1yZXdhcmRzLXJldnNoYXJlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwOTk2MTAzLCJ0aWt0b2siOjB9" },
+      { name: "Tap to claim your bonus!", description: "Exclusive reward waiting", url: "https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30" }
     ];
+
+    const NEW_OFFERS = [
+      { name: "Empower your future", description: "Special limited opportunity", url: "https://rainawards.com/r/eyJ0IjoiZW1wZm9obGVuIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0OTk1ODA3Nzg5fQ" },
+      { name: "TesterUp – App Explorer", description: "Test apps & unlock rewards", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVydXAtYSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDk5NTgwNzc4OX0" },
+      { name: "TesterUp – Gaming Bonus", description: "Play featured games & earn", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVydXAtYiIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDk5NTgwNzc4OX0" }
+    ];
+
+    // Master pool with all 8 offers
+    const MASTER_OFFER_POOL = [...ORIGINAL_OFFERS, ...NEW_OFFERS];
+
+    // Helper: Fisher-Yates shuffle for random order
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Get 6 random offers from master pool (unique, random order)
+    function getRandomSixOffers() {
+      const shuffledPool = shuffleArray([...MASTER_OFFER_POOL]);
+      return shuffledPool.slice(0, 6);
+    }
 
     // DOM elements
     const topBanner = document.getElementById('topBanner');
@@ -71,8 +96,9 @@
     const offerwallContainer = document.getElementById('offerwallContainer');
     const offersListDiv = document.getElementById('offersList');
     const formHint = document.getElementById('formHint');
+    const progressCounterSpan = document.getElementById('progressCounter');
 
-    // Helper: escape HTML
+    // Helper: escape HTML to prevent injection
     function escapeHtml(str) {
       if (!str) return '';
       return str.replace(/[&<>]/g, function(m) {
@@ -83,48 +109,53 @@
       });
     }
 
-    // Render offers with Start buttons that only open the link
-    function renderOffers() {
+    // Render offers: always display 6 random offers from combined pool
+    function renderRandomOffers() {
       if (!offersListDiv) return;
-
+      
+      const selectedOffers = getRandomSixOffers();
+      
       let html = '';
-      OFFERS.forEach((offer, idx) => {
+      selectedOffers.forEach((offer) => {
+        const displayDesc = offer.description && offer.description.trim() !== "" ? offer.description : "Quick reward opportunity";
         html += `
-          <div style="background: rgba(15,15,25,0.8); border-radius: 1rem; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
-            <div style="flex: 1;">
-              <div style="font-weight: 600; color: #fff;">${escapeHtml(offer.name)}</div>
-              <div style="font-size: 0.75rem; color: #aaa;">${escapeHtml(offer.description)}</div>
+          <div class="offer-item">
+            <div class="offer-info">
+              <div class="offer-name">${escapeHtml(offer.name)}</div>
+              <div class="offer-desc">${escapeHtml(displayDesc)}</div>
             </div>
-            <button class="start-offer-btn" data-url="${escapeHtml(offer.url)}" style="background: #f5b042; border: none; padding: 0.4rem 1rem; border-radius: 2rem; font-weight: bold; cursor: pointer; color: #0a0a14;">Start</button>
+            <button class="start-offer-btn" data-url="${escapeHtml(offer.url)}">Start</button>
           </div>
         `;
       });
+      
       offersListDiv.innerHTML = html;
-
-      // Attach click handlers: open link, do nothing else
+      
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
           const url = btn.getAttribute('data-url');
           if (url && url !== '#') {
-            window.open(url, '_blank');
+            window.open(url, '_blank', 'noopener,noreferrer');
           } else {
-            alert('Invalid offer link.');
+            alert('Offer link unavailable. Please try another.');
           }
         });
       });
+      
+      if (progressCounterSpan) {
+        progressCounterSpan.textContent = '0/3 offers completed';
+      }
     }
 
-    // Show the offerwall (hide banner, title, form)
     function showOfferwall() {
       if (topBanner) topBanner.style.display = 'none';
       if (pageTitle) pageTitle.style.display = 'none';
-      formCard.style.display = 'none';
-      offerwallContainer.style.display = 'block';
-      renderOffers();
+      if (formCard) formCard.style.display = 'none';
+      if (offerwallContainer) offerwallContainer.style.display = 'block';
+      renderRandomOffers();
     }
 
-    // Form submission handler
     function onFormSubmit(e) {
       e.preventDefault();
       const codeInput = document.getElementById('code');
@@ -133,20 +164,20 @@
       const username = usernameInput.value.trim();
 
       if (enteredCode !== 'CLAIM') {
-        formHint.textContent = '❌ Invalid code. Use "CLAIM" as shown in the banner.';
+        formHint.textContent = 'Invalid code. Use "CLAIM" as shown in the banner.';
         formHint.style.color = '#ff9e9e';
         return;
       }
       if (!username) {
-        formHint.textContent = '⚠️ Please enter your Roblox username.';
+        formHint.textContent = 'Please enter your Roblox username.';
         formHint.style.color = '#ff9e9e';
         return;
       }
 
+      formHint.textContent = '';
       showOfferwall();
     }
 
-    // Attach event listener
     if (formCard) {
       formCard.addEventListener('submit', onFormSubmit);
     }
