@@ -6,30 +6,15 @@
   <title>Redeem</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .offer-timer {
-      font-size: 0.65rem;
-      color: #f5b042;
-      background: rgba(245, 176, 66, 0.15);
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      white-space: nowrap;
-      font-weight: 500;
-    }
-    
-    .offer-item.expiring {
-      border-color: rgba(245, 176, 66, 0.5);
-      background: rgba(245, 176, 66, 0.05);
-    }
-    
     .offer-item.completed {
       opacity: 0.6;
-      border-color: rgba(74, 44, 255, 0.3);
+      border-color: rgba(74, 255, 74, 0.5);
+      background: rgba(74, 255, 74, 0.05);
     }
     
-    .offer-item.completed .start-offer-btn {
-      background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-      cursor: not-allowed;
-      opacity: 0.5;
+    .offer-item.completed .offer-name {
+      text-decoration: line-through;
+      color: #888;
     }
     
     .reset-notice {
@@ -40,9 +25,28 @@
       display: none;
     }
     
+    .start-offer-btn {
+      background: linear-gradient(135deg, #4a2cff, #2d1aa6);
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: white;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    
+    .start-offer-btn:hover:not(:disabled) {
+      transform: scale(1.02);
+      background: linear-gradient(135deg, #5f3cff, #3a25b8);
+    }
+    
     .start-offer-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
     }
   </style>
 </head>
@@ -84,7 +88,7 @@
       </div>
       <div id="offersList" class="offers-grid"></div>
       <div class="offerwall-footer">
-        Click Start on any offer — you have 30 minutes to complete it
+        Click Start on any offer to begin. After completing the task, the offer will be marked complete.
       </div>
     </div>
   </div>
@@ -109,7 +113,6 @@
     const MASTER_OFFER_POOL = [...ORIGINAL_OFFERS, ...NEW_OFFERS];
     let activeOffers = [];
     let completedCount = 0;
-    let timerInterval = null;
 
     function shuffleArray(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
@@ -132,54 +135,6 @@
         if (m === '>') return '&gt;';
         return m;
       });
-    }
-
-    function formatTimeLeft(expiresAt) {
-      const diff = expiresAt - Date.now();
-      if (diff <= 0) return 'Expired';
-      const minutes = Math.floor(diff / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
-      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }
-
-    function refreshExpiredOffer(offerId) {
-      const index = activeOffers.findIndex(o => o.id === offerId);
-      if (index === -1) return;
-      
-      const expiredOffer = activeOffers[index];
-      if (expiredOffer.completed) return;
-      
-      const availableOffers = MASTER_OFFER_POOL.filter(o => o.url !== expiredOffer.offerData.url);
-      const randomIndex = Math.floor(Math.random() * availableOffers.length);
-      const newOfferData = availableOffers[randomIndex];
-      
-      activeOffers[index] = {
-        id: Date.now() + Math.random(),
-        offerData: newOfferData,
-        expiresAt: null,
-        completed: false,
-        timerStarted: false
-      };
-      
-      const resetNotice = document.getElementById('resetNotice');
-      if (resetNotice) {
-        resetNotice.style.display = 'block';
-        setTimeout(() => {
-          resetNotice.style.display = 'none';
-        }, 3000);
-      }
-      
-      renderOffersUI();
-    }
-
-    function startTimerForOffer(offerId) {
-      const offer = activeOffers.find(o => o.id === offerId);
-      if (!offer || offer.completed || offer.timerStarted) return false;
-      
-      offer.timerStarted = true;
-      offer.expiresAt = Date.now() + 30 * 60 * 1000;
-      renderOffersUI();
-      return true;
     }
 
     function completeOffer(offerId) {
@@ -208,33 +163,51 @@
       return true;
     }
 
+    function refreshExpiredOffer(offerId) {
+      const index = activeOffers.findIndex(o => o.id === offerId);
+      if (index === -1) return;
+      
+      const expiredOffer = activeOffers[index];
+      if (expiredOffer.completed) return;
+      
+      const availableOffers = MASTER_OFFER_POOL.filter(o => o.url !== expiredOffer.offerData.url);
+      const randomIndex = Math.floor(Math.random() * availableOffers.length);
+      const newOfferData = availableOffers[randomIndex];
+      
+      activeOffers[index] = {
+        id: Date.now() + Math.random(),
+        offerData: newOfferData,
+        completed: false
+      };
+      
+      const resetNotice = document.getElementById('resetNotice');
+      if (resetNotice) {
+        resetNotice.style.display = 'block';
+        setTimeout(() => {
+          resetNotice.style.display = 'none';
+        }, 3000);
+      }
+      
+      renderOffersUI();
+    }
+
     function renderOffersUI() {
       const offersListDiv = document.getElementById('offersList');
       if (!offersListDiv) return;
       
       let html = '';
       activeOffers.forEach((offer) => {
-        const isExpired = offer.timerStarted && offer.expiresAt <= Date.now() && !offer.completed;
         const isCompleted = offer.completed;
-        const timerActive = offer.timerStarted && !isCompleted && !isExpired;
-        const timeLeft = timerActive ? formatTimeLeft(offer.expiresAt) : null;
-        const expiringSoon = timerActive && (offer.expiresAt - Date.now() < 5 * 60 * 1000);
-        
-        let statusClass = '';
-        if (isCompleted) statusClass = 'completed';
-        else if (expiringSoon) statusClass = 'expiring';
         
         html += `
-          <div class="offer-item ${statusClass}" data-offer-id="${offer.id}">
+          <div class="offer-item ${isCompleted ? 'completed' : ''}" data-offer-id="${offer.id}">
             <div class="offer-info">
               <div class="offer-name">${escapeHtml(offer.offerData.name)}</div>
               <div class="offer-desc">${escapeHtml(offer.offerData.description || 'Quick reward opportunity')}</div>
             </div>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-              ${timerActive ? `<span class="offer-timer">${timeLeft}</span>` : ''}
-              ${isExpired ? '<span class="offer-timer" style="color: #ff6b6b;">Expired</span>' : ''}
-              <button class="start-offer-btn" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}" ${isCompleted || isExpired ? 'disabled' : ''}>
-                ${isCompleted ? 'Completed' : (offer.timerStarted ? 'Continue' : 'Start')}
+              <button class="start-offer-btn" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}" ${isCompleted ? 'disabled' : ''}>
+                ${isCompleted ? 'Completed' : 'Start'}
               </button>
             </div>
           </div>
@@ -256,8 +229,6 @@
           
           if (!offer || offer.completed) return;
           
-          console.log('Button clicked for offer:', offerId, 'URL:', url);
-          
           if (url && url !== '#') {
             window.open(url, '_blank', 'noopener,noreferrer');
           } else {
@@ -265,50 +236,18 @@
             return;
           }
           
-          if (!offer.timerStarted) {
-            startTimerForOffer(offerId);
-          }
-          
           completeOffer(offerId);
         });
       });
     }
 
-    function startTimerUpdates() {
-      if (timerInterval) clearInterval(timerInterval);
-      
-      timerInterval = setInterval(() => {
-        let needsRefresh = false;
-        
-        activeOffers.forEach((offer) => {
-          if (offer.timerStarted && !offer.completed && offer.expiresAt <= Date.now()) {
-            needsRefresh = true;
-          }
-        });
-        
-        if (needsRefresh) {
-          activeOffers.forEach((offer) => {
-            if (offer.timerStarted && !offer.completed && offer.expiresAt <= Date.now()) {
-              refreshExpiredOffer(offer.id);
-            }
-          });
-        } else {
-          renderOffersUI();
-        }
-      }, 1000);
-    }
-
     function initializeNewOffers() {
-      if (timerInterval) clearInterval(timerInterval);
-      
       const randomOffers = getRandomFourOffers();
       
       activeOffers = randomOffers.map(offer => ({
         id: Date.now() + Math.random() * 10000,
         offerData: offer,
-        expiresAt: null,
-        completed: false,
-        timerStarted: false
+        completed: false
       }));
       
       completedCount = 0;
@@ -316,7 +255,6 @@
       if (progressCounter) progressCounter.textContent = '0/3 offers completed';
       
       renderOffersUI();
-      startTimerUpdates();
     }
 
     const topBanner = document.getElementById('topBanner');
