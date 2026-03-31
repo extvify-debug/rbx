@@ -1,0 +1,179 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: white;
+  background: radial-gradient(60% 60% at 50% 30%, #18183a 0%, #0a0a14 45%, #05050b 100%);
+}
+
+.wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.banner {
+  background: linear-gradient(#0f6b3a, #0c5a31);
+  padding: 14px 20px;
+  border-radius: 10px;
+  width: 500px;
+}
+
+.banner-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.gift-text {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.title {
+  font-size: 56px;
+  font-weight: 800;
+  margin: 10px 0;
+  text-transform: lowercase;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 500px;
+}
+
+input {
+  height: 55px;
+  padding: 0 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #0a0a14;
+  color: white;
+  font-size: 18px;
+}
+
+.btn {
+  height: 55px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(#4a2cff, #2d1aa6);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hint {
+  font-size: 0.7rem;
+  text-align: center;
+  margin-top: 0.8rem;
+  color: #aaa;
+}
+
+/* Offerwall styles - matches theme */
+.offerwall-card {
+  background: #0a0a14;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 1.5rem;
+  width: 500px;
+}
+
+.offerwall-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.offerwall-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #fff, #b0a0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.offerwall-header p {
+  color: #aaa;
+  font-size: 0.85rem;
+  margin: 0.3rem 0;
+}
+
+.progress-counter {
+  margin: 1rem 0;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #b0a0ff;
+  background: rgba(74, 44, 255, 0.15);
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  border-radius: 20px;
+}
+
+.offers-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.offer-item {
+  background: rgba(10, 10, 20, 0.9);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
+}
+
+.offer-item:hover {
+  border-color: rgba(74, 44, 255, 0.5);
+  background: rgba(20, 20, 40, 0.9);
+}
+
+.offer-info {
+  flex: 1;
+}
+
+.offer-name {
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.offer-desc {
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.start-offer-btn {
+  background: linear-gradient(135deg, #4a2cff, #2d1aa6);
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s;
+}
+
+.start-offer-btn:hover {
+  transform: scale(1.02);
+  background: linear-gradient(135deg, #5f3cff, #3a25b8);
+}
+
+.offerwall-footer {
+  font-size: 0.7rem;
+  text-align: center;
+  margin-top: 1.2rem;
+  color: #555;
+}
