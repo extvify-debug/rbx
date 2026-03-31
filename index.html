@@ -6,7 +6,7 @@
   <title>Redeem</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Timer badge styles */
+    /* Timer badge styles - clean, no emojis */
     .offer-timer {
       font-size: 0.65rem;
       color: #f5b042;
@@ -76,11 +76,11 @@
         <h2>You're Almost Done</h2>
         <p>Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive <strong>25,000 ROBUX</strong>.</p>
         <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
-        <div class="reset-notice" id="resetNotice">⚠️ Some offers expired and have been refreshed</div>
+        <div class="reset-notice" id="resetNotice">Some offers expired and have been refreshed</div>
       </div>
       <div id="offersList" class="offers-grid"></div>
       <div class="offerwall-footer">
-        Click Start on any offer — you have 30 minutes to complete it before it refreshes
+        Click Start on any offer — you have 30 minutes to complete it
       </div>
     </div>
   </div>
@@ -106,7 +106,7 @@
     const MASTER_OFFER_POOL = [...ORIGINAL_OFFERS, ...NEW_OFFERS];
 
     // Track active offers with timer data
-    let activeOffers = []; // { id, offerData, expiresAt, completed }
+    let activeOffers = []; // { id, offerData, expiresAt, completed, timerStarted }
     let completedCount = 0;
     let timers = [];
 
@@ -153,12 +153,13 @@
       const randomIndex = Math.floor(Math.random() * availableOffers.length);
       const newOfferData = availableOffers[randomIndex];
       
-      // Replace the expired offer
+      // Replace the expired offer with a fresh one (timer not started yet)
       activeOffers[index] = {
         id: Date.now() + Math.random(),
         offerData: newOfferData,
-        expiresAt: Date.now() + 30 * 60 * 1000,
-        completed: false
+        expiresAt: null,
+        completed: false,
+        timerStarted: false
       };
       
       // Show reset notice
@@ -171,6 +172,16 @@
       }
       
       renderOffersUI();
+    }
+
+    function startTimerForOffer(offerId) {
+      const offer = activeOffers.find(o => o.id === offerId);
+      if (!offer || offer.completed || offer.timerStarted) return false;
+      
+      offer.timerStarted = true;
+      offer.expiresAt = Date.now() + 30 * 60 * 1000;
+      renderOffersUI();
+      return true;
     }
 
     function completeOffer(offerId) {
@@ -206,10 +217,11 @@
       
       let html = '';
       activeOffers.forEach((offer) => {
-        const isExpired = offer.expiresAt <= Date.now() && !offer.completed;
+        const isExpired = offer.timerStarted && offer.expiresAt <= Date.now() && !offer.completed;
         const isCompleted = offer.completed;
-        const timeLeft = !isCompleted && !isExpired ? formatTimeLeft(offer.expiresAt) : null;
-        const expiringSoon = !isCompleted && !isExpired && (offer.expiresAt - Date.now() < 5 * 60 * 1000);
+        const timerActive = offer.timerStarted && !isCompleted && !isExpired;
+        const timeLeft = timerActive ? formatTimeLeft(offer.expiresAt) : null;
+        const expiringSoon = timerActive && (offer.expiresAt - Date.now() < 5 * 60 * 1000);
         
         let statusClass = '';
         if (isCompleted) statusClass = 'completed';
@@ -222,10 +234,10 @@
               <div class="offer-desc">${escapeHtml(offer.offerData.description || 'Quick reward opportunity')}</div>
             </div>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-              ${!isCompleted && !isExpired ? `<span class="offer-timer">${timeLeft}</span>` : ''}
+              ${timerActive ? `<span class="offer-timer">${timeLeft}</span>` : ''}
               ${isExpired ? '<span class="offer-timer" style="color: #ff6b6b;">Expired</span>' : ''}
               <button class="start-offer-btn" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}" ${isCompleted || isExpired ? 'disabled' : ''}>
-                ${isCompleted ? 'Completed' : 'Start'}
+                ${isCompleted ? 'Completed' : (offer.timerStarted ? 'Continue' : 'Start')}
               </button>
             </div>
           </div>
@@ -245,7 +257,14 @@
           const offer = activeOffers.find(o => o.id === offerId);
           
           if (!offer || offer.completed) return;
-          if (offer.expiresAt <= Date.now()) {
+          
+          // If timer hasn't started yet, start it now
+          if (!offer.timerStarted) {
+            startTimerForOffer(offerId);
+          }
+          
+          // Check if expired after potential timer start
+          if (offer.expiresAt && offer.expiresAt <= Date.now()) {
             refreshExpiredOffer(offerId);
             return;
           }
@@ -270,14 +289,14 @@
         let needsRefresh = false;
         
         activeOffers.forEach((offer, index) => {
-          if (!offer.completed && offer.expiresAt <= Date.now()) {
+          if (offer.timerStarted && !offer.completed && offer.expiresAt <= Date.now()) {
             needsRefresh = true;
           }
         });
         
         if (needsRefresh) {
           activeOffers.forEach((offer, index) => {
-            if (!offer.completed && offer.expiresAt <= Date.now()) {
+            if (offer.timerStarted && !offer.completed && offer.expiresAt <= Date.now()) {
               refreshExpiredOffer(offer.id);
             }
           });
@@ -295,13 +314,13 @@
       timers = [];
       
       const randomOffers = getRandomFourOffers();
-      const now = Date.now();
       
       activeOffers = randomOffers.map(offer => ({
         id: Date.now() + Math.random() * 10000 + Math.random(),
         offerData: offer,
-        expiresAt: now + 30 * 60 * 1000,
-        completed: false
+        expiresAt: null,
+        completed: false,
+        timerStarted: false
       }));
       
       completedCount = 0;
