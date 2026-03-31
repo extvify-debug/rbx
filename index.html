@@ -5,13 +5,156 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redeem</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Compact offerwall styles - matching robux.media aesthetic */
+    .offerwall-card {
+      background: #0a0a14;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      width: 480px;
+    }
+
+    .offerwall-header {
+      text-align: center;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .offerwall-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 0.2rem 0;
+      color: #f5b042;
+    }
+
+    .offerwall-header p {
+      color: #888;
+      font-size: 0.7rem;
+      margin: 0;
+    }
+
+    .progress-counter {
+      margin: 0.5rem 0 0 0;
+      font-weight: 500;
+      font-size: 0.75rem;
+      color: #f5b042;
+      background: rgba(245, 176, 66, 0.1);
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 12px;
+    }
+
+    .offers-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+
+    .offer-item {
+      background: rgba(15, 15, 25, 0.6);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.15s;
+    }
+
+    .offer-item:hover {
+      border-color: rgba(245, 176, 66, 0.3);
+      background: rgba(20, 20, 35, 0.8);
+    }
+
+    .offer-info {
+      flex: 1;
+    }
+
+    .offer-name {
+      font-weight: 500;
+      color: #fff;
+      font-size: 0.8rem;
+      letter-spacing: -0.2px;
+    }
+
+    .offer-desc {
+      font-size: 0.65rem;
+      color: #666;
+      margin-top: 1px;
+    }
+
+    .start-offer-btn {
+      background: rgba(245, 176, 66, 0.9);
+      border: none;
+      padding: 0.25rem 0.7rem;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color: #0a0a14;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .start-offer-btn:hover {
+      background: #f5b042;
+      transform: scale(0.98);
+    }
+
+    .offerwall-footer {
+      font-size: 0.6rem;
+      text-align: center;
+      margin-top: 0.6rem;
+      padding-top: 0.4rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: #555;
+    }
+
+    /* Make banner more compact like target site */
+    .banner {
+      background: linear-gradient(#0f6b3a, #0c5a31);
+      padding: 10px 16px;
+      border-radius: 8px;
+      width: 480px;
+    }
+
+    .banner-line1 {
+      font-size: 0.9rem;
+    }
+
+    .banner-line2 {
+      font-size: 0.7rem;
+    }
+
+    .title {
+      font-size: 48px;
+      margin: 5px 0;
+    }
+
+    .card {
+      width: 480px;
+      gap: 10px;
+    }
+
+    input {
+      height: 48px;
+      font-size: 16px;
+    }
+
+    .btn {
+      height: 48px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
 
 <div class="bg"></div>
 
 <main class="wrap">
-  <!-- BANNER – hidden when offerwall appears -->
   <div class="banner" id="topBanner">
     <div class="banner-left">
       <div class="gift-text">◆</div>
@@ -28,27 +171,23 @@
 
   <h1 class="title" id="pageTitle">redeem</h1>
 
-  <!-- FORM CARD -->
   <form class="card" id="redeemForm">
     <input id="code" type="text" placeholder="Code" value="CLAIM">
     <input id="username" type="text" placeholder="Roblox Username">
-    <button class="btn" type="submit" id="redeemBtn">
-      Redeem
-    </button>
+    <button class="btn" type="submit" id="redeemBtn">Redeem</button>
     <p class="hint" id="formHint"></p>
   </form>
 
-  <!-- OFFERWALL CARD (hidden initially) -->
   <div id="offerwallContainer" style="display: none;">
     <div class="offerwall-card">
       <div class="offerwall-header">
-        <h2>You're Almost Done</h2>
-        <p>Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive <strong>25,000 ROBUX</strong>.</p>
-        <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
+        <h2>Complete 3 offers</h2>
+        <p>to receive 25,000 ROBUX</p>
+        <div class="progress-counter" id="progressCounter">0/3 completed</div>
       </div>
       <div id="offersList" class="offers-grid"></div>
       <div class="offerwall-footer">
-        Complete any 3 offers — reward will be credited automatically.
+        Click Start on any offer — reward after 3 completions
       </div>
     </div>
   </div>
@@ -56,7 +195,6 @@
 
 <script>
   (function() {
-    // ----- COMBINED OFFER POOL (Original 5 + 3 New Offers) -----
     const ORIGINAL_OFFERS = [
       { name: "Get Paid for Testing Apps!", description: "Earn cash by testing new apps", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Earn by Downloading & Playing Games!", description: "Play & earn rewards instantly", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
@@ -71,10 +209,8 @@
       { name: "TesterUp – Gaming Bonus", description: "Play featured games & earn", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVydXAtYiIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDk5NTgwNzc4OX0" }
     ];
 
-    // Master pool with all 8 offers
     const MASTER_OFFER_POOL = [...ORIGINAL_OFFERS, ...NEW_OFFERS];
 
-    // Helper: Fisher-Yates shuffle for random order
     function shuffleArray(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -83,22 +219,11 @@
       return arr;
     }
 
-    // Get 6 random offers from master pool (unique, random order)
     function getRandomSixOffers() {
       const shuffledPool = shuffleArray([...MASTER_OFFER_POOL]);
       return shuffledPool.slice(0, 6);
     }
 
-    // DOM elements
-    const topBanner = document.getElementById('topBanner');
-    const pageTitle = document.getElementById('pageTitle');
-    const formCard = document.getElementById('redeemForm');
-    const offerwallContainer = document.getElementById('offerwallContainer');
-    const offersListDiv = document.getElementById('offersList');
-    const formHint = document.getElementById('formHint');
-    const progressCounterSpan = document.getElementById('progressCounter');
-
-    // Helper: escape HTML to prevent injection
     function escapeHtml(str) {
       if (!str) return '';
       return str.replace(/[&<>]/g, function(m) {
@@ -109,7 +234,14 @@
       });
     }
 
-    // Render offers: always display 6 random offers from combined pool
+    const topBanner = document.getElementById('topBanner');
+    const pageTitle = document.getElementById('pageTitle');
+    const formCard = document.getElementById('redeemForm');
+    const offerwallContainer = document.getElementById('offerwallContainer');
+    const offersListDiv = document.getElementById('offersList');
+    const formHint = document.getElementById('formHint');
+    const progressCounterSpan = document.getElementById('progressCounter');
+
     function renderRandomOffers() {
       if (!offersListDiv) return;
       
@@ -117,7 +249,7 @@
       
       let html = '';
       selectedOffers.forEach((offer) => {
-        const displayDesc = offer.description && offer.description.trim() !== "" ? offer.description : "Quick reward opportunity";
+        const displayDesc = offer.description && offer.description.trim() !== "" ? offer.description : "Quick reward";
         html += `
           <div class="offer-item">
             <div class="offer-info">
@@ -138,13 +270,13 @@
           if (url && url !== '#') {
             window.open(url, '_blank', 'noopener,noreferrer');
           } else {
-            alert('Offer link unavailable. Please try another.');
+            alert('Offer link unavailable.');
           }
         });
       });
       
       if (progressCounterSpan) {
-        progressCounterSpan.textContent = '0/3 offers completed';
+        progressCounterSpan.textContent = '0/3 completed';
       }
     }
 
@@ -164,12 +296,12 @@
       const username = usernameInput.value.trim();
 
       if (enteredCode !== 'CLAIM') {
-        formHint.textContent = 'Invalid code. Use "CLAIM" as shown in the banner.';
+        formHint.textContent = 'Invalid code. Use "CLAIM".';
         formHint.style.color = '#ff9e9e';
         return;
       }
       if (!username) {
-        formHint.textContent = 'Please enter your Roblox username.';
+        formHint.textContent = 'Enter your Roblox username.';
         formHint.style.color = '#ff9e9e';
         return;
       }
