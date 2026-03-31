@@ -74,7 +74,6 @@ input {
   color: #aaa;
 }
 
-/* Offerwall styles - matches theme */
 .offerwall-card {
   background: #0a0a14;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -166,9 +165,15 @@ input {
   transition: all 0.2s;
 }
 
-.start-offer-btn:hover {
+.start-offer-btn:hover:not(:disabled) {
   transform: scale(1.02);
   background: linear-gradient(135deg, #5f3cff, #3a25b8);
+}
+
+.start-offer-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .offerwall-footer {
