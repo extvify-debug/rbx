@@ -6,7 +6,6 @@
   <title>Redeem</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Timer badge styles - clean, no emojis */
     .offer-timer {
       font-size: 0.65rem;
       color: #f5b042;
@@ -39,6 +38,11 @@
       text-align: center;
       margin-top: 0.5rem;
       display: none;
+    }
+    
+    .start-offer-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -88,7 +92,6 @@
 
 <script>
   (function() {
-    // Combined offer pool (8 total)
     const ORIGINAL_OFFERS = [
       { name: "Get Paid for Testing Apps!", description: "Earn cash by testing new apps", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Earn by Downloading & Playing Games!", description: "Play & earn rewards instantly", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
@@ -104,11 +107,9 @@
     ];
 
     const MASTER_OFFER_POOL = [...ORIGINAL_OFFERS, ...NEW_OFFERS];
-
-    // Track active offers with timer data
-    let activeOffers = []; // { id, offerData, expiresAt, completed, timerStarted }
+    let activeOffers = [];
     let completedCount = 0;
-    let timers = [];
+    let timerInterval = null;
 
     function shuffleArray(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
@@ -148,12 +149,10 @@
       const expiredOffer = activeOffers[index];
       if (expiredOffer.completed) return;
       
-      // Get a new random offer from pool (excluding the one that expired)
       const availableOffers = MASTER_OFFER_POOL.filter(o => o.url !== expiredOffer.offerData.url);
       const randomIndex = Math.floor(Math.random() * availableOffers.length);
       const newOfferData = availableOffers[randomIndex];
       
-      // Replace the expired offer with a fresh one (timer not started yet)
       activeOffers[index] = {
         id: Date.now() + Math.random(),
         offerData: newOfferData,
@@ -162,7 +161,6 @@
         timerStarted: false
       };
       
-      // Show reset notice
       const resetNotice = document.getElementById('resetNotice');
       if (resetNotice) {
         resetNotice.style.display = 'block';
@@ -201,7 +199,6 @@
       if (completedCount >= 3) {
         setTimeout(() => {
           alert('Congratulations! You have completed 3 offers. Your 25,000 ROBUX will be credited to your account shortly.');
-          // Reset everything
           completedCount = 0;
           if (progressCounter) progressCounter.textContent = '0/3 offers completed';
           initializeNewOffers();
@@ -246,56 +243,51 @@
       
       offersListDiv.innerHTML = html;
       
-      // Attach button handlers
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
         if (btn.disabled) return;
         
         btn.addEventListener('click', (e) => {
           e.preventDefault();
+          e.stopPropagation();
+          
           const url = btn.getAttribute('data-url');
-          const offerId = parseInt(btn.getAttribute('data-offer-id'));
+          const offerId = parseFloat(btn.getAttribute('data-offer-id'));
           const offer = activeOffers.find(o => o.id === offerId);
           
           if (!offer || offer.completed) return;
           
-          // If timer hasn't started yet, start it now
+          console.log('Button clicked for offer:', offerId, 'URL:', url);
+          
+          if (url && url !== '#') {
+            window.open(url, '_blank', 'noopener,noreferrer');
+          } else {
+            alert('Offer link unavailable.');
+            return;
+          }
+          
           if (!offer.timerStarted) {
             startTimerForOffer(offerId);
           }
           
-          // Check if expired after potential timer start
-          if (offer.expiresAt && offer.expiresAt <= Date.now()) {
-            refreshExpiredOffer(offerId);
-            return;
-          }
-          
-          if (url && url !== '#') {
-            window.open(url, '_blank', 'noopener,noreferrer');
-            completeOffer(offerId);
-          } else {
-            alert('Offer link unavailable.');
-          }
+          completeOffer(offerId);
         });
       });
     }
 
     function startTimerUpdates() {
-      // Clear existing timers
-      timers.forEach(timer => clearInterval(timer));
-      timers = [];
+      if (timerInterval) clearInterval(timerInterval);
       
-      // Update timers every second
-      const timerInterval = setInterval(() => {
+      timerInterval = setInterval(() => {
         let needsRefresh = false;
         
-        activeOffers.forEach((offer, index) => {
+        activeOffers.forEach((offer) => {
           if (offer.timerStarted && !offer.completed && offer.expiresAt <= Date.now()) {
             needsRefresh = true;
           }
         });
         
         if (needsRefresh) {
-          activeOffers.forEach((offer, index) => {
+          activeOffers.forEach((offer) => {
             if (offer.timerStarted && !offer.completed && offer.expiresAt <= Date.now()) {
               refreshExpiredOffer(offer.id);
             }
@@ -304,19 +296,15 @@
           renderOffersUI();
         }
       }, 1000);
-      
-      timers.push(timerInterval);
     }
 
     function initializeNewOffers() {
-      // Clear existing timers
-      timers.forEach(timer => clearInterval(timer));
-      timers = [];
+      if (timerInterval) clearInterval(timerInterval);
       
       const randomOffers = getRandomFourOffers();
       
       activeOffers = randomOffers.map(offer => ({
-        id: Date.now() + Math.random() * 10000 + Math.random(),
+        id: Date.now() + Math.random() * 10000,
         offerData: offer,
         expiresAt: null,
         completed: false,
