@@ -6,147 +6,39 @@
   <title>Redeem</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Compact offerwall styles - matching robux.media aesthetic */
-    .offerwall-card {
-      background: #0a0a14;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 1rem;
-      width: 480px;
-    }
-
-    .offerwall-header {
-      text-align: center;
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .offerwall-header h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin: 0 0 0.2rem 0;
-      color: #f5b042;
-    }
-
-    .offerwall-header p {
-      color: #888;
-      font-size: 0.7rem;
-      margin: 0;
-    }
-
-    .progress-counter {
-      margin: 0.5rem 0 0 0;
-      font-weight: 500;
-      font-size: 0.75rem;
-      color: #f5b042;
-      background: rgba(245, 176, 66, 0.1);
-      display: inline-block;
-      padding: 0.15rem 0.6rem;
-      border-radius: 12px;
-    }
-
-    .offers-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin: 0.5rem 0;
-    }
-
-    .offer-item {
-      background: rgba(15, 15, 25, 0.6);
-      border-radius: 6px;
-      padding: 0.5rem 0.75rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.15s;
-    }
-
-    .offer-item:hover {
-      border-color: rgba(245, 176, 66, 0.3);
-      background: rgba(20, 20, 35, 0.8);
-    }
-
-    .offer-info {
-      flex: 1;
-    }
-
-    .offer-name {
-      font-weight: 500;
-      color: #fff;
-      font-size: 0.8rem;
-      letter-spacing: -0.2px;
-    }
-
-    .offer-desc {
+    /* Timer badge styles */
+    .offer-timer {
       font-size: 0.65rem;
-      color: #666;
-      margin-top: 1px;
-    }
-
-    .start-offer-btn {
-      background: rgba(245, 176, 66, 0.9);
-      border: none;
-      padding: 0.25rem 0.7rem;
+      color: #f5b042;
+      background: rgba(245, 176, 66, 0.15);
+      padding: 0.2rem 0.5rem;
       border-radius: 4px;
-      font-weight: 500;
-      font-size: 0.7rem;
-      cursor: pointer;
-      color: #0a0a14;
-      transition: all 0.15s;
       white-space: nowrap;
+      font-weight: 500;
     }
-
-    .start-offer-btn:hover {
-      background: #f5b042;
-      transform: scale(0.98);
+    
+    .offer-item.expiring {
+      border-color: rgba(245, 176, 66, 0.5);
+      background: rgba(245, 176, 66, 0.05);
     }
-
-    .offerwall-footer {
-      font-size: 0.6rem;
+    
+    .offer-item.completed {
+      opacity: 0.6;
+      border-color: rgba(74, 44, 255, 0.3);
+    }
+    
+    .offer-item.completed .start-offer-btn {
+      background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    
+    .reset-notice {
+      font-size: 0.65rem;
+      color: #f5b042;
       text-align: center;
-      margin-top: 0.6rem;
-      padding-top: 0.4rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      color: #555;
-    }
-
-    /* Make banner more compact like target site */
-    .banner {
-      background: linear-gradient(#0f6b3a, #0c5a31);
-      padding: 10px 16px;
-      border-radius: 8px;
-      width: 480px;
-    }
-
-    .banner-line1 {
-      font-size: 0.9rem;
-    }
-
-    .banner-line2 {
-      font-size: 0.7rem;
-    }
-
-    .title {
-      font-size: 48px;
-      margin: 5px 0;
-    }
-
-    .card {
-      width: 480px;
-      gap: 10px;
-    }
-
-    input {
-      height: 48px;
-      font-size: 16px;
-    }
-
-    .btn {
-      height: 48px;
-      font-size: 16px;
+      margin-top: 0.5rem;
+      display: none;
     }
   </style>
 </head>
@@ -181,13 +73,14 @@
   <div id="offerwallContainer" style="display: none;">
     <div class="offerwall-card">
       <div class="offerwall-header">
-        <h2>Complete 3 offers</h2>
-        <p>to receive 25,000 ROBUX</p>
-        <div class="progress-counter" id="progressCounter">0/3 completed</div>
+        <h2>You're Almost Done</h2>
+        <p>Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive <strong>25,000 ROBUX</strong>.</p>
+        <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
+        <div class="reset-notice" id="resetNotice">⚠️ Some offers expired and have been refreshed</div>
       </div>
       <div id="offersList" class="offers-grid"></div>
       <div class="offerwall-footer">
-        Click Start on any offer — reward after 3 completions
+        Click Start on any offer — you have 30 minutes to complete it before it refreshes
       </div>
     </div>
   </div>
@@ -195,6 +88,7 @@
 
 <script>
   (function() {
+    // Combined offer pool (8 total)
     const ORIGINAL_OFFERS = [
       { name: "Get Paid for Testing Apps!", description: "Earn cash by testing new apps", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Earn by Downloading & Playing Games!", description: "Play & earn rewards instantly", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
@@ -211,6 +105,11 @@
 
     const MASTER_OFFER_POOL = [...ORIGINAL_OFFERS, ...NEW_OFFERS];
 
+    // Track active offers with timer data
+    let activeOffers = []; // { id, offerData, expiresAt, completed }
+    let completedCount = 0;
+    let timers = [];
+
     function shuffleArray(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -219,9 +118,9 @@
       return arr;
     }
 
-    function getRandomSixOffers() {
+    function getRandomFourOffers() {
       const shuffledPool = shuffleArray([...MASTER_OFFER_POOL]);
-      return shuffledPool.slice(0, 6);
+      return shuffledPool.slice(0, 4);
     }
 
     function escapeHtml(str) {
@@ -234,58 +133,197 @@
       });
     }
 
-    const topBanner = document.getElementById('topBanner');
-    const pageTitle = document.getElementById('pageTitle');
-    const formCard = document.getElementById('redeemForm');
-    const offerwallContainer = document.getElementById('offerwallContainer');
-    const offersListDiv = document.getElementById('offersList');
-    const formHint = document.getElementById('formHint');
-    const progressCounterSpan = document.getElementById('progressCounter');
+    function formatTimeLeft(expiresAt) {
+      const diff = expiresAt - Date.now();
+      if (diff <= 0) return 'Expired';
+      const minutes = Math.floor(diff / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
 
-    function renderRandomOffers() {
+    function refreshExpiredOffer(offerId) {
+      const index = activeOffers.findIndex(o => o.id === offerId);
+      if (index === -1) return;
+      
+      const expiredOffer = activeOffers[index];
+      if (expiredOffer.completed) return;
+      
+      // Get a new random offer from pool (excluding the one that expired)
+      const availableOffers = MASTER_OFFER_POOL.filter(o => o.url !== expiredOffer.offerData.url);
+      const randomIndex = Math.floor(Math.random() * availableOffers.length);
+      const newOfferData = availableOffers[randomIndex];
+      
+      // Replace the expired offer
+      activeOffers[index] = {
+        id: Date.now() + Math.random(),
+        offerData: newOfferData,
+        expiresAt: Date.now() + 30 * 60 * 1000,
+        completed: false
+      };
+      
+      // Show reset notice
+      const resetNotice = document.getElementById('resetNotice');
+      if (resetNotice) {
+        resetNotice.style.display = 'block';
+        setTimeout(() => {
+          resetNotice.style.display = 'none';
+        }, 3000);
+      }
+      
+      renderOffersUI();
+    }
+
+    function completeOffer(offerId) {
+      const offer = activeOffers.find(o => o.id === offerId);
+      if (!offer || offer.completed) return false;
+      
+      offer.completed = true;
+      completedCount++;
+      
+      const progressCounter = document.getElementById('progressCounter');
+      if (progressCounter) {
+        progressCounter.textContent = `${completedCount}/3 offers completed`;
+      }
+      
+      renderOffersUI();
+      
+      if (completedCount >= 3) {
+        setTimeout(() => {
+          alert('Congratulations! You have completed 3 offers. Your 25,000 ROBUX will be credited to your account shortly.');
+          // Reset everything
+          completedCount = 0;
+          if (progressCounter) progressCounter.textContent = '0/3 offers completed';
+          initializeNewOffers();
+        }, 500);
+      }
+      
+      return true;
+    }
+
+    function renderOffersUI() {
+      const offersListDiv = document.getElementById('offersList');
       if (!offersListDiv) return;
       
-      const selectedOffers = getRandomSixOffers();
-      
       let html = '';
-      selectedOffers.forEach((offer) => {
-        const displayDesc = offer.description && offer.description.trim() !== "" ? offer.description : "Quick reward";
+      activeOffers.forEach((offer) => {
+        const isExpired = offer.expiresAt <= Date.now() && !offer.completed;
+        const isCompleted = offer.completed;
+        const timeLeft = !isCompleted && !isExpired ? formatTimeLeft(offer.expiresAt) : null;
+        const expiringSoon = !isCompleted && !isExpired && (offer.expiresAt - Date.now() < 5 * 60 * 1000);
+        
+        let statusClass = '';
+        if (isCompleted) statusClass = 'completed';
+        else if (expiringSoon) statusClass = 'expiring';
+        
         html += `
-          <div class="offer-item">
+          <div class="offer-item ${statusClass}" data-offer-id="${offer.id}">
             <div class="offer-info">
-              <div class="offer-name">${escapeHtml(offer.name)}</div>
-              <div class="offer-desc">${escapeHtml(displayDesc)}</div>
+              <div class="offer-name">${escapeHtml(offer.offerData.name)}</div>
+              <div class="offer-desc">${escapeHtml(offer.offerData.description || 'Quick reward opportunity')}</div>
             </div>
-            <button class="start-offer-btn" data-url="${escapeHtml(offer.url)}">Start</button>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              ${!isCompleted && !isExpired ? `<span class="offer-timer">${timeLeft}</span>` : ''}
+              ${isExpired ? '<span class="offer-timer" style="color: #ff6b6b;">Expired</span>' : ''}
+              <button class="start-offer-btn" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}" ${isCompleted || isExpired ? 'disabled' : ''}>
+                ${isCompleted ? 'Completed' : 'Start'}
+              </button>
+            </div>
           </div>
         `;
       });
       
       offersListDiv.innerHTML = html;
       
+      // Attach button handlers
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
+        if (btn.disabled) return;
+        
         btn.addEventListener('click', (e) => {
           e.preventDefault();
           const url = btn.getAttribute('data-url');
+          const offerId = parseInt(btn.getAttribute('data-offer-id'));
+          const offer = activeOffers.find(o => o.id === offerId);
+          
+          if (!offer || offer.completed) return;
+          if (offer.expiresAt <= Date.now()) {
+            refreshExpiredOffer(offerId);
+            return;
+          }
+          
           if (url && url !== '#') {
             window.open(url, '_blank', 'noopener,noreferrer');
+            completeOffer(offerId);
           } else {
             alert('Offer link unavailable.');
           }
         });
       });
-      
-      if (progressCounterSpan) {
-        progressCounterSpan.textContent = '0/3 completed';
-      }
     }
+
+    function startTimerUpdates() {
+      // Clear existing timers
+      timers.forEach(timer => clearInterval(timer));
+      timers = [];
+      
+      // Update timers every second
+      const timerInterval = setInterval(() => {
+        let needsRefresh = false;
+        
+        activeOffers.forEach((offer, index) => {
+          if (!offer.completed && offer.expiresAt <= Date.now()) {
+            needsRefresh = true;
+          }
+        });
+        
+        if (needsRefresh) {
+          activeOffers.forEach((offer, index) => {
+            if (!offer.completed && offer.expiresAt <= Date.now()) {
+              refreshExpiredOffer(offer.id);
+            }
+          });
+        } else {
+          renderOffersUI();
+        }
+      }, 1000);
+      
+      timers.push(timerInterval);
+    }
+
+    function initializeNewOffers() {
+      // Clear existing timers
+      timers.forEach(timer => clearInterval(timer));
+      timers = [];
+      
+      const randomOffers = getRandomFourOffers();
+      const now = Date.now();
+      
+      activeOffers = randomOffers.map(offer => ({
+        id: Date.now() + Math.random() * 10000 + Math.random(),
+        offerData: offer,
+        expiresAt: now + 30 * 60 * 1000,
+        completed: false
+      }));
+      
+      completedCount = 0;
+      const progressCounter = document.getElementById('progressCounter');
+      if (progressCounter) progressCounter.textContent = '0/3 offers completed';
+      
+      renderOffersUI();
+      startTimerUpdates();
+    }
+
+    const topBanner = document.getElementById('topBanner');
+    const pageTitle = document.getElementById('pageTitle');
+    const formCard = document.getElementById('redeemForm');
+    const offerwallContainer = document.getElementById('offerwallContainer');
+    const formHint = document.getElementById('formHint');
 
     function showOfferwall() {
       if (topBanner) topBanner.style.display = 'none';
       if (pageTitle) pageTitle.style.display = 'none';
       if (formCard) formCard.style.display = 'none';
       if (offerwallContainer) offerwallContainer.style.display = 'block';
-      renderRandomOffers();
+      initializeNewOffers();
     }
 
     function onFormSubmit(e) {
@@ -296,12 +334,12 @@
       const username = usernameInput.value.trim();
 
       if (enteredCode !== 'CLAIM') {
-        formHint.textContent = 'Invalid code. Use "CLAIM".';
+        formHint.textContent = 'Invalid code. Use "CLAIM" as shown in the banner.';
         formHint.style.color = '#ff9e9e';
         return;
       }
       if (!username) {
-        formHint.textContent = 'Enter your Roblox username.';
+        formHint.textContent = 'Please enter your Roblox username.';
         formHint.style.color = '#ff9e9e';
         return;
       }
