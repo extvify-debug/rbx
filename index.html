@@ -5,50 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redeem</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .offer-item.completed {
-      opacity: 0.6;
-      border-color: rgba(74, 255, 74, 0.5);
-      background: rgba(74, 255, 74, 0.05);
-    }
-    
-    .offer-item.completed .offer-name {
-      text-decoration: line-through;
-      color: #888;
-    }
-    
-    .reset-notice {
-      font-size: 0.65rem;
-      color: #f5b042;
-      text-align: center;
-      margin-top: 0.5rem;
-      display: none;
-    }
-    
-    .start-offer-btn {
-      background: linear-gradient(135deg, #4a2cff, #2d1aa6);
-      border: none;
-      padding: 0.4rem 1rem;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      color: white;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-    
-    .start-offer-btn:hover:not(:disabled) {
-      transform: scale(1.02);
-      background: linear-gradient(135deg, #5f3cff, #3a25b8);
-    }
-    
-    .start-offer-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-  </style>
 </head>
 <body>
 
@@ -84,11 +40,10 @@
         <h2>You're Almost Done</h2>
         <p>Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive <strong>25,000 ROBUX</strong>.</p>
         <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
-        <div class="reset-notice" id="resetNotice">Some offers expired and have been refreshed</div>
       </div>
       <div id="offersList" class="offers-grid"></div>
       <div class="offerwall-footer">
-        Click Start on any offer to begin. After completing the task, the offer will be marked complete.
+        Click Start on any offer to begin
       </div>
     </div>
   </div>
@@ -112,7 +67,6 @@
 
     const MASTER_OFFER_POOL = [...ORIGINAL_OFFERS, ...NEW_OFFERS];
     let activeOffers = [];
-    let completedCount = 0;
 
     function shuffleArray(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
@@ -137,77 +91,21 @@
       });
     }
 
-    function completeOffer(offerId) {
-      const offer = activeOffers.find(o => o.id === offerId);
-      if (!offer || offer.completed) return false;
-      
-      offer.completed = true;
-      completedCount++;
-      
-      const progressCounter = document.getElementById('progressCounter');
-      if (progressCounter) {
-        progressCounter.textContent = `${completedCount}/3 offers completed`;
-      }
-      
-      renderOffersUI();
-      
-      if (completedCount >= 3) {
-        setTimeout(() => {
-          alert('Congratulations! You have completed 3 offers. Your 25,000 ROBUX will be credited to your account shortly.');
-          completedCount = 0;
-          if (progressCounter) progressCounter.textContent = '0/3 offers completed';
-          initializeNewOffers();
-        }, 500);
-      }
-      
-      return true;
-    }
-
-    function refreshExpiredOffer(offerId) {
-      const index = activeOffers.findIndex(o => o.id === offerId);
-      if (index === -1) return;
-      
-      const expiredOffer = activeOffers[index];
-      if (expiredOffer.completed) return;
-      
-      const availableOffers = MASTER_OFFER_POOL.filter(o => o.url !== expiredOffer.offerData.url);
-      const randomIndex = Math.floor(Math.random() * availableOffers.length);
-      const newOfferData = availableOffers[randomIndex];
-      
-      activeOffers[index] = {
-        id: Date.now() + Math.random(),
-        offerData: newOfferData,
-        completed: false
-      };
-      
-      const resetNotice = document.getElementById('resetNotice');
-      if (resetNotice) {
-        resetNotice.style.display = 'block';
-        setTimeout(() => {
-          resetNotice.style.display = 'none';
-        }, 3000);
-      }
-      
-      renderOffersUI();
-    }
-
     function renderOffersUI() {
       const offersListDiv = document.getElementById('offersList');
       if (!offersListDiv) return;
       
       let html = '';
       activeOffers.forEach((offer) => {
-        const isCompleted = offer.completed;
-        
         html += `
-          <div class="offer-item ${isCompleted ? 'completed' : ''}" data-offer-id="${offer.id}">
+          <div class="offer-item" data-offer-id="${offer.id}">
             <div class="offer-info">
               <div class="offer-name">${escapeHtml(offer.offerData.name)}</div>
               <div class="offer-desc">${escapeHtml(offer.offerData.description || 'Quick reward opportunity')}</div>
             </div>
-            <div style="display: flex; gap: 0.5rem; align-items: center;">
-              <button class="start-offer-btn" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}" ${isCompleted ? 'disabled' : ''}>
-                ${isCompleted ? 'Completed' : 'Start'}
+            <div>
+              <button class="start-offer-btn" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}">
+                Start
               </button>
             </div>
           </div>
@@ -217,26 +115,17 @@
       offersListDiv.innerHTML = html;
       
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
-        if (btn.disabled) return;
-        
         btn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
           
           const url = btn.getAttribute('data-url');
-          const offerId = parseFloat(btn.getAttribute('data-offer-id'));
-          const offer = activeOffers.find(o => o.id === offerId);
-          
-          if (!offer || offer.completed) return;
           
           if (url && url !== '#') {
             window.open(url, '_blank', 'noopener,noreferrer');
           } else {
             alert('Offer link unavailable.');
-            return;
           }
-          
-          completeOffer(offerId);
         });
       });
     }
@@ -246,13 +135,8 @@
       
       activeOffers = randomOffers.map(offer => ({
         id: Date.now() + Math.random() * 10000,
-        offerData: offer,
-        completed: false
+        offerData: offer
       }));
-      
-      completedCount = 0;
-      const progressCounter = document.getElementById('progressCounter');
-      if (progressCounter) progressCounter.textContent = '0/3 offers completed';
       
       renderOffersUI();
     }
