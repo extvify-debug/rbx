@@ -205,7 +205,6 @@ input {
   color: #555;
 }
 
-/* Mobile Responsive Styles */
 @media (max-width: 600px) {
   .wrap {
     gap: 12px;
@@ -295,7 +294,6 @@ input {
   }
 }
 
-/* Extra small devices */
 @media (max-width: 480px) {
   .wrap {
     padding: 12px;
