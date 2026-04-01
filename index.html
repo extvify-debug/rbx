@@ -19,7 +19,7 @@
           25,000 Robux Code: <strong>CLAIM</strong>
         </div>
         <div class="banner-line2">
-          Only <strong>14</strong> codes remaining.
+          Only <strong>19</strong> codes remaining.
         </div>
       </div>
     </div>
@@ -51,21 +51,33 @@
 
 <script>
   (function() {
-    const ORIGINAL_OFFERS = [
+    // All offers combined
+    const OFFERS = [
+      // Original offers
       { name: "Get Paid for Testing Apps!", description: "Earn cash by testing new apps", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Earn by Downloading & Playing Games!", description: "Play & earn rewards instantly", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
       { name: "Win an iPhone 17 Pro!", description: "Enter the sweepstakes", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLXNvaSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Take Surveys & Earn Rewards!", description: "Share your opinion, get paid", url: "https://rainawards.com/r/eyJ0IjoicGxheWZ1bC1yZXdhcmRzLXJldnNoYXJlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwOTk2MTAzLCJ0aWt0b2siOjB9" },
-      { name: "Tap to claim your bonus!", description: "Exclusive reward waiting", url: "https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30" }
-    ];
-
-    const NEW_OFFERS = [
+      { name: "Tap to claim your bonus!", description: "Exclusive reward waiting", url: "https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30" },
+      
+      // Previous new offers
       { name: "Empower your future", description: "Special limited opportunity", url: "https://rainawards.com/r/eyJ0IjoiZW1wZm9obGVuIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0OTk1ODA3Nzg5fQ" },
       { name: "TesterUp – App Explorer", description: "Test apps & unlock rewards", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVydXAtYSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDk5NTgwNzc4OX0" },
-      { name: "TesterUp – Gaming Bonus", description: "Play featured games & earn", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVydXAtYiIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDk5NTgwNzc4OX0" }
+      { name: "TesterUp – Gaming Bonus", description: "Play featured games & earn", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVydXAtYiIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDk5NTgwNzc4OX0" },
+      
+      // New offers - Benjamin CPE
+      { name: "Benjamin CPE", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoiYmVuamFtaW4tY3BlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc1MDc1OTgzNTY2fQ" },
+      { name: "CashPilots CPE", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoiY2FzaHBpbG90cy1jcGUiLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjZ9" },
+      { name: "KashKick SOI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0Ijoia2FzaGtpY2siLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjV9" },
+      { name: "Branded Offers SOI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoiYnJhbmRlZC1zdXJ2ZXlzIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc1MDc1OTgzNTY2fQ" },
+      { name: "Scrambly SOI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0Ijoic2NyYW1ibHktc29pIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc1MDc1OTgzNTY2fQ" },
+      { name: "TesterHeld CPI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVyaGVsZC1jcGkiLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjZ9" },
+      { name: "Bigo LIVE CPI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoiYmlnby1jcGkiLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjZ9" },
+      { name: "CashPilots CPI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoiY2FzaHBpbG90cy1jcGkiLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjZ9" },
+      { name: "PayPal $1,000 - SOI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoicGF5cGFsLWRlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc1MDc1OTgzNTY2fQ" },
+      { name: "Prize Stash - Stimulus $500 SOI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoicHJpemVzdGFzaC1zdGltdWx1cy01MDAiLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjZ9" }
     ];
 
-    const MASTER_OFFER_POOL = [...ORIGINAL_OFFERS, ...NEW_OFFERS];
     let activeOffers = [];
 
     function shuffleArray(arr) {
@@ -77,7 +89,7 @@
     }
 
     function getRandomFourOffers() {
-      const shuffledPool = shuffleArray([...MASTER_OFFER_POOL]);
+      const shuffledPool = shuffleArray([...OFFERS]);
       return shuffledPool.slice(0, 4);
     }
 
