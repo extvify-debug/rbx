@@ -1,71 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Redeem</title>
-  <link rel="stylesheet" href="style.css">
+  <title>✨ Redeem Rewards</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #0b0e14 0%, #1a1f2b 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+    }
+
+    .bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 20%, rgba(88, 166, 255, 0.08), transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(180, 130, 255, 0.08), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Banner */
+    .banner {
+      background: rgba(18, 25, 40, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 215, 100, 0.25);
+      border-radius: 60px;
+      padding: 12px 22px;
+      margin-bottom: 28px;
+      box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .gift-text {
+      font-size: 34px;
+      line-height: 1;
+      filter: drop-shadow(0 0 6px #ffd966);
+    }
+
+    .banner-line1 {
+      color: #f0f3fa;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .banner-line1 strong {
+      color: #FFD966;
+      background: rgba(255, 220, 100, 0.12);
+      padding: 2px 10px;
+      border-radius: 30px;
+      margin-left: 6px;
+    }
+
+    .banner-line2 {
+      color: #b0c2da;
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    .banner-line2 strong {
+      color: #f5c542;
+    }
+
+    /* Title */
+    .title {
+      font-size: 3.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #ffffff 0%, #d6e3ff 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 5px rgba(0, 20, 50, 0.5);
+    }
+
+    /* Cards & forms */
+    .card {
+      background: rgba(22, 30, 46, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 36px;
+      padding: 30px 24px;
+      box-shadow: 0 20px 40px -10px #00000055;
+    }
+
+    /* Selection grid — 3 big options */
+    .selection-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .option-card {
+      flex: 1 1 140px;
+      min-width: 130px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.5px solid #2e3a55;
+      border-radius: 28px;
+      padding: 20px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: 0 6px 0 #0f131c;
+    }
+
+    .option-card.active {
+      border-color: #f7b731;
+      background: rgba(247, 183, 49, 0.08);
+      box-shadow: 0 6px 0 #9e721f, 0 0 18px #f7b73155;
+      transform: translateY(-2px);
+    }
+
+    .option-emoji {
+      font-size: 46px;
+      margin-bottom: 10px;
+    }
+
+    .option-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #f0eef7;
+      margin-bottom: 4px;
+    }
+
+    .option-sub {
+      color: #9aabca;
+      font-size: 0.9rem;
+    }
+
+    /* Dynamic form area */
+    .dynamic-form {
+      margin-top: 22px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 18px 20px;
+      background: #0f1622;
+      border: 1.5px solid #2c3a58;
+      border-radius: 40px;
+      font-size: 1rem;
+      color: white;
+      outline: none;
+      transition: border 0.15s;
+    }
+
+    input:focus {
+      border-color: #f3b83e;
+      box-shadow: 0 0 0 3px rgba(243, 184, 62, 0.2);
+    }
+
+    input::placeholder {
+      color: #7a89aa;
+    }
+
+    .btn {
+      background: linear-gradient(to bottom, #fee08b, #e09f1f);
+      border: none;
+      border-radius: 60px;
+      padding: 18px 24px;
+      width: 100%;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: #0a0e16;
+      box-shadow: 0 8px 0 #8a5f0e, 0 6px 18px #00000060;
+      cursor: pointer;
+      transition: all 0.08s;
+      border: 1px solid #ffeaae;
+      letter-spacing: 1px;
+      margin-top: 8px;
+    }
+
+    .btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 4px 0 #8a5f0e, 0 8px 18px #000;
+    }
+
+    .hint {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      color: #bcc9e6;
+      text-align: center;
+      min-height: 24px;
+    }
+
+    /* OFFERWALL — same style as before, but adapted */
+    .offerwall-card {
+      background: rgba(18, 26, 40, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 40px;
+      padding: 28px 22px;
+      border: 1px solid #3a4a6b;
+      box-shadow: 0 20px 40px #00000080;
+      margin-top: 20px;
+    }
+
+    .offerwall-header h2 {
+      color: #ffe5a3;
+      font-size: 1.9rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .offerwall-header p {
+      color: #cbd5f0;
+      margin-bottom: 22px;
+      font-size: 1.05rem;
+    }
+
+    .progress-counter {
+      background: #1a2538;
+      border-radius: 40px;
+      padding: 12px 18px;
+      font-weight: 600;
+      color: #bdd3ff;
+      margin-bottom: 28px;
+      border-left: 6px solid #f3b83e;
+    }
+
+    .offers-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .offer-item {
+      background: #101a28;
+      border-radius: 28px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #2e405e;
+    }
+
+    .offer-name {
+      font-weight: 700;
+      color: #f2e9d8;
+      font-size: 1.15rem;
+    }
+
+    .offer-desc {
+      color: #94a9cc;
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    .start-offer-btn {
+      background: #2a3c5a;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 12px 22px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      border-bottom: 3px solid #0e1622;
+      transition: 0.1s;
+      box-shadow: 0 4px 8px #00000033;
+    }
+
+    .start-offer-btn:active {
+      transform: translateY(2px);
+      border-bottom-width: 1px;
+    }
+
+    .offerwall-footer {
+      color: #9eb0d0;
+      text-align: center;
+      margin-top: 18px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .note-highlight {
+      color: #FFD966;
+    }
+
+    .back-home {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .text-link {
+      color: #afc6ff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="bg"></div>
 
-<div class="bg"></div>
-
-<main class="wrap">
-  <div class="banner" id="topBanner">
-    <div class="banner-left">
-      <div class="gift-text">🎁</div>
-      <div>
-        <div class="banner-line1">
-          25,000 Robux Code: <strong>CLAIM</strong>
-        </div>
-        <div class="banner-line2">
-          Only <strong>19</strong> codes remaining.
+  <main class="wrap">
+    <!-- Top banner (shows reward context) -->
+    <div class="banner" id="topBanner">
+      <div class="banner-left">
+        <div class="gift-text">🎁</div>
+        <div>
+          <div class="banner-line1" id="bannerMainLine">
+            <span id="bannerRewardLabel">25,000 Robux</span> · <strong id="bannerCodeLabel">CLAIM</strong>
+          </div>
+          <div class="banner-line2" id="bannerStockLine">
+            Only <strong>19</strong> codes remaining.
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <h1 class="title" id="pageTitle">redeem</h1>
+    <h1 class="title" id="pageTitle">redeem</h1>
 
-  <form class="card" id="redeemForm">
-    <input id="code" type="text" placeholder="Code" value="CLAIM">
-    <input id="username" type="text" placeholder="Roblox Username">
-    <button class="btn" type="submit" id="redeemBtn">Redeem</button>
-    <p class="hint" id="formHint"></p>
-  </form>
-
-  <div id="offerwallContainer" style="display: none;">
-    <div class="offerwall-card">
-      <div class="offerwall-header">
-        <h2>You're Almost Done</h2>
-        <p>Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive <strong>25,000 ROBUX</strong>.</p>
-        <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
+    <!-- MAIN CARD: selection & dynamic form -->
+    <div class="card" id="mainCard">
+      <!-- 3 reward options -->
+      <div class="selection-grid">
+        <div class="option-card" data-reward="robux" id="optRobux">
+          <div class="option-emoji">
+            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307529008021677/1920px-Robux_2019_Logo_gold.svg.png?ex=69e9687a&is=69e816fa&hm=e2c83284e79209289941e641edfdcec5edc0188e3c7e59112de9bc3dd3738c33&" alt="Robux" style="width: 46px; height: 46px; object-fit: contain;">
+          </div>
+          <div class="option-title">Robux</div>
+          <div class="option-sub">25,000</div>
+        </div>
+        <div class="option-card" data-reward="nitro" id="optNitro">
+          <div class="option-emoji">
+            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307603385618443/361.png?ex=69e9688c&is=69e8170c&hm=ce6422f051042e2c80b51360515d303de439f0198040a033f40d426e36c02735&" alt="Discord Nitro" style="width: 46px; height: 46px; object-fit: contain;">
+          </div>
+          <div class="option-title">Nitro</div>
+          <div class="option-sub">3 months</div>
+        </div>
+        <div class="option-card" data-reward="money" id="optMoney">
+          <div class="option-emoji">
+            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307786894676088/2150150.png?ex=69e968b8&is=69e81738&hm=66d05909bee4c658e024b5cb796a044f064a91fa3abc2c91cc42f23e938aeff4&" alt="Discord Nitro" style="width: 46px; height: 46px; object-fit: contain;">
+          </div>
+          <div class="option-title">$250</div>
+          <div class="option-sub">Cash</div>
+        </div>
       </div>
-      <div id="offersList" class="offers-grid"></div>
-      <div class="offerwall-footer">
-        Click Start on any offer to begin
+
+      <!-- Dynamic form area -->
+      <div class="dynamic-form" id="dynamicFormArea">
+        <!-- will be filled by JS -->
+      </div>
+      <p class="hint" id="formHint"></p>
+    </div>
+
+    <!-- OFFERWALL container (hidden by default) -->
+    <div id="offerwallContainer" style="display: none;">
+      <div class="offerwall-card">
+        <div class="offerwall-header">
+          <h2 id="offerwallTitle">You're Almost Done</h2>
+          <p id="offerwallDescription">Complete <strong>3</strong> sponsor activities to receive your reward.</p>
+          <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
+        </div>
+        <div id="offersList" class="offers-grid"></div>
+        <div class="offerwall-footer">
+          Click <strong>Start</strong> on any offer to begin
+        </div>
+      </div>
+      <div class="back-home">
+        <span class="text-link" id="resetToSelectionLink">← Choose another reward</span>
       </div>
     </div>
-  </div>
-</main>
+  </main>
 
-<script>
-  (function() {
-    // All offers combined
+  <script>
+    (function(){
+    "use strict";
+
+    // ---------- OFFER POOL (same as original) ----------
     const OFFERS = [
-      // Original offers
       { name: "Get Paid for Testing Apps!", description: "Earn cash by testing new apps", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Earn by Downloading & Playing Games!", description: "Play & earn rewards instantly", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
       { name: "Win an iPhone 17 Pro!", description: "Enter the sweepstakes", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLXNvaSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Take Surveys & Earn Rewards!", description: "Share your opinion, get paid", url: "https://rainawards.com/r/eyJ0IjoicGxheWZ1bC1yZXdhcmRzLXJldnNoYXJlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwOTk2MTAzLCJ0aWt0b2siOjB9" },
       { name: "Tap to claim your bonus!", description: "Exclusive reward waiting", url: "https://rainawards.com/r/eyJ0IjoicXVlc3RlciIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxM30" },
-      
-      // Previous new offers
       { name: "Empower your future", description: "Special limited opportunity", url: "https://rainawards.com/r/eyJ0IjoiZW1wZm9obGVuIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0OTk1ODA3Nzg5fQ" },
       { name: "TesterUp – App Explorer", description: "Test apps & unlock rewards", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVydXAtYSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDk5NTgwNzc4OX0" },
       { name: "TesterUp – Gaming Bonus", description: "Play featured games & earn", url: "https://rainawards.com/r/eyJ0IjoidGVzdGVydXAtYiIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDk5NTgwNzc4OX0" },
-      
-      // New offers - Benjamin CPE
       { name: "Benjamin CPE", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoiYmVuamFtaW4tY3BlIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc1MDc1OTgzNTY2fQ" },
       { name: "CashPilots CPE", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoiY2FzaHBpbG90cy1jcGUiLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjZ9" },
       { name: "KashKick SOI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0Ijoia2FzaGtpY2siLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjV9" },
@@ -78,121 +437,255 @@
       { name: "Prize Stash - Stimulus $500 SOI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoicHJpemVzdGFzaC1zdGltdWx1cy01MDAiLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjZ9" }
     ];
 
+    // ---------- DOM elements ----------
+    const topBanner = document.getElementById('topBanner');
+    const pageTitle = document.getElementById('pageTitle');
+    const mainCard = document.getElementById('mainCard');
+    const offerwallContainer = document.getElementById('offerwallContainer');
+    const dynamicFormArea = document.getElementById('dynamicFormArea');
+    const formHint = document.getElementById('formHint');
+    const bannerRewardLabel = document.getElementById('bannerRewardLabel');
+    const bannerCodeLabel = document.getElementById('bannerCodeLabel');
+    const bannerStockLine = document.getElementById('bannerStockLine');
+    const offerwallTitle = document.getElementById('offerwallTitle');
+    const offerwallDesc = document.getElementById('offerwallDescription');
+
+    // Options
+    const optRobux = document.getElementById('optRobux');
+    const optNitro = document.getElementById('optNitro');
+    const optMoney = document.getElementById('optMoney');
+
+    // State
+    let currentReward = 'robux'; // 'robux', 'nitro', 'money'
     let activeOffers = [];
+    let selectedOffersCount = 0; // just visual
 
-    function shuffleArray(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
-    function getRandomFourOffers() {
-      const shuffledPool = shuffleArray([...OFFERS]);
-      return shuffledPool.slice(0, 4);
-    }
-
+    // Helper: escape
     function escapeHtml(str) {
       if (!str) return '';
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      });
+      return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]);
+    }
+
+    // Random 4 offers
+    function getRandomFourOffers() {
+      const shuffled = [...OFFERS].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, 4);
     }
 
     function renderOffersUI() {
       const offersListDiv = document.getElementById('offersList');
       if (!offersListDiv) return;
-      
       let html = '';
-      activeOffers.forEach((offer) => {
+      activeOffers.forEach((offer, idx) => {
         html += `
-          <div class="offer-item" data-offer-id="${offer.id}">
+          <div class="offer-item" data-offer-id="${idx}">
             <div class="offer-info">
-              <div class="offer-name">${escapeHtml(offer.offerData.name)}</div>
-              <div class="offer-desc">${escapeHtml(offer.offerData.description || 'Quick reward opportunity')}</div>
+              <div class="offer-name">${escapeHtml(offer.name)}</div>
+              <div class="offer-desc">${escapeHtml(offer.description || 'Quick reward')}</div>
             </div>
             <div>
-              <button class="start-offer-btn" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}">
-                Start
-              </button>
+              <button class="start-offer-btn" data-url="${escapeHtml(offer.url)}">Start</button>
             </div>
           </div>
         `;
       });
-      
       offersListDiv.innerHTML = html;
-      
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
-          e.stopPropagation();
-          
           const url = btn.getAttribute('data-url');
-          
-          if (url && url !== '#') {
-            window.open(url, '_blank', 'noopener,noreferrer');
-          } else {
-            alert('Offer link unavailable.');
-          }
+          if (url) window.open(url, '_blank', 'noopener,noreferrer');
         });
       });
     }
 
-    function initializeNewOffers() {
-      const randomOffers = getRandomFourOffers();
-      
-      activeOffers = randomOffers.map(offer => ({
-        id: Date.now() + Math.random() * 10000,
-        offerData: offer
-      }));
-      
-      renderOffersUI();
+    function updateBannerAndTitles() {
+      if (currentReward === 'robux') {
+        bannerRewardLabel.textContent = '25,000 Robux';
+        bannerCodeLabel.textContent = 'ROBUXBACK';
+        bannerStockLine.innerHTML = 'Only <strong>19</strong> codes remaining.';
+        pageTitle.textContent = 'Redeem Robux';
+      } else if (currentReward === 'nitro') {
+        bannerRewardLabel.textContent = 'Discord Nitro';
+        bannerCodeLabel.textContent = 'NITROGIFT';
+        bannerStockLine.innerHTML = 'Only <strong>12</strong> gifts left.';
+        pageTitle.textContent = 'Claim Nitro';
+      } else { // money
+        bannerRewardLabel.textContent = '$250 Cash';
+        bannerCodeLabel.textContent = 'CASHBACK';
+        bannerStockLine.innerHTML = 'Only <strong>7</strong> rewards left.';
+        pageTitle.textContent = 'Get $250';
+      }
     }
 
-    const topBanner = document.getElementById('topBanner');
-    const pageTitle = document.getElementById('pageTitle');
-    const formCard = document.getElementById('redeemForm');
-    const offerwallContainer = document.getElementById('offerwallContainer');
-    const formHint = document.getElementById('formHint');
-
-    function showOfferwall() {
-      if (topBanner) topBanner.style.display = 'none';
-      if (pageTitle) pageTitle.style.display = 'none';
-      if (formCard) formCard.style.display = 'none';
-      if (offerwallContainer) offerwallContainer.style.display = 'block';
-      initializeNewOffers();
+    // Update active card UI highlight
+    function setActiveOption(reward) {
+      [optRobux, optNitro, optMoney].forEach(el => el.classList.remove('active'));
+      if (reward === 'robux') optRobux.classList.add('active');
+      if (reward === 'nitro') optNitro.classList.add('active');
+      if (reward === 'money') optMoney.classList.add('active');
     }
 
-    function onFormSubmit(e) {
-      e.preventDefault();
-      const codeInput = document.getElementById('code');
-      const usernameInput = document.getElementById('username');
-      const enteredCode = codeInput.value.trim().toUpperCase();
-      const username = usernameInput.value.trim();
-
-      if (enteredCode !== 'CLAIM') {
-        formHint.textContent = 'Invalid code. Use "CLAIM" as shown in the banner.';
-        formHint.style.color = '#ff9e9e';
-        return;
+    // Render the form depending on reward
+    function renderDynamicForm() {
+      let html = '';
+      if (currentReward === 'robux') {
+        html = `
+          <div class="input-group">
+            <input id="codeInput" type="text" placeholder="Code" value="ROBUXBACK">
+          </div>
+          <div class="input-group">
+            <input id="usernameInput" type="text" placeholder="Roblox Username">
+          </div>
+          <button class="btn" type="button" id="actionButton">Next →</button>
+        `;
+      } else if (currentReward === 'nitro') {
+        html = `
+          <div class="input-group">
+            <input id="codeInput" type="text" placeholder="Nitro code" value="NITROCLAIM">
+          </div>
+          <div class="input-group">
+            <input id="discordTagInput" type="text" placeholder="Discord Username (e.g. User#0000)">
+          </div>
+          <button class="btn" type="button" id="actionButton">Redeem Nitro</button>
+        `;
+      } else { // money
+        html = `
+          <div class="input-group">
+            <input id="codeInput" type="text" placeholder="Code" value="CASHBACK" readonly disabled style="background:#1a2332;">
+          </div>
+          <button class="btn" type="button" id="actionButton">Claim $250 →</button>
+          <p style="color:#b9c8f0; margin-top:12px; text-align:center;">No username needed — instant access</p>
+        `;
       }
-      if (!username) {
-        formHint.textContent = 'Please enter your Roblox username.';
-        formHint.style.color = '#ff9e9e';
-        return;
+      dynamicFormArea.innerHTML = html;
+      
+      const actionBtn = document.getElementById('actionButton');
+      if (actionBtn) {
+        actionBtn.addEventListener('click', onActionClick);
       }
+    }
 
+    // Validate and proceed to offerwall
+    function onActionClick(e) {
+      const codeInput = document.getElementById('codeInput');
+      let codeValid = true;
+      let extraValid = true;
       formHint.textContent = '';
+      
+      if (currentReward === 'ROBUXBACK') {
+        const code = codeInput?.value.trim().toUpperCase() || '';
+        const username = document.getElementById('usernameInput')?.value.trim() || '';
+        if (code !== 'CLAIM') {
+          formHint.textContent = 'Code must be "CLAIM"';
+          formHint.style.color = '#ff9e9e';
+          return;
+        }
+        if (!username) {
+          formHint.textContent = 'Enter your Roblox username.';
+          formHint.style.color = '#ff9e9e';
+          return;
+        }
+      } else if (currentReward === 'nitro') {
+        const code = codeInput?.value.trim().toUpperCase() || '';
+        const discord = document.getElementById('discordTagInput')?.value.trim() || '';
+        if (code !== 'NITROCLAIM') {
+          formHint.textContent = 'Use code NITROCLAIM';
+          formHint.style.color = '#ff9e9e';
+          return;
+        }
+        if (!discord) {
+          formHint.textContent = 'Please enter Discord username.';
+          formHint.style.color = '#ff9e9e';
+          return;
+        }
+      } else {
+        // money: no validation needed
+      }
+      
+      // Show offerwall
       showOfferwall();
     }
 
-    if (formCard) {
-      formCard.addEventListener('submit', onFormSubmit);
+    function showOfferwall() {
+      // hide main card, banner & title
+      mainCard.style.display = 'none';
+      topBanner.style.display = 'none';
+      pageTitle.style.display = 'none';
+      offerwallContainer.style.display = 'block';
+      
+      // customize offerwall text based on reward
+      if (currentReward === 'robux') {
+        offerwallTitle.textContent = 'Claim 25,000 Robux';
+        offerwallDesc.innerHTML = 'Complete <strong>any 3</strong> offers below to get your Robux instantly.';
+      } else if (currentReward === 'nitro') {
+        offerwallTitle.textContent = 'Get 3 Months Nitro FREE';
+        offerwallDesc.innerHTML = 'Finish <strong>3</strong> sponsor tasks to unlock Discord Nitro.';
+      } else {
+        offerwallTitle.textContent = '$250 Cash Reward';
+        offerwallDesc.innerHTML = 'Complete <strong>3 offers</strong> and receive $3,000!';
+      }
+      
+      // load offers
+      activeOffers = getRandomFourOffers();
+      renderOffersUI();
+      document.getElementById('progressCounter').textContent = `0/3 offers completed`;
     }
+
+    // Reset to selection
+    function resetToSelection() {
+      offerwallContainer.style.display = 'none';
+      mainCard.style.display = 'block';
+      topBanner.style.display = 'flex';
+      pageTitle.style.display = 'block';
+      updateBannerAndTitles();
+      renderDynamicForm();
+      formHint.textContent = '';
+    }
+
+    // Attach option clicks
+    function initOptions() {
+      optRobux.addEventListener('click', () => {
+        currentReward = 'robux';
+        setActiveOption('robux');
+        updateBannerAndTitles();
+        renderDynamicForm();
+        formHint.textContent = '';
+      });
+      optNitro.addEventListener('click', () => {
+        currentReward = 'nitro';
+        setActiveOption('nitro');
+        updateBannerAndTitles();
+        renderDynamicForm();
+        formHint.textContent = '';
+      });
+      optMoney.addEventListener('click', () => {
+        currentReward = 'money';
+        setActiveOption('money');
+        updateBannerAndTitles();
+        renderDynamicForm();
+        formHint.textContent = '';
+      });
+    }
+
+    // Reset link
+    document.getElementById('resetToSelectionLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      resetToSelection();
+    });
+
+    // Start with robux active
+    function initialize() {
+      currentReward = 'robux';
+      setActiveOption('robux');
+      updateBannerAndTitles();
+      renderDynamicForm();
+      initOptions();
+    }
+
+    initialize();
   })();
-</script>
+  </script>
 </body>
+
 </html>
