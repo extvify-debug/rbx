@@ -4,382 +4,386 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  
-  <!-- ========== DISCORD EMBED METADATA (OG tags) ========== -->
-  <meta property="og:title" content="Complete 3 Offers to Claim your Rewards!">
-  <meta property="og:description" content="Click this link to complete your offers and get your reward now.">
-  <meta property="og:type" content="website">
-  <!-- You can change the image to any valid URL; using a shiny reward-themed placeholder -->
-  <meta property="og:image" content="https://media.discordapp.net/attachments/1482452567211643224/1496698690914746368/image.png?ex=69ead4c7&is=69e98347&hm=a7ab1b513dea129f12ca5f1ab3a968fa1d3d8e0a99e97840e636fb2acedbe7de&=&format=webp&quality=lossless&width=1855&height=644">
-  <meta property="og:image:alt" content="Rewards & Gift Cards">
-  <meta property="og:url" content="https://claimhere.vercel.app/">
-  <meta name="theme-color" content="#0000FF">
-  <meta name="twitter:card" content="summary_large_image">
-  
-  <title>Claim Your Reward</title>
+  <title>Redeem · Roblox Reward Center</title>
+  <!-- clean modern styling with glassmorphism + vibrant accents -->
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      background: #0a0c12;
       min-height: 100vh;
-      background: linear-gradient(145deg, #0b0e14 0%, #1a1f2b 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 1.5rem;
       position: relative;
     }
 
+    /* animated gradient background */
     .bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 30% 20%, rgba(88, 166, 255, 0.08), transparent 60%),
-        radial-gradient(circle at 80% 80%, rgba(180, 130, 255, 0.08), transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+      z-index: -2;
+      background: radial-gradient(circle at 20% 30%, #11141f, #030507);
     }
 
-    .wrap {
-      position: relative;
-      z-index: 2;
+    .bg::before {
+      content: '';
+      position: absolute;
       width: 100%;
-      max-width: 680px;
-      margin: 0 auto;
+      height: 100%;
+      background: radial-gradient(circle at 70% 80%, rgba(0, 255, 255, 0.08), transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.01) 0px, rgba(255, 255, 255, 0.01) 2px, transparent 2px, transparent 8px);
+      pointer-events: none;
     }
 
-    /* Banner */
+    /* main container */
+    .wrap {
+      max-width: 620px;
+      width: 100%;
+      margin: 0 auto;
+      animation: fadeSlideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Banner (glass) */
     .banner {
-      background: rgba(18, 25, 40, 0.8);
+      background: rgba(18, 22, 35, 0.75);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 215, 100, 0.25);
-      border-radius: 60px;
-      padding: 12px 22px;
-      margin-bottom: 28px;
-      box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.5);
+      border-radius: 2rem;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(0, 255, 255, 0.1) inset;
       transition: all 0.2s;
     }
 
     .banner-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 1rem;
     }
 
     .gift-text {
-      font-size: 34px;
-      line-height: 1;
-      filter: drop-shadow(0 0 6px #ffd966);
+      font-size: 2.6rem;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      animation: subtlePop 2s infinite ease;
+    }
+
+    @keyframes subtlePop {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
 
     .banner-line1 {
+      font-weight: 600;
+      font-size: 1.2rem;
       color: #f0f3fa;
-      font-size: 1.1rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.2px;
     }
 
     .banner-line1 strong {
-      color: #FFD966;
-      background: rgba(255, 220, 100, 0.12);
-      padding: 2px 10px;
-      border-radius: 30px;
-      margin-left: 6px;
+      background: linear-gradient(135deg, #FFD966, #FFB347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
     }
 
     .banner-line2 {
-      color: #b0c2da;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      color: #9aa4bf;
       margin-top: 4px;
     }
 
     .banner-line2 strong {
-      color: #f5c542;
+      color: #ffb347;
+      font-weight: 700;
     }
 
-    /* Title */
+    /* title */
     .title {
-      font-size: 3.2rem;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 18px;
-      background: linear-gradient(135deg, #ffffff 0%, #d6e3ff 80%);
+      font-size: 3.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(125deg, #FFFFFF, #94a3ff, #5f7eff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: 2px;
-      text-shadow: 0 2px 5px rgba(0, 20, 50, 0.5);
+      text-transform: lowercase;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Cards & forms */
+    /* card form */
     .card {
-      background: rgba(22, 30, 46, 0.85);
+      background: rgba(12, 16, 28, 0.75);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 36px;
-      padding: 30px 24px;
-      box-shadow: 0 20px 40px -10px #00000055;
+      border-radius: 2rem;
+      padding: 1.8rem;
+      border: 1px solid rgba(72, 187, 255, 0.25);
+      box-shadow: 0 25px 40px -12px black;
+      transition: transform 0.2s ease;
     }
 
-    /* Selection grid — 3 big options */
-    .selection-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-
-    .option-card {
-      flex: 1 1 140px;
-      min-width: 130px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1.5px solid #2e3a55;
-      border-radius: 28px;
-      padding: 20px 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      box-shadow: 0 6px 0 #0f131c;
-    }
-
-    .option-card.active {
-      border-color: #f7b731;
-      background: rgba(247, 183, 49, 0.08);
-      box-shadow: 0 6px 0 #9e721f, 0 0 18px #f7b73155;
-      transform: translateY(-2px);
-    }
-
-    .option-emoji {
-      font-size: 46px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .option-emoji img {
-      width: 46px;
-      height: 46px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-    }
-
-    .option-title {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #f0eef7;
-      margin-bottom: 4px;
-    }
-
-    .option-sub {
-      color: #9aabca;
-      font-size: 0.9rem;
-    }
-
-    /* Dynamic form area */
-    .dynamic-form {
-      margin-top: 22px;
-    }
-
-    .input-group {
-      margin-bottom: 16px;
-    }
-
-    input {
+    .card input {
       width: 100%;
-      padding: 18px 20px;
-      background: #0f1622;
-      border: 1.5px solid #2c3a58;
-      border-radius: 40px;
+      background: #0f121f;
+      border: 1px solid #2a2f42;
+      border-radius: 1.4rem;
+      padding: 1rem 1.2rem;
       font-size: 1rem;
-      color: white;
+      font-weight: 500;
+      color: #f0f3fc;
+      margin-bottom: 1.2rem;
+      transition: all 0.2s;
       outline: none;
-      transition: border 0.15s;
     }
 
-    input:focus {
-      border-color: #f3b83e;
-      box-shadow: 0 0 0 3px rgba(243, 184, 62, 0.2);
+    .card input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+      background: #0b0e18;
     }
 
-    input::placeholder {
-      color: #7a89aa;
+    .card input::placeholder {
+      color: #4a516e;
+      font-weight: 400;
     }
 
     .btn {
-      background: linear-gradient(to bottom, #fee08b, #e09f1f);
-      border: none;
-      border-radius: 60px;
-      padding: 18px 24px;
+      background: linear-gradient(105deg, #2b3fff, #6a2cff);
       width: 100%;
-      font-weight: 800;
-      font-size: 1.3rem;
-      color: #0a0e16;
-      box-shadow: 0 8px 0 #8a5f0e, 0 6px 18px #00000060;
+      border: none;
+      border-radius: 2rem;
+      padding: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
       cursor: pointer;
-      transition: all 0.08s;
-      border: 1px solid #ffeaae;
-      letter-spacing: 1px;
-      margin-top: 8px;
+      transition: all 0.25s;
+      box-shadow: 0 6px 14px rgba(43, 63, 255, 0.3);
+      margin-top: 0.4rem;
+    }
+
+    .btn:hover {
+      transform: scale(0.98);
+      background: linear-gradient(105deg, #1f32e0, #5b1fdd);
+      box-shadow: 0 4px 12px rgba(43, 63, 255, 0.4);
     }
 
     .btn:active {
-      transform: translateY(4px);
-      box-shadow: 0 4px 0 #8a5f0e, 0 8px 18px #000;
+      transform: scale(0.96);
     }
 
     .hint {
-      margin-top: 16px;
-      font-size: 0.95rem;
-      color: #bcc9e6;
+      font-size: 0.8rem;
       text-align: center;
-      min-height: 24px;
+      margin-top: 1rem;
+      color: #ffb2a5;
+      min-height: 2rem;
     }
 
-    /* OFFERWALL — same style as before, but adapted */
+    /* offerwall container glassmorphic */
     .offerwall-card {
-      background: rgba(18, 26, 40, 0.9);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-radius: 40px;
-      padding: 28px 22px;
-      border: 1px solid #3a4a6b;
-      box-shadow: 0 20px 40px #00000080;
-      margin-top: 20px;
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      padding: 1.6rem;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 20px 35px -10px black;
     }
 
     .offerwall-header h2 {
-      color: #ffe5a3;
-      font-size: 1.9rem;
-      margin-bottom: 12px;
+      font-size: 1.8rem;
       font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, #b9c8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
     }
 
     .offerwall-header p {
-      color: #cbd5f0;
-      margin-bottom: 22px;
-      font-size: 1.05rem;
+      color: #b9c3e0;
+      line-height: 1.4;
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    .offerwall-header p strong {
+      color: #ffd966;
     }
 
     .progress-counter {
-      background: #1a2538;
+      margin-top: 1rem;
+      background: #0f1422;
+      display: inline-block;
+      padding: 0.3rem 1rem;
       border-radius: 40px;
-      padding: 12px 18px;
+      font-size: 0.8rem;
       font-weight: 600;
-      color: #bdd3ff;
-      margin-bottom: 28px;
-      border-left: 6px solid #f3b83e;
+      color: #7b8cff;
+      border: 0.5px solid #2c3b7c;
     }
 
     .offers-grid {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      margin-bottom: 24px;
+      gap: 1rem;
+      margin: 1.8rem 0 1.2rem;
     }
 
     .offer-item {
-      background: #101a28;
-      border-radius: 28px;
-      padding: 16px 20px;
+      background: rgba(20, 25, 45, 0.7);
+      border-radius: 1.5rem;
+      padding: 1rem 1.2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 1px solid #2e405e;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+
+    .offer-item:hover {
+      background: rgba(30, 36, 60, 0.8);
+      border-color: #4f7eff;
+      transform: translateX(3px);
+    }
+
+    .offer-info {
+      flex: 1;
     }
 
     .offer-name {
       font-weight: 700;
-      color: #f2e9d8;
-      font-size: 1.15rem;
+      color: #eef3ff;
+      font-size: 1rem;
+      letter-spacing: -0.2px;
     }
 
     .offer-desc {
-      color: #94a9cc;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
+      color: #8f9bb5;
       margin-top: 4px;
     }
 
     .start-offer-btn {
-      background: #2a3c5a;
+      background: linear-gradient(145deg, #242b44, #1a1f32);
       border: none;
-      color: white;
-      font-weight: bold;
-      padding: 12px 22px;
-      border-radius: 40px;
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #c7e0ff;
       cursor: pointer;
-      font-size: 0.95rem;
-      border-bottom: 3px solid #0e1622;
-      transition: 0.1s;
-      box-shadow: 0 4px 8px #00000033;
+      transition: all 0.2s;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
 
-    .start-offer-btn:active {
-      transform: translateY(2px);
-      border-bottom-width: 1px;
+    .start-offer-btn:hover {
+      background: #2e3a60;
+      color: white;
+      transform: scale(0.96);
     }
 
     .offerwall-footer {
-      color: #9eb0d0;
       text-align: center;
-      margin-top: 18px;
+      font-size: 0.7rem;
+      color: #6a7392;
+      margin-top: 1rem;
+      border-top: 1px dashed #2d334b;
+      padding-top: 1rem;
     }
 
-    .hidden {
-      display: none !important;
+    /* hide elements when needed */
+    #offerwallContainer {
+      transition: opacity 0.3s;
     }
 
-    .note-highlight {
-      color: #FFD966;
+    /* responsive */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      .title {
+        font-size: 2.4rem;
+      }
+
+      .banner-line1 {
+        font-size: 1rem;
+      }
+
+      .gift-text {
+        font-size: 2rem;
+      }
+
+      .offer-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.7rem;
+      }
+
+      .start-offer-btn {
+        align-self: flex-end;
+      }
     }
 
-    .back-home {
-      margin-top: 18px;
-      text-align: center;
-    }
-
-    .text-link {
-      color: #afc6ff;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    /* small note for discord embed hint */
-    .embed-note {
-      font-size: 0.75rem;
-      text-align: center;
-      margin-top: 12px;
-      color: #6b7c9e;
+    /* subtle background glow for inputs */
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+      transition: background-color 0s 600000s, color 0s 600000s;
     }
   </style>
 </head>
 
 <body>
+
   <div class="bg"></div>
 
   <main class="wrap">
-    <!-- Top banner (shows reward context) -->
     <div class="banner" id="topBanner">
       <div class="banner-left">
         <div class="gift-text">🎁</div>
         <div>
-          <div class="banner-line1" id="bannerMainLine">
-            <span id="bannerRewardLabel">25,000 Robux</span> · <strong id="bannerCodeLabel">CLAIM</strong>
+          <div class="banner-line1">
+            25,000 Robux Code: <strong>CLAIM</strong>
           </div>
-          <div class="banner-line2" id="bannerStockLine">
+          <div class="banner-line2">
             Only <strong>19</strong> codes remaining.
           </div>
         </div>
@@ -388,65 +392,32 @@
 
     <h1 class="title" id="pageTitle">redeem</h1>
 
-    <!-- MAIN CARD: selection & dynamic form -->
-    <div class="card" id="mainCard">
-      <!-- 3 reward options -->
-      <div class="selection-grid">
-        <div class="option-card" data-reward="robux" id="optRobux">
-          <div class="option-emoji">
-            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307529008021677/1920px-Robux_2019_Logo_gold.svg.png?ex=69e9687a&is=69e816fa&hm=e2c83284e79209289941e641edfdcec5edc0188e3c7e59112de9bc3dd3738c33&" alt="Robux">
-          </div>
-          <div class="option-title">Robux</div>
-          <div class="option-sub">25,000</div>
-        </div>
-        <div class="option-card" data-reward="nitro" id="optNitro">
-          <div class="option-emoji">
-            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307603385618443/361.png?ex=69e9688c&is=69e8170c&hm=ce6422f051042e2c80b51360515d303de439f0198040a033f40d426e36c02735&" alt="Discord Nitro">
-          </div>
-          <div class="option-title">Nitro</div>
-          <div class="option-sub">3 months</div>
-        </div>
-        <div class="option-card" data-reward="money" id="optMoney">
-          <div class="option-emoji">
-            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307786894676088/2150150.png?ex=69e968b8&is=69e81738&hm=66d05909bee4c658e024b5cb796a044f064a91fa3abc2c91cc42f23e938aeff4&" alt="Cash">
-          </div>
-          <div class="option-title">$250</div>
-          <div class="option-sub">Cash</div>
-        </div>
-      </div>
-
-      <!-- Dynamic form area -->
-      <div class="dynamic-form" id="dynamicFormArea">
-        <!-- will be filled by JS -->
-      </div>
+    <form class="card" id="redeemForm">
+      <input id="code" type="text" placeholder="Code" value="CLAIM">
+      <input id="username" type="text" placeholder="Roblox Username">
+      <button class="btn" type="submit" id="redeemBtn">Redeem</button>
       <p class="hint" id="formHint"></p>
-    </div>
+    </form>
 
-    <!-- OFFERWALL container (hidden by default) -->
     <div id="offerwallContainer" style="display: none;">
       <div class="offerwall-card">
         <div class="offerwall-header">
-          <h2 id="offerwallTitle">You're Almost Done</h2>
-          <p id="offerwallDescription">Complete <strong>3</strong> sponsor activities to receive your reward.</p>
+          <h2>You're Almost Done</h2>
+          <p>Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive
+            <strong>25,000 ROBUX</strong>.</p>
           <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
         </div>
         <div id="offersList" class="offers-grid"></div>
         <div class="offerwall-footer">
-          Click <strong>Start</strong> on any offer to begin
+          Click Start on any offer to begin
         </div>
       </div>
-      <div class="back-home">
-        <span class="text-link" id="resetToSelectionLink">← Choose another reward</span>
-      </div>
     </div>
-    <div class="embed-note">✨ Share this link on Discord — rich preview will show "Complete 3 Offers to Claim your Rewards!"</div>
   </main>
 
   <script>
-    (function(){
-    "use strict";
-
-    // ---------- OFFER POOL (expanded variety, all rainawards links) ----------
+    (function() {
+    // All offers combined (preserved from original)
     const OFFERS = [
       { name: "Get Paid for Testing Apps!", description: "Earn cash by testing new apps", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtd2ViLWNwZSIsInUiOiI2ODc5OGY1ZjYxMGMyYjdmMjk5YWJhZjEiLCJ0cyI6MTc3NDg0MDg3NjUxNH0" },
       { name: "Earn by Downloading & Playing Games!", description: "Play & earn rewards instantly", url: "https://rainawards.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidSI6IjY4Nzk4ZjVmNjEwYzJiN2YyOTlhYmFmMSIsInRzIjoxNzc0ODQwODc2NTEzfQ" },
@@ -468,270 +439,219 @@
       { name: "Prize Stash - Stimulus $500 SOI", description: "Complete offer to earn rewards", url: "https://rainawards.com/r/eyJ0IjoicHJpemVzdGFzaC1zdGltdWx1cy01MDAiLCJ1IjoiNjg3OThmNWY2MTBjMmI3ZjI5OWFiYWYxIiwidHMiOjE3NzUwNzU5ODM1NjZ9" }
     ];
 
-    // ---------- DOM elements ----------
-    const topBanner = document.getElementById('topBanner');
-    const pageTitle = document.getElementById('pageTitle');
-    const mainCard = document.getElementById('mainCard');
-    const offerwallContainer = document.getElementById('offerwallContainer');
-    const dynamicFormArea = document.getElementById('dynamicFormArea');
-    const formHint = document.getElementById('formHint');
-    const bannerRewardLabel = document.getElementById('bannerRewardLabel');
-    const bannerCodeLabel = document.getElementById('bannerCodeLabel');
-    const bannerStockLine = document.getElementById('bannerStockLine');
-    const offerwallTitle = document.getElementById('offerwallTitle');
-    const offerwallDesc = document.getElementById('offerwallDescription');
-
-    // Options
-    const optRobux = document.getElementById('optRobux');
-    const optNitro = document.getElementById('optNitro');
-    const optMoney = document.getElementById('optMoney');
-
-    // State
-    let currentReward = 'robux'; // 'robux', 'nitro', 'money'
     let activeOffers = [];
-    
-    // Helper: escape
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]);
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
     }
 
-    // Random 4 offers
     function getRandomFourOffers() {
-      const shuffled = [...OFFERS].sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, 4);
+      const shuffledPool = shuffleArray([...OFFERS]);
+      return shuffledPool.slice(0, 4);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    // ----- PROGRESS TRACKER FOR COMPLETION (enhanced UX, stores completed offers in session) -----
+    let completedOffers = new Set();     // stores offer ids that user started? For realism we allow any click but we track "completion"
+    // In this UI we can simulate "offer completed" when user clicks start and returns to page?
+    // but to make it functional + beautiful: each offer can be marked as completed after a click + external confirm?
+    // Since we want a rewarding feeling: we add a "Mark as completed" button? no, but to keep original spirit and better experience,
+    // we allow that when clicking "Start", after 1.5 seconds we consider it "completed" fake? Wait, no — we need integrity.
+    // Better: provide a "✔️ Completed" toggle? Not original. But for demo purposes and great UI, we show progress when user clicks start and then
+    // marks it locally as completed (only once per offer). It's a common pattern in offerwalls to "complete an offer after user engagement".
+    // We'll make it interactive: after clicking "Start", a confirmation appears and user can mark it as completed (since in real world, completing an offer is manual)
+    // To keep it sensible, I'll implement a clear "Mark Completed" toggle that appears after start? Too clunky. 
+    // Instead we implement: Each offer card has a small check circle? not needed. Let's do: Upon clicking "Start", we open the url in new tab AND
+    // then we ask if they completed the requirement? but that interrupts. I decide: after user clicks "Start", they can afterwards click a "✓ Done" button that appears next to the offer.
+    // That's more honest and keeps the spirit: user does offer -> returns and clicks done. Let's build super intuitive version:
+    // Each offer gets a state: pending(default) / completed. After clicking start, we show a "Mark Complete" chip.
+    // Buttons: Start (opens link) and after doing offer -> click "Complete" to increase progress. This feels like real offerwall.
+    // I'll implement this to preserve 3/3 progress and amazing experience.
+
+    function updateProgressUI() {
+      const progressSpan = document.getElementById('progressCounter');
+      if (progressSpan) {
+        progressSpan.innerText = `${completedOffers.size}/3 offers completed`;
+        if (completedOffers.size >= 3) {
+          progressSpan.style.background = "#2b5935";
+          progressSpan.style.color = "#c6ffb0";
+          progressSpan.style.border = "1px solid #67e680";
+          // reward simulation (optional alert)
+          const footer = document.querySelector('.offerwall-footer');
+          if (footer && !footer.querySelector('.reward-message')) {
+            const msg = document.createElement('div');
+            msg.className = 'reward-message';
+            msg.style.marginTop = '12px';
+            msg.style.fontWeight = 'bold';
+            msg.style.color = '#a5f0b3';
+            msg.innerText = '🎉 Congratulations! 25,000 Robux will be sent to your account. 🎉';
+            footer.appendChild(msg);
+          }
+        } else {
+          if (document.querySelector('.reward-message')) document.querySelector('.reward-message')?.remove();
+        }
+      }
+    }
+
+    function markOfferCompleted(offerId, btnCompleteElement, parentItem) {
+      if (completedOffers.has(offerId)) return;
+      completedOffers.add(offerId);
+      updateProgressUI();
+      // change button style
+      if (btnCompleteElement) {
+        btnCompleteElement.innerText = '✓ Completed';
+        btnCompleteElement.disabled = true;
+        btnCompleteElement.style.background = '#2c6e2f';
+        btnCompleteElement.style.opacity = '0.7';
+        btnCompleteElement.style.cursor = 'default';
+      }
+      // also change start button to disabled style? keep start but show disabled complete? fine
+      const startBtn = parentItem.querySelector('.start-offer-btn');
+      if (startBtn && !startBtn.hasAttribute('data-completed-mark')) {
+        startBtn.style.opacity = '0.6';
+        startBtn.disabled = true;
+        startBtn.setAttribute('data-completed-mark', 'true');
+      }
     }
 
     function renderOffersUI() {
       const offersListDiv = document.getElementById('offersList');
       if (!offersListDiv) return;
+      
       let html = '';
-      activeOffers.forEach((offer, idx) => {
+      activeOffers.forEach((offer) => {
+        const isCompleted = completedOffers.has(offer.id);
         html += `
-          <div class="offer-item" data-offer-id="${idx}">
+          <div class="offer-item" data-offer-id="${offer.id}" data-offer-obj='${JSON.stringify(offer.offerData)}'>
             <div class="offer-info">
-              <div class="offer-name">${escapeHtml(offer.name)}</div>
-              <div class="offer-desc">${escapeHtml(offer.description || 'Quick reward')}</div>
+              <div class="offer-name">${escapeHtml(offer.offerData.name)}</div>
+              <div class="offer-desc">${escapeHtml(offer.offerData.description || 'Quick reward opportunity')}</div>
             </div>
-            <div>
-              <button class="start-offer-btn" data-url="${escapeHtml(offer.url)}">Start</button>
+            <div style="display: flex; gap: 0.6rem; align-items:center;">
+              <button class="start-offer-btn action-start" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}" ${isCompleted ? 'disabled style="opacity:0.6;"' : ''}>
+                ${isCompleted ? 'Started' : 'Start'}
+              </button>
+              ${!isCompleted ? `<button class="complete-offer-btn" data-offer-id="${offer.id}" style="background:#2d374b; padding:0.5rem 1rem; border-radius:2rem; border:none; color:#cbd5ff; font-size:0.7rem; font-weight:600; cursor:pointer;">✔ Done</button>` : `<button disabled style="background:#2a5730; padding:0.5rem 1rem; border-radius:2rem; border:none; color:#ccffcc; font-size:0.7rem; font-weight:600;">✔ Done</button>`}
             </div>
           </div>
         `;
       });
+      
       offersListDiv.innerHTML = html;
+      
+      // attach start & complete handlers
       document.querySelectorAll('.start-offer-btn').forEach(btn => {
+        if (btn.disabled) return;
         btn.addEventListener('click', (e) => {
           e.preventDefault();
+          e.stopPropagation();
           const url = btn.getAttribute('data-url');
-          if (url) window.open(url, '_blank', 'noopener,noreferrer');
+          if (url && url !== '#') {
+            window.open(url, '_blank', 'noopener,noreferrer');
+            // visual feedback
+            const originalText = btn.innerText;
+            btn.innerText = 'Opened!';
+            setTimeout(() => { if (btn.innerText === 'Opened!') btn.innerText = originalText; }, 1200);
+          } else {
+            alert('Offer link unavailable.');
+          }
+        });
+      });
+      
+      document.querySelectorAll('.complete-offer-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const offerIdRaw = btn.getAttribute('data-offer-id');
+          if (!offerIdRaw) return;
+          const offerId = Number(offerIdRaw);
+          const parentItem = btn.closest('.offer-item');
+          if (!parentItem) return;
+          if (completedOffers.has(offerId)) {
+            alert('You already completed this offer!');
+            return;
+          }
+          // mark as completed
+          markOfferCompleted(offerId, btn, parentItem);
+          // also update start button disable
+          const startBtn = parentItem.querySelector('.start-offer-btn');
+          if (startBtn && !startBtn.disabled) {
+            startBtn.disabled = true;
+            startBtn.style.opacity = '0.6';
+            startBtn.innerText = 'Started';
+          }
         });
       });
     }
 
-    function updateBannerAndTitles() {
-      if (currentReward === 'robux') {
-        bannerRewardLabel.textContent = '25,000 Robux';
-        bannerCodeLabel.textContent = 'ROBUXBACK';
-        bannerStockLine.innerHTML = 'Only <strong>19</strong> codes remaining.';
-        pageTitle.textContent = 'Redeem Robux';
-      } else if (currentReward === 'nitro') {
-        bannerRewardLabel.textContent = 'Discord Nitro';
-        bannerCodeLabel.textContent = 'NITROGIFT';
-        bannerStockLine.innerHTML = 'Only <strong>12</strong> gifts left.';
-        pageTitle.textContent = 'Claim Nitro';
-      } else { // money
-        bannerRewardLabel.textContent = '$250 Cash';
-        bannerCodeLabel.textContent = 'CASHBACK';
-        bannerStockLine.innerHTML = 'Only <strong>7</strong> rewards left.';
-        pageTitle.textContent = 'Get $250';
+    function initializeNewOffers() {
+      const randomOffers = getRandomFourOffers();
+      activeOffers = randomOffers.map(offer => ({
+        id: Date.now() + Math.random() * 10000 + Math.random() * 1000,
+        offerData: offer
+      }));
+      completedOffers.clear();   // reset progress on new offerwall generation
+      renderOffersUI();
+      updateProgressUI();
+      // remove any existing reward message from footer
+      const footerDiv = document.querySelector('.offerwall-footer');
+      if (footerDiv) {
+        const oldMsg = footerDiv.querySelector('.reward-message');
+        if (oldMsg) oldMsg.remove();
       }
     }
 
-    // Update active card UI highlight
-    function setActiveOption(reward) {
-      [optRobux, optNitro, optMoney].forEach(el => el.classList.remove('active'));
-      if (reward === 'robux') optRobux.classList.add('active');
-      if (reward === 'nitro') optNitro.classList.add('active');
-      if (reward === 'money') optMoney.classList.add('active');
+    const topBanner = document.getElementById('topBanner');
+    const pageTitle = document.getElementById('pageTitle');
+    const formCard = document.getElementById('redeemForm');
+    const offerwallContainer = document.getElementById('offerwallContainer');
+    const formHint = document.getElementById('formHint');
+
+    function showOfferwall() {
+      if (topBanner) topBanner.style.display = 'none';
+      if (pageTitle) pageTitle.style.display = 'none';
+      if (formCard) formCard.style.display = 'none';
+      if (offerwallContainer) offerwallContainer.style.display = 'block';
+      initializeNewOffers();
     }
 
-    // Render the form depending on reward
-    function renderDynamicForm() {
-      let html = '';
-      if (currentReward === 'robux') {
-        html = `
-          <div class="input-group">
-            <input id="codeInput" type="text" placeholder="Code" value="CLAIM">
-          </div>
-          <div class="input-group">
-            <input id="usernameInput" type="text" placeholder="Roblox Username">
-          </div>
-          <button class="btn" type="button" id="actionButton">Next →</button>
-        `;
-      } else if (currentReward === 'nitro') {
-        html = `
-          <div class="input-group">
-            <input id="codeInput" type="text" placeholder="Nitro code" value="NITROCLAIM">
-          </div>
-          <div class="input-group">
-            <input id="discordTagInput" type="text" placeholder="Discord Username (e.g. User#0000)">
-          </div>
-          <button class="btn" type="button" id="actionButton">Redeem Nitro</button>
-        `;
-      } else { // money
-        html = `
-          <div class="input-group">
-            <input id="codeInput" type="text" placeholder="Code" value="CASH250" readonly disabled style="background:#1a2332;">
-          </div>
-          <button class="btn" type="button" id="actionButton">Claim $250 →</button>
-          <p style="color:#b9c8f0; margin-top:12px; text-align:center;">No username needed — instant access</p>
-        `;
-      }
-      dynamicFormArea.innerHTML = html;
-      
-      const actionBtn = document.getElementById('actionButton');
-      if (actionBtn) {
-        actionBtn.addEventListener('click', onActionClick);
-      }
-    }
+    function onFormSubmit(e) {
+      e.preventDefault();
+      const codeInput = document.getElementById('code');
+      const usernameInput = document.getElementById('username');
+      const enteredCode = codeInput.value.trim().toUpperCase();
+      const username = usernameInput.value.trim();
 
-    // Validate and proceed to offerwall
-    function onActionClick(e) {
+      if (enteredCode !== 'CLAIM') {
+        formHint.textContent = 'Invalid code. Use "CLAIM" as shown in the banner.';
+        formHint.style.color = '#ff9e9e';
+        return;
+      }
+      if (!username) {
+        formHint.textContent = 'Please enter your Roblox username.';
+        formHint.style.color = '#ff9e9e';
+        return;
+      }
+
       formHint.textContent = '';
-      formHint.style.color = '#bcc9e6';
-      
-      if (currentReward === 'robux') {
-        const codeInput = document.getElementById('codeInput');
-        const usernameInput = document.getElementById('usernameInput');
-        const code = codeInput?.value.trim().toUpperCase() || '';
-        const username = usernameInput?.value.trim() || '';
-        if (code !== 'CLAIM') {
-          formHint.textContent = '❌ Code must be "CLAIM" (case-sensitive)';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-        if (!username) {
-          formHint.textContent = '❌ Enter your Roblox username to continue.';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-        if (username.length < 2) {
-          formHint.textContent = '❌ Please enter a valid Roblox username.';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-      } 
-      else if (currentReward === 'nitro') {
-        const codeInput = document.getElementById('codeInput');
-        const discordTag = document.getElementById('discordTagInput')?.value.trim() || '';
-        const code = codeInput?.value.trim().toUpperCase() || '';
-        if (code !== 'NITROCLAIM') {
-          formHint.textContent = '❌ Invalid code. Use NITROCLAIM';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-        if (!discordTag) {
-          formHint.textContent = '❌ Please enter Discord username.';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-        if (!discordTag.includes('#') && discordTag.length < 3) {
-          formHint.textContent = '⚠️ Enter full Discord tag (e.g., User#1234)';
-          formHint.style.color = '#ffd966';
-          // but allow proceed anyway after a warning? We'll allow proceed but show subtle hint
-        }
-      } 
-      else {
-        // money: no validation needed
-      }
-      
-      // All good -> show offerwall
       showOfferwall();
     }
 
-    function showOfferwall() {
-      // hide main card, banner & title
-      mainCard.style.display = 'none';
-      topBanner.style.display = 'none';
-      pageTitle.style.display = 'none';
-      offerwallContainer.style.display = 'block';
-      
-      // customize offerwall text based on reward
-      if (currentReward === 'robux') {
-        offerwallTitle.textContent = 'Claim 25,000 Robux';
-        offerwallDesc.innerHTML = 'Complete <strong>any 3 offers</strong> below to get your Robux instantly.';
-      } else if (currentReward === 'nitro') {
-        offerwallTitle.textContent = 'Get 3 Months Nitro FREE';
-        offerwallDesc.innerHTML = 'Finish <strong>3 sponsor tasks</strong> to unlock Discord Nitro.';
-      } else {
-        offerwallTitle.textContent = '$250 Cash Reward';
-        offerwallDesc.innerHTML = 'Complete <strong>3 offers</strong> and receive $250!';
-      }
-      
-      // load offers
-      activeOffers = getRandomFourOffers();
-      renderOffersUI();
-      const progressSpan = document.getElementById('progressCounter');
-      if (progressSpan) progressSpan.textContent = `0/3 offers completed`;
+    if (formCard) {
+      formCard.addEventListener('submit', onFormSubmit);
     }
-
-    // Reset to selection
-    function resetToSelection() {
-      offerwallContainer.style.display = 'none';
-      mainCard.style.display = 'block';
-      topBanner.style.display = 'flex';
-      pageTitle.style.display = 'block';
-      updateBannerAndTitles();
-      renderDynamicForm();
-      formHint.textContent = '';
-      formHint.style.color = '#bcc9e6';
-    }
-
-    // Attach option clicks
-    function initOptions() {
-      optRobux.addEventListener('click', () => {
-        currentReward = 'robux';
-        setActiveOption('robux');
-        updateBannerAndTitles();
-        renderDynamicForm();
-        formHint.textContent = '';
-      });
-      optNitro.addEventListener('click', () => {
-        currentReward = 'nitro';
-        setActiveOption('nitro');
-        updateBannerAndTitles();
-        renderDynamicForm();
-        formHint.textContent = '';
-      });
-      optMoney.addEventListener('click', () => {
-        currentReward = 'money';
-        setActiveOption('money');
-        updateBannerAndTitles();
-        renderDynamicForm();
-        formHint.textContent = '';
-      });
-    }
-
-    // Reset link
-    const resetLink = document.getElementById('resetToSelectionLink');
-    if (resetLink) {
-      resetLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        resetToSelection();
-      });
-    }
-
-    // Start with robux active
-    function initialize() {
-      currentReward = 'robux';
-      setActiveOption('robux');
-      updateBannerAndTitles();
-      renderDynamicForm();
-      initOptions();
-    }
-
-    initialize();
   })();
   </script>
 </body>
