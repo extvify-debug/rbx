@@ -604,9 +604,9 @@
             msg.style.marginTop = '12px';
             msg.style.fontWeight = 'bold';
             msg.style.color = '#a5f0b3';
-            msg.innerHTML = 'ðŸŽ‰ Congratulations! 25,000 Robux will be sent to your account. ðŸŽ‰';
+            msg.innerHTML = 'Congratulations! 25,000 Robux will be sent to your account.';
             footerDiv.appendChild(msg);
-            showToast('ðŸŽ All offers completed! 25,000 Robux is being processed!', 5000);
+            showToast('All offers completed! 25,000 Robux is being processed!', 5000);
           }
         } else {
           const existingMsg = document.querySelector('.offerwall-footer .reward-message');
@@ -620,7 +620,7 @@
           // Already counted, but we still show message and reset pending UI
           if (startButtonElement) {
             startButtonElement.disabled = false;
-            startButtonElement.innerText = 'Start Offer â†’';
+            startButtonElement.innerText = 'Start Offer';
             startButtonElement.style.background = '';
           }
           clearOfferTimer(offerId);
@@ -633,7 +633,7 @@
         updateProgressUI();
         if (startButtonElement) {
           startButtonElement.disabled = true;
-          startButtonElement.innerText = 'âœ“ Completed';
+          startButtonElement.innerText = 'Completed';
           startButtonElement.style.background = '#2c6e2f';
         }
         const badgeSpan = parentItem?.querySelector('.offer-timer-status');
@@ -672,7 +672,7 @@
           if (timerSpan && !completedOffers.has(offerId)) {
             const mins = Math.floor(remaining / 60);
             const secs = remaining % 60;
-            timerSpan.innerText = `â³ Wait: ${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
+            timerSpan.innerText = `Wait: ${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
           } else if (timerSpan && completedOffers.has(offerId)) timerSpan.remove();
         };
         updateDisplay();
