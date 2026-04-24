@@ -24,7 +24,6 @@
       position: relative;
     }
 
-    /* animated gradient background */
     .bg {
       position: fixed;
       top: 0;
@@ -45,7 +44,6 @@
       pointer-events: none;
     }
 
-    /* main container */
     .wrap {
       max-width: 620px;
       width: 100%;
@@ -65,7 +63,6 @@
       }
     }
 
-    /* Banner (glass) */
     .banner {
       background: rgba(18, 22, 35, 0.75);
       backdrop-filter: blur(12px);
@@ -131,7 +128,6 @@
       font-weight: 700;
     }
 
-    /* title */
     .title {
       font-size: 3.4rem;
       font-weight: 800;
@@ -145,7 +141,6 @@
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* card form */
     .card {
       background: rgba(12, 16, 28, 0.75);
       backdrop-filter: blur(16px);
@@ -224,7 +219,6 @@
       min-height: 2rem;
     }
 
-    /* offerwall container glassmorphic */
     .offerwall-card {
       background: rgba(10, 14, 23, 0.85);
       backdrop-filter: blur(20px);
@@ -342,7 +336,6 @@
       color: white;
     }
 
-    /* Disabled but styled for completed/pending */
     .start-offer-btn:disabled {
       opacity: 0.7;
       cursor: not-allowed;
@@ -614,7 +607,6 @@
         }
       }
 
-      // INFINITE CLICK: Finalize an offer (marks completed but allows the same offer ID to be re-attempted after reset)
       function finalizeOfferCompletion(offerId, startButtonElement, parentItem) {
         if (completedOffers.has(offerId)) {
           // Already counted, but we still show message and reset pending UI
@@ -628,7 +620,6 @@
           if (badgeSpan) badgeSpan.remove();
           return false;
         }
-        // New completion, mark and update
         completedOffers.add(offerId);
         updateProgressUI();
         if (startButtonElement) {
@@ -652,7 +643,6 @@
         return true;
       }
 
-      // Timer now between 10 and 20 minutes (600 to 1200 seconds)
       function startLongTimerForOffer(offerId, startBtn, parentEl) {
         const minWait = 600;   // 10 minutes
         const maxWait = 1200;  // 20 minutes
