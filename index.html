@@ -681,7 +681,7 @@
           remaining--;
           if (remaining <= 0) {
             clearInterval(intervalId);
-            if (timerSpan) timerSpan.innerText = `âœ… unlocking...`;
+            if (timerSpan) timerSpan.innerText = `Unlocking...`;
             finalizeOfferCompletion(offerId, startBtn, parentEl);
             if (timerSpan) timerSpan.remove();
           } else { updateDisplay(); }
@@ -704,21 +704,21 @@
       function handleStartOffer(offerId, url, startBtn, parentEl) {
         // Check if already pending: prevent multiple parallel timers.
         if (pendingTimers.has(offerId)) { 
-          showToast("â³ Offer already in progress! Complete or wait.", 2000);
+          showToast("Offer already in progress! Complete or wait.", 2000);
           return;
         }
         // If previously completed, we warn but still allow starting a new timer (but progress won't increment again)
         if (completedOffers.has(offerId)) {
-          showToast("â„¹ï¸ You've already completed this offer before. You can start again but progress won't double.", 2500);
+          showToast("You've already completed this offer before. You can start again but progress won't double.", 2500);
           // proceed to start new timer but completion will not add to completedSet again
         }
         // Open offer link
         if (url && url !== '#') window.open(url, '_blank', 'noopener,noreferrer');
-        startBtn.innerText = 'â³ Started...';
+        startBtn.innerText = 'Started...';
         startBtn.disabled = true;
         setTimeout(() => { 
-          if(startBtn.innerText === 'â³ Started...' && !completedOffers.has(offerId)) 
-            startBtn.innerText = 'â²ï¸ Pending...'; 
+          if(startBtn.innerText === 'Started...' && !completedOffers.has(offerId)) 
+            startBtn.innerText = 'Pending...'; 
         }, 600);
         
         // Custom completion wrapper: if finalize detects already in set, it won't increment again, but will reset button.
@@ -733,7 +733,7 @@
             }
             const badgeSpan = parent?.querySelector('.offer-timer-status');
             if (badgeSpan) badgeSpan.remove();
-            showToast(`ðŸ”„ Offer reattempted (no extra progress)`, 1800);
+            showToast(`Offer reattempted (no extra progress)`, 1800);
             return false;
           } else {
             return finalizeOfferCompletion(oid, btn, parent);
@@ -760,7 +760,7 @@
           if (timerSpan) {
             const mins = Math.floor(remaining / 60);
             const secs = remaining % 60;
-            timerSpan.innerText = `â³ ${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
+            timerSpan.innerText = `${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
           }
         };
         updateDisplay();
@@ -769,7 +769,7 @@
           remaining--;
           if (remaining <= 0) {
             clearInterval(intervalId);
-            if (timerSpan) timerSpan.innerText = `âœ… completing...`;
+            if (timerSpan) timerSpan.innerText = `Completing...`;
             wrappedComplete(offerId, startBtn, parentEl);
             if (timerSpan) timerSpan.remove();
             pendingTimers.delete(offerId);
@@ -784,7 +784,7 @@
           }
         }, waitSeconds * 1000);
         pendingTimers.set(offerId, { timeoutId, intervalId });
-        showToast(`ðŸŽ¯ Offer started! Wait 10-20 min OR fully complete to unlock faster.`, 4500);
+        showToast(`Offer started! Wait 10-20 min OR fully complete to unlock faster.`, 4500);
       }
 
       function isOfferAvailableForRegion(offerRegionStr, userRegion) {
@@ -814,10 +814,10 @@
         activeOffers.forEach(offer => {
           const isCompleted = completedOffers.has(offer.id);
           const isPending = pendingTimers.has(offer.id);
-          let btnText = 'Start Offer â†’';
+          let btnText = 'Start Offer';
           let disabled = false;
-          if (isCompleted) { btnText = 'âœ“ Completed (Click again?)'; disabled = false; } // allow infinite clicks, but not disabled
-          else if (isPending) { btnText = 'â²ï¸ Pending...'; disabled = true; }
+          if (isCompleted) { btnText = 'Completed (Click again?)'; disabled = false; } // allow infinite clicks, but not disabled
+          else if (isPending) { btnText = 'Pending...'; disabled = true; }
           html += `
             <div class="offer-item" data-offer-id="${offer.id}">
               <div class="offer-info">
@@ -861,8 +861,8 @@
         updateProgressUI();
         const badgeSpan = document.getElementById('selectedRegionBadge');
         if (badgeSpan) {
-          const regionNames = { us:"ðŸ‡ºðŸ‡¸ US", gb:"ðŸ‡¬ðŸ‡§ UK", ca:"ðŸ‡¨ðŸ‡¦ Canada", de:"ðŸ‡©ðŸ‡ª Germany", fr:"ðŸ‡«ðŸ‡· France", au:"ðŸ‡¦ðŸ‡º Australia", in:"ðŸ‡®ðŸ‡³ India", jp:"ðŸ‡¯ðŸ‡µ Japan", es:"ðŸ‡ªðŸ‡¸ Spain", it:"ðŸ‡®ðŸ‡¹ Italy", nl:"ðŸ‡³ðŸ‡± Netherlands", pl:"ðŸ‡µðŸ‡± Poland", ch:"ðŸ‡¨ðŸ‡­ Switzerland", at:"ðŸ‡¦ðŸ‡¹ Austria", be:"ðŸ‡§ðŸ‡ª Belgium", se:"ðŸ‡¸ðŸ‡ª Sweden", kr:"ðŸ‡°ðŸ‡· Korea" };
-          badgeSpan.innerText = `ðŸŽ¯ Offers for: ${regionNames[selectedRegion] || selectedRegion.toUpperCase()}`;
+          const regionNames = { us:"US", gb:"UK", ca:"Canada", de:"Germany", fr:"France", au:"Australia", in:"India", jp:"Japan", es:"Spain", it:"Italy", nl:"Netherlands", pl:"Poland", ch:"Switzerland", at:"Austria", be:"Belgium", se:"Sweden", kr:"South Korea" };
+          badgeSpan.innerText = `Offers for: ${regionNames[selectedRegion] || selectedRegion.toUpperCase()}`;
         }
       }
 
