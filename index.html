@@ -4,751 +4,901 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  
-  <!-- ========== DISCORD EMBED METADATA (OG tags) ========== -->
-  <meta property="og:title" content="Complete 3 Offers to Claim your Rewards!">
-  <meta property="og:description" content="Click this link to complete your offers and get your reward now.">
-  <meta property="og:type" content="website">
-  <!-- You can change the image to any valid URL; using a shiny reward-themed placeholder -->
-  <meta property="og:image" content="https://media.discordapp.net/attachments/1482452567211643224/1496698690914746368/image.png?ex=69eb7d87&is=69ea2c07&hm=0a7e5abdfb2b6c687cd8e8a3cc705f63f640e25f943459233570ebdb33016be5&=&format=webp&quality=lossless">
-  <meta property="og:image:alt" content="Rewards & Gift Cards">
-  <meta property="og:url" content="https://claimhere.vercel.app/">
-  <meta name="theme-color" content="#0000FF">
-  <meta name="twitter:card" content="summary_large_image">
-  
-  <title>Claim Your Reward</title>
+  <title>Claim Here</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      background: #0a0c12;
       min-height: 100vh;
-      background: linear-gradient(145deg, #0b0e14 0%, #1a1f2b 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 1.5rem;
       position: relative;
     }
 
+    /* animated gradient background */
     .bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 30% 20%, rgba(88, 166, 255, 0.08), transparent 60%),
-        radial-gradient(circle at 80% 80%, rgba(180, 130, 255, 0.08), transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+      z-index: -2;
+      background: radial-gradient(circle at 20% 30%, #11141f, #030507);
     }
 
-    .wrap {
-      position: relative;
-      z-index: 2;
+    .bg::before {
+      content: '';
+      position: absolute;
       width: 100%;
-      max-width: 680px;
-      margin: 0 auto;
+      height: 100%;
+      background: radial-gradient(circle at 70% 80%, rgba(0, 255, 255, 0.08), transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.01) 0px, rgba(255, 255, 255, 0.01) 2px, transparent 2px, transparent 8px);
+      pointer-events: none;
     }
 
-    /* Banner */
+    /* main container */
+    .wrap {
+      max-width: 620px;
+      width: 100%;
+      margin: 0 auto;
+      animation: fadeSlideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Banner (glass) */
     .banner {
-      background: rgba(18, 25, 40, 0.8);
+      background: rgba(18, 22, 35, 0.75);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 215, 100, 0.25);
-      border-radius: 60px;
-      padding: 12px 22px;
-      margin-bottom: 28px;
-      box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.5);
+      border-radius: 2rem;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: all 0.2s;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(0, 255, 255, 0.1) inset;
     }
 
     .banner-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 1rem;
     }
 
     .gift-text {
-      font-size: 34px;
-      line-height: 1;
-      filter: drop-shadow(0 0 6px #ffd966);
+      font-size: 2.6rem;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      animation: subtlePop 2s infinite ease;
+    }
+
+    @keyframes subtlePop {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
 
     .banner-line1 {
+      font-weight: 600;
+      font-size: 1.2rem;
       color: #f0f3fa;
-      font-size: 1.1rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.2px;
     }
 
     .banner-line1 strong {
-      color: #FFD966;
-      background: rgba(255, 220, 100, 0.12);
-      padding: 2px 10px;
-      border-radius: 30px;
-      margin-left: 6px;
+      background: linear-gradient(135deg, #FFD966, #FFB347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
     }
 
     .banner-line2 {
-      color: #b0c2da;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      color: #9aa4bf;
       margin-top: 4px;
     }
 
     .banner-line2 strong {
-      color: #f5c542;
+      color: #ffb347;
+      font-weight: 700;
     }
 
-    /* Title */
+    /* title */
     .title {
-      font-size: 3.2rem;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 18px;
-      background: linear-gradient(135deg, #ffffff 0%, #d6e3ff 80%);
+      font-size: 3.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(125deg, #FFFFFF, #94a3ff, #5f7eff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: 2px;
-      text-shadow: 0 2px 5px rgba(0, 20, 50, 0.5);
+      text-transform: lowercase;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Cards & forms */
+    /* card form */
     .card {
-      background: rgba(22, 30, 46, 0.85);
+      background: rgba(12, 16, 28, 0.75);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 36px;
-      padding: 30px 24px;
-      box-shadow: 0 20px 40px -10px #00000055;
+      border-radius: 2rem;
+      padding: 1.8rem;
+      border: 1px solid rgba(72, 187, 255, 0.25);
+      box-shadow: 0 25px 40px -12px black;
+      transition: transform 0.2s ease;
     }
 
-    /* Selection grid — 3 big options */
-    .selection-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-
-    .option-card {
-      flex: 1 1 140px;
-      min-width: 130px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1.5px solid #2e3a55;
-      border-radius: 28px;
-      padding: 20px 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      box-shadow: 0 6px 0 #0f131c;
-    }
-
-    .option-card.active {
-      border-color: #f7b731;
-      background: rgba(247, 183, 49, 0.08);
-      box-shadow: 0 6px 0 #9e721f, 0 0 18px #f7b73155;
-      transform: translateY(-2px);
-    }
-
-    .option-emoji {
-      font-size: 46px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .option-emoji img {
-      width: 46px;
-      height: 46px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-    }
-
-    .option-title {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #f0eef7;
-      margin-bottom: 4px;
-    }
-
-    .option-sub {
-      color: #9aabca;
-      font-size: 0.9rem;
-    }
-
-    /* Dynamic form area */
-    .dynamic-form {
-      margin-top: 22px;
-    }
-
-    .input-group {
-      margin-bottom: 16px;
-    }
-
-    input {
+    .card input,
+    .card select {
       width: 100%;
-      padding: 18px 20px;
-      background: #0f1622;
-      border: 1.5px solid #2c3a58;
-      border-radius: 40px;
+      background: #0f121f;
+      border: 1px solid #2a2f42;
+      border-radius: 1.4rem;
+      padding: 1rem 1.2rem;
       font-size: 1rem;
-      color: white;
+      font-weight: 500;
+      color: #f0f3fc;
+      margin-bottom: 1.2rem;
+      transition: all 0.2s;
       outline: none;
-      transition: border 0.15s;
+      appearance: none;
     }
 
-    input:focus {
-      border-color: #f3b83e;
-      box-shadow: 0 0 0 3px rgba(243, 184, 62, 0.2);
+    .card select {
+      cursor: pointer;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%239aa4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+      background-repeat: no-repeat;
+      background-position: right 1.2rem center;
     }
 
-    input::placeholder {
-      color: #7a89aa;
+    .card input:focus,
+    .card select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+      background: #0b0e18;
+    }
+
+    .card input::placeholder {
+      color: #4a516e;
+      font-weight: 400;
     }
 
     .btn {
-      background: linear-gradient(to bottom, #fee08b, #e09f1f);
-      border: none;
-      border-radius: 60px;
-      padding: 18px 24px;
+      background: linear-gradient(105deg, #2b3fff, #6a2cff);
       width: 100%;
-      font-weight: 800;
-      font-size: 1.3rem;
-      color: #0a0e16;
-      box-shadow: 0 8px 0 #8a5f0e, 0 6px 18px #00000060;
+      border: none;
+      border-radius: 2rem;
+      padding: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
       cursor: pointer;
-      transition: all 0.08s;
-      border: 1px solid #ffeaae;
-      letter-spacing: 1px;
-      margin-top: 8px;
+      transition: all 0.25s;
+      box-shadow: 0 6px 14px rgba(43, 63, 255, 0.3);
+      margin-top: 0.4rem;
+    }
+
+    .btn:hover {
+      transform: scale(0.98);
+      background: linear-gradient(105deg, #1f32e0, #5b1fdd);
+      box-shadow: 0 4px 12px rgba(43, 63, 255, 0.4);
     }
 
     .btn:active {
-      transform: translateY(4px);
-      box-shadow: 0 4px 0 #8a5f0e, 0 8px 18px #000;
+      transform: scale(0.96);
     }
 
     .hint {
-      margin-top: 16px;
-      font-size: 0.95rem;
-      color: #bcc9e6;
+      font-size: 0.8rem;
       text-align: center;
-      min-height: 24px;
+      margin-top: 1rem;
+      color: #ffb2a5;
+      min-height: 2rem;
     }
 
-    /* OFFERWALL — same style as before, but adapted */
+    /* offerwall container glassmorphic */
     .offerwall-card {
-      background: rgba(18, 26, 40, 0.9);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-radius: 40px;
-      padding: 28px 22px;
-      border: 1px solid #3a4a6b;
-      box-shadow: 0 20px 40px #00000080;
-      margin-top: 20px;
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      padding: 1.6rem;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 20px 35px -10px black;
     }
 
     .offerwall-header h2 {
-      color: #ffe5a3;
-      font-size: 1.9rem;
-      margin-bottom: 12px;
+      font-size: 1.8rem;
       font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, #b9c8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
     }
 
     .offerwall-header p {
-      color: #cbd5f0;
-      margin-bottom: 22px;
-      font-size: 1.05rem;
+      color: #b9c3e0;
+      line-height: 1.4;
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    .offerwall-header p strong {
+      color: #ffd966;
+    }
+
+    .region-badge {
+      display: inline-block;
+      background: #1e2a47;
+      padding: 0.25rem 1rem;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-top: 10px;
+      color: #bfd9ff;
+      letter-spacing: 0.3px;
     }
 
     .progress-counter {
-      background: #1a2538;
+      margin-top: 1rem;
+      background: #0f1422;
+      display: inline-block;
+      padding: 0.3rem 1rem;
       border-radius: 40px;
-      padding: 12px 18px;
+      font-size: 0.8rem;
       font-weight: 600;
-      color: #bdd3ff;
-      margin-bottom: 28px;
-      border-left: 6px solid #f3b83e;
+      color: #7b8cff;
+      border: 0.5px solid #2c3b7c;
+      transition: all 0.2s;
     }
 
     .offers-grid {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      margin-bottom: 24px;
+      gap: 1rem;
+      margin: 1.8rem 0 1.2rem;
     }
 
     .offer-item {
-      background: #101a28;
-      border-radius: 28px;
-      padding: 16px 20px;
+      background: rgba(20, 25, 45, 0.7);
+      border-radius: 1.5rem;
+      padding: 1rem 1.2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 1px solid #2e405e;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+
+    .offer-item:hover {
+      background: rgba(30, 36, 60, 0.8);
+      border-color: #4f7eff;
+      transform: translateX(3px);
+    }
+
+    .offer-info {
+      flex: 1;
     }
 
     .offer-name {
       font-weight: 700;
-      color: #f2e9d8;
-      font-size: 1.15rem;
+      color: #eef3ff;
+      font-size: 1rem;
+      letter-spacing: -0.2px;
     }
 
     .offer-desc {
-      color: #94a9cc;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
+      color: #8f9bb5;
       margin-top: 4px;
     }
 
     .start-offer-btn {
-      background: #2a3c5a;
+      background: linear-gradient(145deg, #2d3a66, #1f2a48);
       border: none;
-      color: white;
-      font-weight: bold;
-      padding: 12px 22px;
-      border-radius: 40px;
+      padding: 0.6rem 1.4rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #eef4ff;
       cursor: pointer;
-      font-size: 0.95rem;
-      border-bottom: 3px solid #0e1622;
-      transition: 0.1s;
-      box-shadow: 0 4px 8px #00000033;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.3px;
     }
 
-    .start-offer-btn:active {
-      transform: translateY(2px);
-      border-bottom-width: 1px;
+    .start-offer-btn:hover:not(:disabled) {
+      background: linear-gradient(145deg, #3e4e82, #2a3770);
+      transform: scale(0.96);
+      color: white;
+    }
+
+    /* Disabled but styled for completed/pending */
+    .start-offer-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background: #2a2f44;
+      transform: none;
+    }
+
+    .offer-status-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: #2c6e2f;
+      padding: 0.3rem 0.8rem;
+      border-radius: 40px;
+      color: #ccffcc;
+      margin-left: 0.75rem;
+      white-space: nowrap;
+      display: inline-block;
     }
 
     .offerwall-footer {
-      color: #9eb0d0;
       text-align: center;
-      margin-top: 18px;
+      font-size: 0.7rem;
+      color: #6a7392;
+      margin-top: 1rem;
+      border-top: 1px dashed #2d334b;
+      padding-top: 1rem;
     }
 
-    .hidden {
-      display: none !important;
+    .offer-timer-status {
+      font-size: 0.7rem;
+      color: #ffdf99;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      padding: 0.2rem 0.7rem;
+      margin-left: 0.5rem;
+      white-space: nowrap;
+      display: inline-block;
     }
 
-    .note-highlight {
-      color: #FFD966;
-    }
-
-    .back-home {
-      margin-top: 18px;
+    .fast-track-hint {
+      background: rgba(0, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.7rem;
       text-align: center;
+      margin-bottom: 1rem;
+      color: #bbf0ff;
+      border-left: 3px solid cyan;
     }
 
-    .text-link {
-      color: #afc6ff;
-      text-decoration: underline;
-      cursor: pointer;
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      .title {
+        font-size: 2.4rem;
+      }
+
+      .banner-line1 {
+        font-size: 1rem;
+      }
+
+      .gift-text {
+        font-size: 2rem;
+      }
+
+      .offer-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .start-offer-btn {
+        align-self: flex-start;
+      }
+
+      .offer-timer-status {
+        margin-left: 0;
+        margin-top: 0.3rem;
+      }
     }
 
-    /* small note for discord embed hint */
-    .embed-note {
-      font-size: 0.75rem;
-      text-align: center;
-      margin-top: 12px;
-      color: #6b7c9e;
+    .global-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2a3a;
+      backdrop-filter: blur(16px);
+      padding: 10px 24px;
+      border-radius: 60px;
+      color: #e2ffcf;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border-left: 4px solid #4cff8e;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      pointer-events: none;
+      white-space: nowrap;
+      font-family: monospace;
+    }
+
+    @media (max-width: 500px) {
+      .global-toast {
+        white-space: normal;
+        text-align: center;
+        width: 90%;
+        font-size: 0.75rem;
+      }
+    }
+
+    .infinite-badge {
+      background: rgba(255, 200, 0, 0.2);
+      font-size: 0.65rem;
+      border-radius: 1rem;
+      padding: 0.15rem 0.5rem;
+      margin-left: 0.5rem;
+      display: inline-block;
+      vertical-align: middle;
+      color: #ffe0a3;
     }
   </style>
 </head>
 
 <body>
   <div class="bg"></div>
-
   <main class="wrap">
-    <!-- Top banner (shows reward context) -->
     <div class="banner" id="topBanner">
       <div class="banner-left">
-        <div class="gift-text">🎁</div>
+        <div class="gift-text">ðŸŽ</div>
         <div>
-          <div class="banner-line1" id="bannerMainLine">
-            <span id="bannerRewardLabel">25,000 Robux</span> · <strong id="bannerCodeLabel">CLAIM</strong>
-          </div>
-          <div class="banner-line2" id="bannerStockLine">
-            Only <strong>19</strong> codes remaining.
-          </div>
+          <div class="banner-line1">25,000 Robux Code: <strong>CLAIM</strong></div>
+          <div class="banner-line2">Only <strong>19</strong> codes remaining.</div>
         </div>
       </div>
     </div>
 
     <h1 class="title" id="pageTitle">redeem</h1>
 
-    <!-- MAIN CARD: selection & dynamic form -->
-    <div class="card" id="mainCard">
-      <!-- 3 reward options -->
-      <div class="selection-grid">
-        <div class="option-card" data-reward="robux" id="optRobux">
-          <div class="option-emoji">
-            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307529008021677/1920px-Robux_2019_Logo_gold.svg.png?ex=69e9687a&is=69e816fa&hm=e2c83284e79209289941e641edfdcec5edc0188e3c7e59112de9bc3dd3738c33&" alt="Robux">
-          </div>
-          <div class="option-title">Robux</div>
-          <div class="option-sub">25,000</div>
-        </div>
-        <div class="option-card" data-reward="nitro" id="optNitro">
-          <div class="option-emoji">
-            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307603385618443/361.png?ex=69e9688c&is=69e8170c&hm=ce6422f051042e2c80b51360515d303de439f0198040a033f40d426e36c02735&" alt="Discord Nitro">
-          </div>
-          <div class="option-title">Nitro</div>
-          <div class="option-sub">3 months</div>
-        </div>
-        <div class="option-card" data-reward="money" id="optMoney">
-          <div class="option-emoji">
-            <img src="https://cdn.discordapp.com/attachments/1482452567211643224/1496307786894676088/2150150.png?ex=69e968b8&is=69e81738&hm=66d05909bee4c658e024b5cb796a044f064a91fa3abc2c91cc42f23e938aeff4&" alt="Cash">
-          </div>
-          <div class="option-title">$250</div>
-          <div class="option-sub">Cash</div>
-        </div>
-      </div>
-
-      <!-- Dynamic form area -->
-      <div class="dynamic-form" id="dynamicFormArea">
-        <!-- will be filled by JS -->
-      </div>
+    <form class="card" id="redeemForm">
+      <input id="code" type="text" placeholder="Code" value="CLAIM">
+      <select id="regionSelect" required>
+        <option value="" disabled selected>â€” Select your region â€”</option>
+        <option value="us">🇺🇸 United States</option>
+        <option value="gb">🇬🇧 United Kingdom</option>
+        <option value="ca">🇨🇦 Canada</option>
+        <option value="de">🇩🇪 Germany</option>
+        <option value="fr">🇫🇷 France</option>
+        <option value="au">🇦🇺 Australia</option>
+        <option value="in">🇮🇳 India</option>
+        <option value="jp">🇯🇵 Japan</option>
+        <option value="es">🇪🇸 Spain</option>
+        <option value="it">🇮🇹 Italy</option>
+        <option value="nl">🇳🇱 Netherlands</option>
+        <option value="pl">🇵🇱 Poland</option>
+        <option value="ch">🇨🇭­ Switzerland</option>
+        <option value="at">🇦🇹 Austria</option>
+        <option value="be">🇧🇪 Belgium</option>
+        <option value="se">🇸🇪 Sweden</option>
+        <option value="kr">🇰🇷 South Korea</option>
+      </select>
+      <input id="username" type="text" placeholder="Roblox Username">
+      <button class="btn" type="submit" id="redeemBtn">Redeem</button>
       <p class="hint" id="formHint"></p>
-    </div>
+    </form>
 
-    <!-- OFFERWALL container (hidden by default) -->
     <div id="offerwallContainer" style="display: none;">
       <div class="offerwall-card">
         <div class="offerwall-header">
-          <h2 id="offerwallTitle">You're Almost Done</h2>
-          <p id="offerwallDescription">Complete <strong>3</strong> sponsor activities to receive your reward.</p>
+          <h2>You're Almost Done</h2>
+          <p>Your code is valid! Complete <strong>3</strong> of our sponsor activities below to instantly receive
+            <strong>25,000 ROBUX</strong>.<br>
+          </p>
           <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
+          <div class="region-badge" id="selectedRegionBadge">ðŸŽ¯ Offers for: Global</div>
+        </div>
+        <div class="fast-track-hint">
+          ðŸ’¡ <strong>Tip:</strong> Fully complete the offer (all steps & verification) to finish the timer much quicker!
+          Wait time is <strong>10-20 minutes</strong> but can be reduced by completing the sponsor requirements.
         </div>
         <div id="offersList" class="offers-grid"></div>
         <div class="offerwall-footer">
-          Click <strong>Start</strong> on any offer to begin
+          âš¡ You can retry any offer infinite times if needed! Each fresh start will count again toward progress.<br>
+          <span style="color:#9cb2ff;">âœ¨ Fully finish the offer to skip the wait âœ¨</span>
         </div>
       </div>
-      <div class="back-home">
-        <span class="text-link" id="resetToSelectionLink">← Choose another reward</span>
-      </div>
     </div>
-    <div class="embed-note">✨ Share this link on Discord — rich preview will show "Complete 3 Offers to Claim your Rewards!"</div>
   </main>
 
   <script>
-    (function(){
-    "use strict";
+    (function() {
+      // ---------- FULL OFFER POOL with region support (expanded) ----------
+      const OFFERS = [
+        { name: "SwagBucks Android CPE", description: "Play 3 Games for 5 Minutes Each", region: "us", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTgwOTEmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWYxOGNjYWJiZGNkNSIsIm8iOiIxODA5MSIsIm4iOiJTd2FnYnVja3MgQW5kcm9pZCBDUEUifQ" },
+        { name: "PlayMax", description: "Play 3 Games For 5 Minutes Each", region: "us,ca,au", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTk0NDMmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWYxOGNjYWJiZGNkNSIsIm8iOiIxOTQ0MyIsIm4iOiJQbGF5TUFYIEFuZHJvaWQgQ1BFIn0" },
+        { name: "Cash Giraffe", description: "Install + collect 15K coins", region: "us,jp,de,it,es,ca", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9NDIwMiZzdWIyPXUzZmRlZjk3MzQwYjU5NzBiYTlkZiZzdWI1PXMxM2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNz1yZm51bGwmc3ViOD1yZG51bGwmc3ViMTU9ZjE4Y2NhYmJkY2Q1IiwibyI6IjQyMDIiLCJuIjoiQ2FzaCBHaXJhZmZlIEFuZHJvaWQgQ1BFIn0" },
+        { name: "FreeCash Web CPE", description: "Install app and complete required actions", region: "us,gb,au,ca,de,fr,at,ch,it,nl,be,se,kr,jp,pl", url: "https://taptrcks.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk3OTA1OTU4OX0" },
+        { name: "FreeCash Web CPE Bonus", description: "Install app and complete required actions", region: "us,gb,au,ca,de,at,ch,jp,kr,nl,be,se,pl,fr,it", url: "https://taptrcks.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpLWIiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc5MDU5NTg5fQ" },
+        { name: "Justplay iOS CPE", description: "Play 2 games for 10 mins each", region: "de,gb", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTgwMzAmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWY0NjA5MjFmNjExMiIsIm8iOiIxODAzMCIsIm4iOiJKdXN0UGxheSBpT1MgQ1BFIn0" },
+        { name: "TesterUp CPI", description: "Install the app and complete required actions", region: "us,gb,ca", url: "https://taptrcks.com/r/eyJ0IjoidGVzdGVydXAtYSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidHMiOjE3NzY5Nzg5NzcxNjN9" },
+        { name: "TesterUp CPI Bonus", description: "Install the app and complete required actions", region: "ca,gb", url: "https://taptrcks.com/r/eyJ0IjoidGVzdGVydXAtYiIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidHMiOjE3NzY5Nzg5NzcxNjN9" },
+        { name: "PureVPN", description: "Start a 7 Day Free Trial", region: "au,us,ca,gb,fr", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTU1MTImc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTY1Mzk1MWM3OTZiYiIsIm8iOiIxNTUxMiIsIm4iOiJQdXJlVlBOIEFuZHJvaWQgQ1BFIn0" },
+        { name: "CashPilots CPE", description: "Complete offer", region: "us", url: "https://taptrcks.com/r/eyJ0IjoiY2FzaHBpbG90cy1jcGUiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc4OTUzMjEzfQ" },
+        { name: "CashPilots CPI", description: "Complete offer", region: "us", url: "https://taptrcks.com/r/eyJ0IjoiY2FzaHBpbG90cy1jcGkiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc4ODUyODk5fQ" },
+        { name: "KashKick SOI", description: "Install the app and complete required actions", region: "us", url: "https://taptrcks.com/r/eyJ0Ijoia2FzaGtpY2siLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc4OTM3NDA3fQ" },
+        { name: "TesterHeld CPI", description: "Complete offer", region: "de,ch,at", url: "https://taptrcks.com/r/eyJ0IjoidGVzdGVyaGVsZC1jcGkiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc4ODkwNDAwfQ" },
+        { name: "PayPal $1,000 - SOI", description: "Complete offer", region: "de", url: "https://taptrcks.com/r/eyJ0IjoicGF5cGFsLWRlIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk3ODc5NjUxMH0" },
+        { name: "CTConnect - Taco Bell 100", description: "Complete with valid info", region: "us", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9OTEmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTRiZmFhMGJmODYwYiIsIm8iOiI5MSIsIm4iOiJDVENvbm5lY3QgLSBUYWNvIEJlbGwgMTAwIn0" },
+        { name: "BlueReen", description: "Win a Tattoo (Complete with valid information)", region: "de", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTkxMzMmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTEzOWFjNjJkZmUxOSIsIm8iOiIxOTEzMyIsIm4iOiJCbHVlUmVlbiAtIFdpbiBhIFRhdHRvbyJ9" },
+        { name: "Surveoo - Cash Survey", description: "Complete the survey (Global auto-detect)", region: "global", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTE3Njkmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWQ2OTE2MWMwY2VmNyIsIm8iOiIxMTc2OSIsIm4iOiJTdXJ2ZW9vIC0gQ2FzaCBTdXJ2ZXkgMiJ9" },
+        { name: "Shein Gift Card", description: "Complete required offers to earn your reward", region: "global", url: "https://taptrcks.com/r/eyJ0Ijoic2hlaW4iLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTkzMTIwMTMwfQ" },
+        { name: "Paypal Gift Card", description: "Complete required offers", region: "global", url: "https://taptrcks.com/r/eyJ0IjoicGF5cGFsIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk5MzEyMDEzMH0" },
+        { name: "Zelle Gift Card", description: "Complete required offers", region: "us", url: "https://taptrcks.com/r/eyJ0IjoiemVsbGUiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTkzMTIwMTMwfQ" },
+        { name: "Mcdonalds Gift Card", description: "Complete required offers", region: "global", url: "https://taptrcks.com/r/eyJ0IjoibWNkb25hbGRzIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk5MzEyMDEzMH0" },
+        { name: "Cashapp Gift Card", description: "Complete required offers", region: "us", url: "https://taptrcks.com/r/eyJ0IjoiY2FzaGFwcCIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidHMiOjE3NzY5OTMxMjAxMzB9" },
+        { name: "Empfohlen CPI", description: "Install the app and complete", region: "de", url: "https://taptrcks.com/r/eyJ0IjoiZW1wZm9obGVuIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk5MzEyMDEzMH0" },
+        { name: "Arena Breakout", description: "Install + Open", region: "global", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTk1OTkmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTRiZmFhMGJmODYwYiIsIm8iOiIxOTU5OSIsIm4iOiJBcmVuYSBCcmVha291dDogSW5maW5pdGUgV2luZG93cyBDUEkifQ" },
+        { name: "VeePN Android CPE", description: "Install VPN + complete steps", region: "global", url: "https://taptrcks.com/r/eyJ0IjoidmVlcG4iLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTkzMTIwMTMwfQ" },
+        { name: "Insight Bonuses", description: "Complete the survey", region: "us", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTg3MTImc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWQ2OTE2MWMwY2VmNyIsIm8iOiIxODcxMiIsIm4iOiJJbnNpZ2h0IEJvbnVzZXMifQ" },
+        { name: "Quiztionnaire", description: "Answer quick survey", region: "gb", url: "https://taptrcks.com/r/eyJ0IjoicXVpenRpb25uYWlyZSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidHMiOjE3NzY5Nzg5MjIzMTB9" },
+        { name: "Global Data Leads", description: "Submit basic info", region: "pl", url: "https://taptrcks.com/r/eyJ0IjoiZ2xvYmFsZGF0YSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidHMiOjE3NzY5Nzg5OTkxMjN9" }
+      ];
 
-    // ---------- OFFER POOL (expanded variety, all rainawards links) ----------
-    const OFFERS = [
-      { name: "SwagBucks Android CPE", description: "Play 3 Games for 5 Minutes Each", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTgwOTEmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWYxOGNjYWJiZGNkNSIsIm8iOiIxODA5MSIsIm4iOiJTd2FnYnVja3MgQW5kcm9pZCBDUEUifQ" },
-      { name: "PlayMax", description: "Play 3 Games For 5 Minutes Each", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTk0NDMmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWYxOGNjYWJiZGNkNSIsIm8iOiIxOTQ0MyIsIm4iOiJQbGF5TUFYIEFuZHJvaWQgQ1BFIn0" },
-      { name: "Cash Giraffe", description: "Install + collect 15K coins", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9NDIwMiZzdWIyPXUzZmRlZjk3MzQwYjU5NzBiYTlkZiZzdWI1PXMxM2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNz1yZm51bGwmc3ViOD1yZG51bGwmc3ViMTU9ZjE4Y2NhYmJkY2Q1IiwibyI6IjQyMDIiLCJuIjoiQ2FzaCBHaXJhZmZlIEFuZHJvaWQgQ1BFIn0" },
-      { name: "FreeCash Web CPE", description: "Install app and complete required actions", url: "https://taptrcks.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk3OTA1OTU4OX0" },
-      { name: "FreeCash Web CPE Bonus", description: "Install app and complete required actions", url: "https://taptrcks.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpLWIiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc5MDU5NTg5fQ" },
-      { name: "Justplay iOS CPE", description: "Play 2 games for 10 mins each and get rewards", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTgwMzAmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWY0NjA5MjFmNjExMiIsIm8iOiIxODAzMCIsIm4iOiJKdXN0UGxheSBpT1MgQ1BFIn0" },
-      { name: "TesterUp CPI", description: "Install the app and complete the required actions", url: "https://taptrcks.com/r/eyJ0IjoidGVzdGVydXAtYSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidHMiOjE3NzY5Nzg5NzcxNjN9" },
-      { name: "TesterUp CPI Bonus", description: "Install the app and complete the required actions", url: "https://taptrcks.com/r/eyJ0IjoidGVzdGVydXAtYiIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidHMiOjE3NzY5Nzg5NzcxNjN9" },
-      { name: "PureVPN", description: "Start a 7 Day Free Trial", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTU1MTImc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTY1Mzk1MWM3OTZiYiIsIm8iOiIxNTUxMiIsIm4iOiJQdXJlVlBOIEFuZHJvaWQgQ1BFIn0" },
-      { name: "CashPilots CPE", description: "Complete offer", url: "https://taptrcks.com/r/eyJ0IjoiY2FzaHBpbG90cy1jcGUiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc4OTUzMjEzfQ" },
-      { name: "KashKick SOI", description: "Install the app and complete the required actions", url: "https://taptrcks.com/r/eyJ0Ijoia2FzaGtpY2siLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc4OTM3NDA3fQ" },
-      { name: "TesterHeld CPI", description: "Complete offer", url: "https://taptrcks.com/r/eyJ0IjoidGVzdGVyaGVsZC1jcGkiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc4ODkwNDAwfQ" },
-      { name: "CashPilots CPI", description: "Complete offer", url: "https://taptrcks.com/r/eyJ0IjoiY2FzaHBpbG90cy1jcGkiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTc4ODUyODk5fQ" },
-      { name: "PayPal $1,000 - SOI", description: "Complete offer", url: "https://taptrcks.com/r/eyJ0IjoicGF5cGFsLWRlIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk3ODc5NjUxMH0" },
-      { name: "CTConnect - Taco Bell 100", description: "Complete with valid info", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9OTEmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTRiZmFhMGJmODYwYiIsIm8iOiI5MSIsIm4iOiJDVENvbm5lY3QgLSBUYWNvIEJlbGwgMTAwIn0" },
-      { name: "BlueReen", description: "Complete with valid information", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTkxMzMmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTEzOWFjNjJkZmUxOSIsIm8iOiIxOTEzMyIsIm4iOiJCbHVlUmVlbiAtIFdpbiBhIFRhdHRvbyJ9" },
-      { name: "BlueReen Voucher", description: "Complete with valid information", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTkxMzcmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTEzOWFjNjJkZmUxOSIsIm8iOiIxOTEzNyIsIm4iOiJCbHVlUmVlbiAtIFdpbiBhIDI1MOKCrCBFZGVrYSBWb3VjaGVyIn0" },
-      { name: "BlueReen - Win iPhone 17 Pro", description: "Complete with valid information", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTkxMzQmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTEzOWFjNjJkZmUxOSIsIm8iOiIxOTEzNCIsIm4iOiJCbHVlUmVlbiAtIFdpbiBpUGhvbmUgMTcgUHJvIn0" },
-      { name: "Surveoo - Questionnaire V2", description: "Complete the survey", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MjEyJnN1YjI9dTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1YjU9czEzZmRlZjk3MzQwYjU5NzBiYTlkZiZzdWI3PXJmbnVsbCZzdWI4PXJkbnVsbCZzdWIxNT03MDg4NTlkZjNlN2QiLCJvIjoiMjEyIiwibiI6IlN1cnZlb28gLSBRdWVzdGlvbm5haXJlIFYyIn0" },
-      { name: "Surveoo - Cash Survey", description: "Complete the survey", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTE3Njkmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWQ2OTE2MWMwY2VmNyIsIm8iOiIxMTc2OSIsIm4iOiJTdXJ2ZW9vIC0gQ2FzaCBTdXJ2ZXkgMiJ9" },
-      { name: "Quiztionnaire - Tesco £500", description: "Complete with valid information", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTk4MjAmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWIyZmU4OGNhYzI0YSIsIm8iOiIxOTgyMCIsIm4iOiJRdWl6dGlvbm5haXJlIC0gVGVzY28gwqM1MDAifQ" },
-      { name: "Global Data Leads ", description: "Complete with valid information", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTU2MTMmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTgwOTBmMWRjMTcxYiIsIm8iOiIxNTYxMyIsIm4iOiJHbG9iYWxEYXRhTGVhZHMgLSBXaW4gNTAwIHp0IEJpZWRyb25rYSBHaWZ0IENhcmQifQ" },
-      { name: "Shein Gift Card", description: "Complete required offers to earn your reward", url: "https://taptrcks.com/r/eyJ0Ijoic2hlaW4iLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTkzMTIwMTMwfQ" },
-      { name: "Paypal Gift Card", description: "Complete required offers to earn your reward", url: "https://taptrcks.com/r/eyJ0IjoicGF5cGFsIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk5MzEyMDEzMH0" },
-      { name: "Zelle Gift Card", description: "Complete required offers to earn your reward", url: "https://taptrcks.com/r/eyJ0IjoiemVsbGUiLCJ0aWQiOiIzZmRlZjk3MzQwYjU5NzBiYTlkZiIsInRzIjoxNzc2OTkzMTIwMTMwfQ" },
-      { name: "Mcdonalds Gift Card", description: "Complete required offers to earn your reward", url: "https://taptrcks.com/r/eyJ0IjoibWNkb25hbGRzIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk5MzEyMDEzMH0" },
-      { name: "Cashapp Gift Card", description: "Complete required offers to earn your reward", url: "https://taptrcks.com/r/eyJ0IjoiY2FzaGFwcCIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidHMiOjE3NzY5OTMxMjAxMzB9" },
-      { name: "Empfohlen CPI", description: "Install the app and complete the required actions", url: "https://taptrcks.com/r/eyJ0IjoiZW1wZm9obGVuIiwidGlkIjoiM2ZkZWY5NzM0MGI1OTcwYmE5ZGYiLCJ0cyI6MTc3Njk5MzEyMDEzMH0" },
-      { name: "Arena Breakout", description: "Install + Open", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTk1OTkmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTRiZmFhMGJmODYwYiIsIm8iOiIxOTU5OSIsIm4iOiJBcmVuYSBCcmVha291dDogSW5maW5pdGUgV2luZG93cyBDUEkifQ" },
-      { name: "VeePN Android CPE", description: "Start a Free trial", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTU3Nzcmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWViZTAyMjNjNmFmZiIsIm8iOiIxNTc3NyIsIm4iOiJWZWVQTiBBbmRyb2lkIENQRSJ9" },
-      { name: "Supermarket Affairs Android CPE", description: "Play 10 minutes", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTg2MTEmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWI0Nzc1ODY0NTljOSIsIm8iOiIxODYxMSIsIm4iOiJTdXBlcm1hcmtldCBBZmZhaXJzIEFuZHJvaWQgQ1BFIn0" },
-      { name: "Insight Bonuses", description: "Complete the survey", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTg3MTImc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PWQ2OTE2MWMwY2VmNyIsIm8iOiIxODcxMiIsIm4iOiJJbnNpZ2h0IEJvbnVzZXMifQ" },
-      { name: "Autopaste iOS CPE", description: "Start the 3 Day Free Trial", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTk1NjImc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTIwNGJhNzJmNzU5ZiIsIm8iOiIxOTU2MiIsIm4iOiJBdXRvcGFzdGUgaU9TIENQRSJ9" },
-      { name: "Litstick iOS CPE", description: "Start the 3 Day Free Trial", url: "https://taptrcks.com/r/eyJ0IjoicHJpbWFyeSIsInRpZCI6IjNmZGVmOTczNDBiNTk3MGJhOWRmIiwidXJsIjoiaHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s_cGlkPTImb2ZmZXJfaWQ9MTc1OTYmc3ViMj11M2ZkZWY5NzM0MGI1OTcwYmE5ZGYmc3ViNT1zMTNmZGVmOTczNDBiNTk3MGJhOWRmJnN1Yjc9cmZudWxsJnN1Yjg9cmRudWxsJnN1YjE1PTIwNGJhNzJmNzU5ZiIsIm8iOiIxNzU5NiIsIm4iOiJMaXRzdGljayBpT1MgQ1BFIn0" },
-    ];
+      let activeOffers = [];
+      let completedOffers = new Set();   // stores offer IDs that have been completed at least once
+      let pendingTimers = new Map();      // active timers for each offer instance
+      let selectedRegion = "us";
 
-    // ---------- DOM elements ----------
-    const topBanner = document.getElementById('topBanner');
-    const pageTitle = document.getElementById('pageTitle');
-    const mainCard = document.getElementById('mainCard');
-    const offerwallContainer = document.getElementById('offerwallContainer');
-    const dynamicFormArea = document.getElementById('dynamicFormArea');
-    const formHint = document.getElementById('formHint');
-    const bannerRewardLabel = document.getElementById('bannerRewardLabel');
-    const bannerCodeLabel = document.getElementById('bannerCodeLabel');
-    const bannerStockLine = document.getElementById('bannerStockLine');
-    const offerwallTitle = document.getElementById('offerwallTitle');
-    const offerwallDesc = document.getElementById('offerwallDescription');
+      function showToast(message, duration = 3000) {
+        const existing = document.querySelector('.global-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'global-toast';
+        toast.innerText = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), duration);
+      }
 
-    // Options
-    const optRobux = document.getElementById('optRobux');
-    const optNitro = document.getElementById('optNitro');
-    const optMoney = document.getElementById('optMoney');
+      function clearOfferTimer(offerId) {
+        const timerData = pendingTimers.get(offerId);
+        if (timerData) {
+          if (timerData.timeoutId) clearTimeout(timerData.timeoutId);
+          if (timerData.intervalId) clearInterval(timerData.intervalId);
+          pendingTimers.delete(offerId);
+        }
+      }
 
-    // State
-    let currentReward = 'robux'; // 'robux', 'nitro', 'money'
-    let activeOffers = [];
-    
-    // Helper: escape
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]);
-    }
+      function updateProgressUI() {
+        const progressSpan = document.getElementById('progressCounter');
+        const completedCount = completedOffers.size;
+        progressSpan.innerText = `${completedCount}/3 offers completed`;
+        if (completedCount >= 3) {
+          progressSpan.style.background = "#2b5935";
+          progressSpan.style.color = "#c6ffb0";
+          const footerDiv = document.querySelector('.offerwall-footer');
+          if (footerDiv && !footerDiv.querySelector('.reward-message')) {
+            const msg = document.createElement('div');
+            msg.className = 'reward-message';
+            msg.style.marginTop = '12px';
+            msg.style.fontWeight = 'bold';
+            msg.style.color = '#a5f0b3';
+            msg.innerHTML = 'ðŸŽ‰ Congratulations! 25,000 Robux will be sent to your account. ðŸŽ‰';
+            footerDiv.appendChild(msg);
+            showToast('ðŸŽ All offers completed! 25,000 Robux is being processed!', 5000);
+          }
+        } else {
+          const existingMsg = document.querySelector('.offerwall-footer .reward-message');
+          if (existingMsg) existingMsg.remove();
+        }
+      }
 
-    // Random 4 offers
-    function getRandomFourOffers() {
-      const shuffled = [...OFFERS].sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, 4);
-    }
+      // INFINITE CLICK: Finalize an offer (marks completed but allows the same offer ID to be re-attempted after reset)
+      function finalizeOfferCompletion(offerId, startButtonElement, parentItem) {
+        if (completedOffers.has(offerId)) {
+          // Already counted, but we still show message and reset pending UI
+          if (startButtonElement) {
+            startButtonElement.disabled = false;
+            startButtonElement.innerText = 'Start Offer â†’';
+            startButtonElement.style.background = '';
+          }
+          clearOfferTimer(offerId);
+          const badgeSpan = parentItem?.querySelector('.offer-timer-status');
+          if (badgeSpan) badgeSpan.remove();
+          return false;
+        }
+        // New completion, mark and update
+        completedOffers.add(offerId);
+        updateProgressUI();
+        if (startButtonElement) {
+          startButtonElement.disabled = true;
+          startButtonElement.innerText = 'âœ“ Completed';
+          startButtonElement.style.background = '#2c6e2f';
+        }
+        const badgeSpan = parentItem?.querySelector('.offer-timer-status');
+        if (badgeSpan) badgeSpan.remove();
+        if (parentItem && !parentItem.querySelector('.offer-status-badge')) {
+          const infoDiv = parentItem.querySelector('.offer-info');
+          if (infoDiv) {
+            const doneBadge = document.createElement('span');
+            doneBadge.className = 'offer-status-badge';
+            doneBadge.innerText = 'done';
+            infoDiv.appendChild(doneBadge);
+          }
+        }
+        showToast(`âœ… Offer completed! (+1 progress)`, 2200);
+        clearOfferTimer(offerId);
+        return true;
+      }
 
-    function renderOffersUI() {
-      const offersListDiv = document.getElementById('offersList');
-      if (!offersListDiv) return;
-      let html = '';
-      activeOffers.forEach((offer, idx) => {
-        html += `
-          <div class="offer-item" data-offer-id="${idx}">
-            <div class="offer-info">
-              <div class="offer-name">${escapeHtml(offer.name)}</div>
-              <div class="offer-desc">${escapeHtml(offer.description || 'Quick reward')}</div>
-            </div>
-            <div>
-              <button class="start-offer-btn" data-url="${escapeHtml(offer.url)}">Start</button>
-            </div>
-          </div>
-        `;
-      });
-      offersListDiv.innerHTML = html;
-      document.querySelectorAll('.start-offer-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const url = btn.getAttribute('data-url');
-          if (url) window.open(url, '_blank', 'noopener,noreferrer');
+      // Timer now between 10 and 20 minutes (600 to 1200 seconds)
+      function startLongTimerForOffer(offerId, startBtn, parentEl) {
+        const minWait = 600;   // 10 minutes
+        const maxWait = 1200;  // 20 minutes
+        const waitSeconds = Math.floor(Math.random() * (maxWait - minWait + 1) + minWait);
+        clearOfferTimer(offerId);
+        
+        let timerSpan = parentEl?.querySelector('.offer-timer-status');
+        if (!timerSpan && parentEl) {
+          timerSpan = document.createElement('span');
+          timerSpan.className = 'offer-timer-status';
+          const btnDiv = parentEl.querySelector('div:last-child');
+          if (btnDiv) btnDiv.appendChild(timerSpan);
+          else parentEl.appendChild(timerSpan);
+        }
+        let remaining = waitSeconds;
+        const updateDisplay = () => {
+          if (timerSpan && !completedOffers.has(offerId)) {
+            const mins = Math.floor(remaining / 60);
+            const secs = remaining % 60;
+            timerSpan.innerText = `â³ Wait: ${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
+          } else if (timerSpan && completedOffers.has(offerId)) timerSpan.remove();
+        };
+        updateDisplay();
+        const intervalId = setInterval(() => {
+          if (completedOffers.has(offerId)) { clearInterval(intervalId); if(timerSpan) timerSpan.remove(); return; }
+          remaining--;
+          if (remaining <= 0) {
+            clearInterval(intervalId);
+            if (timerSpan) timerSpan.innerText = `âœ… unlocking...`;
+            finalizeOfferCompletion(offerId, startBtn, parentEl);
+            if (timerSpan) timerSpan.remove();
+          } else { updateDisplay(); }
+        }, 1000);
+        const timeoutId = setTimeout(() => {
+          if (!completedOffers.has(offerId)) {
+            clearInterval(intervalId);
+            finalizeOfferCompletion(offerId, startBtn, parentEl);
+            if (timerSpan) timerSpan.remove();
+          }
+        }, waitSeconds * 1000);
+        pendingTimers.set(offerId, { timeoutId, intervalId });
+      }
+
+      // New infinite click support: each click starts a fresh attempt, and if it was already completed before? Actually we reset "completed state" for that specific instance? 
+      // Since we have to allow infinite attempts per offer, we need to unbind the "completed" lock and treat each click as a separate trial. 
+      // But to complete a new "offer" they must complete 3 UNIQUE offers from the list? To avoid exploitation, we make each offer instance independent per completion: 
+      // User can click same offer multiple times but it will only add +1 to global progress the first time it finishes. To make it truly infinite: if they already completed that specific offer ID, clicking again will start a new timer but upon completion it will NOT increment progress again (since already counted). But they can still click infinite times.
+      // Implementation: handleStartOffer will allow any offer even if already completed? We'll adjust: if completed already, we won't let them start new pending because it would be useless but they may still click to simulate? But we allow restart? Requirement says "click an offer an infinite amount of times" => we allow re-click which resets pending timer, but completion grants progress only once. That's fine.
+      function handleStartOffer(offerId, url, startBtn, parentEl) {
+        // Check if already pending: prevent multiple parallel timers.
+        if (pendingTimers.has(offerId)) { 
+          showToast("â³ Offer already in progress! Complete or wait.", 2000);
+          return;
+        }
+        // If previously completed, we warn but still allow starting a new timer (but progress won't increment again)
+        if (completedOffers.has(offerId)) {
+          showToast("â„¹ï¸ You've already completed this offer before. You can start again but progress won't double.", 2500);
+          // proceed to start new timer but completion will not add to completedSet again
+        }
+        // Open offer link
+        if (url && url !== '#') window.open(url, '_blank', 'noopener,noreferrer');
+        startBtn.innerText = 'â³ Started...';
+        startBtn.disabled = true;
+        setTimeout(() => { 
+          if(startBtn.innerText === 'â³ Started...' && !completedOffers.has(offerId)) 
+            startBtn.innerText = 'â²ï¸ Pending...'; 
+        }, 600);
+        
+        // Custom completion wrapper: if finalize detects already in set, it won't increment again, but will reset button.
+        const wrappedComplete = (oid, btn, parent) => {
+          if (completedOffers.has(oid)) {
+            // already counted, just reset UI & clear timer without incrementing again.
+            clearOfferTimer(oid);
+            if (btn) {
+              btn.disabled = false;
+              btn.innerText = 'Start Offer â†’';
+              btn.style.background = '';
+            }
+            const badgeSpan = parent?.querySelector('.offer-timer-status');
+            if (badgeSpan) badgeSpan.remove();
+            showToast(`ðŸ”„ Offer reattempted (no extra progress)`, 1800);
+            return false;
+          } else {
+            return finalizeOfferCompletion(oid, btn, parent);
+          }
+        };
+        
+        // store custom completion function, but our timer uses finalizeOfferCompletion by default. We'll override by patching.
+        // Instead we use startLongTimerForOffer but modify its internal finalize to use wrappedComplete.
+        // For simplicity, we initiate custom timer.
+        const minWait = 600, maxWait = 1200;
+        const waitSeconds = Math.floor(Math.random() * (maxWait - minWait + 1) + minWait);
+        clearOfferTimer(offerId);
+        let timerSpan = parentEl?.querySelector('.offer-timer-status');
+        if (!timerSpan && parentEl) {
+          timerSpan = document.createElement('span');
+          timerSpan.className = 'offer-timer-status';
+          const btnDiv = parentEl.querySelector('div:last-child');
+          if (btnDiv) btnDiv.appendChild(timerSpan);
+          else parentEl.appendChild(timerSpan);
+        }
+        let remaining = waitSeconds;
+        const updateDisplay = () => {
+          if (timerSpan && !pendingTimers.has(offerId)) { if(timerSpan) timerSpan.remove(); return; }
+          if (timerSpan) {
+            const mins = Math.floor(remaining / 60);
+            const secs = remaining % 60;
+            timerSpan.innerText = `â³ ${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
+          }
+        };
+        updateDisplay();
+        const intervalId = setInterval(() => {
+          if (!pendingTimers.has(offerId)) { clearInterval(intervalId); if(timerSpan) timerSpan.remove(); return; }
+          remaining--;
+          if (remaining <= 0) {
+            clearInterval(intervalId);
+            if (timerSpan) timerSpan.innerText = `âœ… completing...`;
+            wrappedComplete(offerId, startBtn, parentEl);
+            if (timerSpan) timerSpan.remove();
+            pendingTimers.delete(offerId);
+          } else { updateDisplay(); }
+        }, 1000);
+        const timeoutId = setTimeout(() => {
+          if (pendingTimers.has(offerId)) {
+            clearInterval(intervalId);
+            wrappedComplete(offerId, startBtn, parentEl);
+            if (timerSpan) timerSpan.remove();
+            pendingTimers.delete(offerId);
+          }
+        }, waitSeconds * 1000);
+        pendingTimers.set(offerId, { timeoutId, intervalId });
+        showToast(`ðŸŽ¯ Offer started! Wait 10-20 min OR fully complete to unlock faster.`, 4500);
+      }
+
+      function isOfferAvailableForRegion(offerRegionStr, userRegion) {
+        if (offerRegionStr === "global") return true;
+        const regionsList = offerRegionStr.split(',').map(r => r.trim().toLowerCase());
+        return regionsList.includes(userRegion.toLowerCase());
+      }
+
+      function getRandomOffersByRegion(region, count = 4) {
+        let available = OFFERS.filter(offer => isOfferAvailableForRegion(offer.region, region));
+        if (available.length < count) {
+          const globalFallback = OFFERS.filter(o => o.region === "global");
+          available = [...available, ...globalFallback];
+        }
+        const shuffled = [...available];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, count);
+      }
+
+      function renderOffersUI() {
+        const container = document.getElementById('offersList');
+        if (!container) return;
+        let html = '';
+        activeOffers.forEach(offer => {
+          const isCompleted = completedOffers.has(offer.id);
+          const isPending = pendingTimers.has(offer.id);
+          let btnText = 'Start Offer â†’';
+          let disabled = false;
+          if (isCompleted) { btnText = 'âœ“ Completed (Click again?)'; disabled = false; } // allow infinite clicks, but not disabled
+          else if (isPending) { btnText = 'â²ï¸ Pending...'; disabled = true; }
+          html += `
+            <div class="offer-item" data-offer-id="${offer.id}">
+              <div class="offer-info">
+                <div class="offer-name">${escapeHtml(offer.offerData.name)} <span class="infinite-badge"></span></div>
+                <div class="offer-desc">${escapeHtml(offer.offerData.description)}</div>
+              </div>
+              <div>
+                <button class="start-offer-btn action-start" data-url="${escapeHtml(offer.offerData.url)}" data-offer-id="${offer.id}" ${disabled ? 'disabled' : ''}>
+                  ${btnText}
+                </button>
+              </div>
+            </div>`;
         });
-      });
-    }
-
-    function updateBannerAndTitles() {
-      if (currentReward === 'robux') {
-        bannerRewardLabel.textContent = '25,000 Robux';
-        bannerCodeLabel.textContent = 'ROBUXBACK';
-        bannerStockLine.innerHTML = 'Only <strong>19</strong> codes remaining.';
-        pageTitle.textContent = 'Redeem Robux';
-      } else if (currentReward === 'nitro') {
-        bannerRewardLabel.textContent = 'Discord Nitro';
-        bannerCodeLabel.textContent = 'NITROGIFT';
-        bannerStockLine.innerHTML = 'Only <strong>12</strong> gifts left.';
-        pageTitle.textContent = 'Claim Nitro';
-      } else { // money
-        bannerRewardLabel.textContent = '$250 Cash';
-        bannerCodeLabel.textContent = 'CASHBACK';
-        bannerStockLine.innerHTML = 'Only <strong>7</strong> rewards left.';
-        pageTitle.textContent = 'Get $250';
+        container.innerHTML = html;
+        document.querySelectorAll('.start-offer-btn').forEach(btn => {
+          if (btn.disabled && btn.innerText.includes('Pending')) return;
+          const oid = Number(btn.getAttribute('data-offer-id'));
+          const url = btn.getAttribute('data-url');
+          const parentItem = btn.closest('.offer-item');
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (pendingTimers.has(oid)) { showToast("Already in progress! Wait for completion", 1800); return; }
+            handleStartOffer(oid, url, btn, parentItem);
+          });
+        });
       }
-    }
 
-    // Update active card UI highlight
-    function setActiveOption(reward) {
-      [optRobux, optNitro, optMoney].forEach(el => el.classList.remove('active'));
-      if (reward === 'robux') optRobux.classList.add('active');
-      if (reward === 'nitro') optNitro.classList.add('active');
-      if (reward === 'money') optMoney.classList.add('active');
-    }
-
-    // Render the form depending on reward
-    function renderDynamicForm() {
-      let html = '';
-      if (currentReward === 'robux') {
-        html = `
-          <div class="input-group">
-            <input id="codeInput" type="text" placeholder="Code" value="CLAIM">
-          </div>
-          <div class="input-group">
-            <input id="usernameInput" type="text" placeholder="Roblox Username">
-          </div>
-          <button class="btn" type="button" id="actionButton">Next →</button>
-        `;
-      } else if (currentReward === 'nitro') {
-        html = `
-          <div class="input-group">
-            <input id="codeInput" type="text" placeholder="Nitro code" value="NITROCLAIM">
-          </div>
-          <div class="input-group">
-            <input id="discordTagInput" type="text" placeholder="Discord Username (e.g. User#0000)">
-          </div>
-          <button class="btn" type="button" id="actionButton">Redeem Nitro</button>
-        `;
-      } else { // money
-        html = `
-          <div class="input-group">
-            <input id="codeInput" type="text" placeholder="Code" value="CASH250" readonly disabled style="background:#1a2332;">
-          </div>
-          <button class="btn" type="button" id="actionButton">Claim $250 →</button>
-          <p style="color:#b9c8f0; margin-top:12px; text-align:center;">No username needed — instant access</p>
-        `;
+      function initializeNewOffers() {
+        for (let [oid, timers] of pendingTimers.entries()) {
+          if (timers.timeoutId) clearTimeout(timers.timeoutId);
+          if (timers.intervalId) clearInterval(timers.intervalId);
+        }
+        pendingTimers.clear();
+        completedOffers.clear();
+        const selectedOffersRaw = getRandomOffersByRegion(selectedRegion, 4);
+        activeOffers = selectedOffersRaw.map(offerData => ({
+          id: Date.now() + Math.random() * 100000 + Math.floor(Math.random() * 10000),
+          offerData: offerData
+        }));
+        renderOffersUI();
+        updateProgressUI();
+        const badgeSpan = document.getElementById('selectedRegionBadge');
+        if (badgeSpan) {
+          const regionNames = { us:"ðŸ‡ºðŸ‡¸ US", gb:"ðŸ‡¬ðŸ‡§ UK", ca:"ðŸ‡¨ðŸ‡¦ Canada", de:"ðŸ‡©ðŸ‡ª Germany", fr:"ðŸ‡«ðŸ‡· France", au:"ðŸ‡¦ðŸ‡º Australia", in:"ðŸ‡®ðŸ‡³ India", jp:"ðŸ‡¯ðŸ‡µ Japan", es:"ðŸ‡ªðŸ‡¸ Spain", it:"ðŸ‡®ðŸ‡¹ Italy", nl:"ðŸ‡³ðŸ‡± Netherlands", pl:"ðŸ‡µðŸ‡± Poland", ch:"ðŸ‡¨ðŸ‡­ Switzerland", at:"ðŸ‡¦ðŸ‡¹ Austria", be:"ðŸ‡§ðŸ‡ª Belgium", se:"ðŸ‡¸ðŸ‡ª Sweden", kr:"ðŸ‡°ðŸ‡· Korea" };
+          badgeSpan.innerText = `ðŸŽ¯ Offers for: ${regionNames[selectedRegion] || selectedRegion.toUpperCase()}`;
+        }
       }
-      dynamicFormArea.innerHTML = html;
-      
-      const actionBtn = document.getElementById('actionButton');
-      if (actionBtn) {
-        actionBtn.addEventListener('click', onActionClick);
+
+      function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+      const formCard = document.getElementById('redeemForm');
+      const offerwallContainer = document.getElementById('offerwallContainer');
+      const topBanner = document.getElementById('topBanner');
+      const pageTitle = document.getElementById('pageTitle');
+      const formHint = document.getElementById('formHint');
+      const regionSelect = document.getElementById('regionSelect');
+
+      function showOfferwall() {
+        if (topBanner) topBanner.style.display = 'none';
+        if (pageTitle) pageTitle.style.display = 'none';
+        if (formCard) formCard.style.display = 'none';
+        if (offerwallContainer) offerwallContainer.style.display = 'block';
+        initializeNewOffers();
       }
-    }
 
-    // Validate and proceed to offerwall
-    function onActionClick(e) {
-      formHint.textContent = '';
-      formHint.style.color = '#bcc9e6';
-      
-      if (currentReward === 'robux') {
-        const codeInput = document.getElementById('codeInput');
-        const usernameInput = document.getElementById('usernameInput');
-        const code = codeInput?.value.trim().toUpperCase() || '';
-        const username = usernameInput?.value.trim() || '';
-        if (code !== 'CLAIM') {
-          formHint.textContent = '❌ Code must be "CLAIM" (case-sensitive)';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-        if (!username) {
-          formHint.textContent = '❌ Enter your Roblox username to continue.';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-        if (username.length < 2) {
-          formHint.textContent = '❌ Please enter a valid Roblox username.';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-      } 
-      else if (currentReward === 'nitro') {
-        const codeInput = document.getElementById('codeInput');
-        const discordTag = document.getElementById('discordTagInput')?.value.trim() || '';
-        const code = codeInput?.value.trim().toUpperCase() || '';
-        if (code !== 'NITROCLAIM') {
-          formHint.textContent = '❌ Invalid code. Use NITROCLAIM';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-        if (!discordTag) {
-          formHint.textContent = '❌ Please enter Discord username.';
-          formHint.style.color = '#ff9e9e';
-          return;
-        }
-        if (!discordTag.includes('#') && discordTag.length < 3) {
-          formHint.textContent = '⚠️ Enter full Discord tag (e.g., User#1234)';
-          formHint.style.color = '#ffd966';
-          // but allow proceed anyway after a warning? We'll allow proceed but show subtle hint
-        }
-      } 
-      else {
-        // money: no validation needed
-      }
-      
-      // All good -> show offerwall
-      showOfferwall();
-    }
-
-    function showOfferwall() {
-      // hide main card, banner & title
-      mainCard.style.display = 'none';
-      topBanner.style.display = 'none';
-      pageTitle.style.display = 'none';
-      offerwallContainer.style.display = 'block';
-      
-      // customize offerwall text based on reward
-      if (currentReward === 'robux') {
-        offerwallTitle.textContent = 'Claim 25,000 Robux';
-        offerwallDesc.innerHTML = 'Complete <strong>any 3 offers</strong> below to get your Robux instantly.';
-      } else if (currentReward === 'nitro') {
-        offerwallTitle.textContent = 'Get 3 Months Nitro FREE';
-        offerwallDesc.innerHTML = 'Finish <strong>3 sponsor tasks</strong> to unlock Discord Nitro.';
-      } else {
-        offerwallTitle.textContent = '$250 Cash Reward';
-        offerwallDesc.innerHTML = 'Complete <strong>3 offers</strong> and receive $250!';
-      }
-      
-      // load offers
-      activeOffers = getRandomFourOffers();
-      renderOffersUI();
-      const progressSpan = document.getElementById('progressCounter');
-      if (progressSpan) progressSpan.textContent = `0/3 offers completed`;
-    }
-
-    // Reset to selection
-    function resetToSelection() {
-      offerwallContainer.style.display = 'none';
-      mainCard.style.display = 'block';
-      topBanner.style.display = 'flex';
-      pageTitle.style.display = 'block';
-      updateBannerAndTitles();
-      renderDynamicForm();
-      formHint.textContent = '';
-      formHint.style.color = '#bcc9e6';
-    }
-
-    // Attach option clicks
-    function initOptions() {
-      optRobux.addEventListener('click', () => {
-        currentReward = 'robux';
-        setActiveOption('robux');
-        updateBannerAndTitles();
-        renderDynamicForm();
-        formHint.textContent = '';
-      });
-      optNitro.addEventListener('click', () => {
-        currentReward = 'nitro';
-        setActiveOption('nitro');
-        updateBannerAndTitles();
-        renderDynamicForm();
-        formHint.textContent = '';
-      });
-      optMoney.addEventListener('click', () => {
-        currentReward = 'money';
-        setActiveOption('money');
-        updateBannerAndTitles();
-        renderDynamicForm();
-        formHint.textContent = '';
-      });
-    }
-
-    // Reset link
-    const resetLink = document.getElementById('resetToSelectionLink');
-    if (resetLink) {
-      resetLink.addEventListener('click', (e) => {
+      formCard.addEventListener('submit', (e) => {
         e.preventDefault();
-        resetToSelection();
+        const codeInput = document.getElementById('code');
+        const usernameInput = document.getElementById('username');
+        const enteredCode = codeInput.value.trim().toUpperCase();
+        const username = usernameInput.value.trim(); 
+        const regionVal = regionSelect.value;
+        if (!regionVal) { formHint.textContent = 'Please select your region.'; formHint.style.color = '#ff9e9e'; return; }
+        if (enteredCode !== 'CLAIM') { formHint.textContent = 'Invalid code. Use "CLAIM".'; formHint.style.color = '#ff9e9e'; return; }
+        if (!username) { formHint.textContent = 'Enter Roblox username.'; return; }
+        selectedRegion = regionVal;
+        formHint.textContent = '';
+        showOfferwall();
       });
-    }
-
-    // Start with robux active
-    function initialize() {
-      currentReward = 'robux';
-      setActiveOption('robux');
-      updateBannerAndTitles();
-      renderDynamicForm();
-      initOptions();
-    }
-
-    initialize();
-  })();
+    })();
   </script>
 </body>
 
