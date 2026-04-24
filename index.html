@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Claim Here</title>
+  <title>Redeem · Roblox Reward Center</title>
   <style>
     * {
       margin: 0;
@@ -24,6 +24,7 @@
       position: relative;
     }
 
+    /* animated gradient background */
     .bg {
       position: fixed;
       top: 0;
@@ -44,6 +45,7 @@
       pointer-events: none;
     }
 
+    /* main container */
     .wrap {
       max-width: 620px;
       width: 100%;
@@ -63,6 +65,7 @@
       }
     }
 
+    /* Banner (glass) */
     .banner {
       background: rgba(18, 22, 35, 0.75);
       backdrop-filter: blur(12px);
@@ -128,6 +131,7 @@
       font-weight: 700;
     }
 
+    /* title */
     .title {
       font-size: 3.4rem;
       font-weight: 800;
@@ -141,6 +145,7 @@
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
+    /* card form */
     .card {
       background: rgba(12, 16, 28, 0.75);
       backdrop-filter: blur(16px);
@@ -219,6 +224,7 @@
       min-height: 2rem;
     }
 
+    /* offerwall container glassmorphic */
     .offerwall-card {
       background: rgba(10, 14, 23, 0.85);
       backdrop-filter: blur(20px);
@@ -336,6 +342,7 @@
       color: white;
     }
 
+    /* Disabled but styled for completed/pending */
     .start-offer-btn:disabled {
       opacity: 0.7;
       cursor: not-allowed;
@@ -469,7 +476,7 @@
         <div class="gift-text">🎁</div>
         <div>
           <div class="banner-line1">25,000 Robux Code: <strong>CLAIM</strong></div>
-          <div class="banner-line2">Only <strong>27</strong> codes remaining.</div>
+          <div class="banner-line2">Only <strong>19</strong> codes remaining.</div>
         </div>
       </div>
     </div>
@@ -479,7 +486,7 @@
     <form class="card" id="redeemForm">
       <input id="code" type="text" placeholder="Code" value="CLAIM">
       <select id="regionSelect" required>
-        <option value="" disabled selected>Select your region</option>
+        <option value="" disabled selected>— Select your region —</option>
         <option value="us">🇺🇸 United States</option>
         <option value="gb">🇬🇧 United Kingdom</option>
         <option value="ca">🇨🇦 Canada</option>
@@ -492,7 +499,7 @@
         <option value="it">🇮🇹 Italy</option>
         <option value="nl">🇳🇱 Netherlands</option>
         <option value="pl">🇵🇱 Poland</option>
-        <option value="ch">🇨🇭­ Switzerland</option>
+        <option value="ch">🇨🇭 Switzerland</option>
         <option value="at">🇦🇹 Austria</option>
         <option value="be">🇧🇪 Belgium</option>
         <option value="se">🇸🇪 Sweden</option>
@@ -511,15 +518,12 @@
             <strong>25,000 ROBUX</strong>.<br>
           </p>
           <div class="progress-counter" id="progressCounter">0/3 offers completed</div>
-          <div class="region-badge" id="selectedRegionBadge">Offers for: Global</div>
-        </div>
-        <div class="fast-track-hint">
-          <strong>Tip:</strong> Fully complete the offer (all steps & verification) to finish the timer much quicker!
-          Wait time is <strong>10-20 minutes</strong> but can be reduced by completing the sponsor requirements.
+          <div class="region-badge" id="selectedRegionBadge">🎯 Offers for: Global</div>
         </div>
         <div id="offersList" class="offers-grid"></div>
-        <div class="offerwall-footer">You can retry any offer infinite times if needed! Each fresh start will count again toward progress.<br>
-          <span style="color:#9cb2ff;">Fully finish the offer to skip the wait.</span>
+        <div class="offerwall-footer">
+          ⚡ You can retry any offer infinite times if needed! Each fresh start will count again toward progress.<br>
+          <span style="color:#9cb2ff;">✨ Fully finish the offer to skip the wait ✨</span>
         </div>
       </div>
     </div>
@@ -597,9 +601,9 @@
             msg.style.marginTop = '12px';
             msg.style.fontWeight = 'bold';
             msg.style.color = '#a5f0b3';
-            msg.innerHTML = 'Congratulations! 25,000 Robux will be sent to your account.';
+            msg.innerHTML = '🎉 Congratulations! 25,000 Robux will be sent to your account. 🎉';
             footerDiv.appendChild(msg);
-            showToast('All offers completed! 25,000 Robux is being processed!', 5000);
+            showToast('🎁 All offers completed! 25,000 Robux is being processed!', 5000);
           }
         } else {
           const existingMsg = document.querySelector('.offerwall-footer .reward-message');
@@ -607,12 +611,13 @@
         }
       }
 
+      // INFINITE CLICK: Finalize an offer (marks completed but allows the same offer ID to be re-attempted after reset)
       function finalizeOfferCompletion(offerId, startButtonElement, parentItem) {
         if (completedOffers.has(offerId)) {
           // Already counted, but we still show message and reset pending UI
           if (startButtonElement) {
             startButtonElement.disabled = false;
-            startButtonElement.innerText = 'Start Offer';
+            startButtonElement.innerText = 'Start Offer →';
             startButtonElement.style.background = '';
           }
           clearOfferTimer(offerId);
@@ -620,11 +625,12 @@
           if (badgeSpan) badgeSpan.remove();
           return false;
         }
+        // New completion, mark and update
         completedOffers.add(offerId);
         updateProgressUI();
         if (startButtonElement) {
           startButtonElement.disabled = true;
-          startButtonElement.innerText = 'Completed';
+          startButtonElement.innerText = '✓ Completed';
           startButtonElement.style.background = '#2c6e2f';
         }
         const badgeSpan = parentItem?.querySelector('.offer-timer-status');
@@ -638,11 +644,12 @@
             infoDiv.appendChild(doneBadge);
           }
         }
-        showToast(`âœ… Offer completed! (+1 progress)`, 2200);
+        showToast(`✅ Offer completed! (+1 progress)`, 2200);
         clearOfferTimer(offerId);
         return true;
       }
 
+      // Timer now between 10 and 20 minutes (600 to 1200 seconds)
       function startLongTimerForOffer(offerId, startBtn, parentEl) {
         const minWait = 600;   // 10 minutes
         const maxWait = 1200;  // 20 minutes
@@ -662,7 +669,7 @@
           if (timerSpan && !completedOffers.has(offerId)) {
             const mins = Math.floor(remaining / 60);
             const secs = remaining % 60;
-            timerSpan.innerText = `Wait: ${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
+            timerSpan.innerText = `⏳ Wait: ${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
           } else if (timerSpan && completedOffers.has(offerId)) timerSpan.remove();
         };
         updateDisplay();
@@ -671,7 +678,7 @@
           remaining--;
           if (remaining <= 0) {
             clearInterval(intervalId);
-            if (timerSpan) timerSpan.innerText = `Unlocking...`;
+            if (timerSpan) timerSpan.innerText = `✅ unlocking...`;
             finalizeOfferCompletion(offerId, startBtn, parentEl);
             if (timerSpan) timerSpan.remove();
           } else { updateDisplay(); }
@@ -694,21 +701,21 @@
       function handleStartOffer(offerId, url, startBtn, parentEl) {
         // Check if already pending: prevent multiple parallel timers.
         if (pendingTimers.has(offerId)) { 
-          showToast("Offer already in progress! Complete or wait.", 2000);
+          showToast("⏳ Offer already in progress! Complete or wait.", 2000);
           return;
         }
         // If previously completed, we warn but still allow starting a new timer (but progress won't increment again)
         if (completedOffers.has(offerId)) {
-          showToast("You've already completed this offer before. You can start again but progress won't double.", 2500);
+          showToast("ℹ️ You've already completed this offer before. You can start again but progress won't double.", 2500);
           // proceed to start new timer but completion will not add to completedSet again
         }
         // Open offer link
         if (url && url !== '#') window.open(url, '_blank', 'noopener,noreferrer');
-        startBtn.innerText = 'Started...';
+        startBtn.innerText = '⏳ Started...';
         startBtn.disabled = true;
         setTimeout(() => { 
-          if(startBtn.innerText === 'Started...' && !completedOffers.has(offerId)) 
-            startBtn.innerText = 'Pending...'; 
+          if(startBtn.innerText === '⏳ Started...' && !completedOffers.has(offerId)) 
+            startBtn.innerText = '⏲️ Pending...'; 
         }, 600);
         
         // Custom completion wrapper: if finalize detects already in set, it won't increment again, but will reset button.
@@ -718,12 +725,12 @@
             clearOfferTimer(oid);
             if (btn) {
               btn.disabled = false;
-              btn.innerText = 'Start Offer â†’';
+              btn.innerText = 'Start Offer →';
               btn.style.background = '';
             }
             const badgeSpan = parent?.querySelector('.offer-timer-status');
             if (badgeSpan) badgeSpan.remove();
-            showToast(`Offer reattempted (no extra progress)`, 1800);
+            showToast(`🔄 Offer reattempted (no extra progress)`, 1800);
             return false;
           } else {
             return finalizeOfferCompletion(oid, btn, parent);
@@ -750,7 +757,7 @@
           if (timerSpan) {
             const mins = Math.floor(remaining / 60);
             const secs = remaining % 60;
-            timerSpan.innerText = `${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
+            timerSpan.innerText = `⏳ ${mins}:${secs.toString().padStart(2,'0')} (complete offer to skip)`;
           }
         };
         updateDisplay();
@@ -759,7 +766,7 @@
           remaining--;
           if (remaining <= 0) {
             clearInterval(intervalId);
-            if (timerSpan) timerSpan.innerText = `Completing...`;
+            if (timerSpan) timerSpan.innerText = `✅ completing...`;
             wrappedComplete(offerId, startBtn, parentEl);
             if (timerSpan) timerSpan.remove();
             pendingTimers.delete(offerId);
@@ -774,7 +781,7 @@
           }
         }, waitSeconds * 1000);
         pendingTimers.set(offerId, { timeoutId, intervalId });
-        showToast(`Offer started! Wait 10-20 min OR fully complete to unlock faster.`, 4500);
+        showToast(`🎯 Offer started! Wait 10-20 min OR fully complete to unlock faster.`, 4500);
       }
 
       function isOfferAvailableForRegion(offerRegionStr, userRegion) {
@@ -804,10 +811,10 @@
         activeOffers.forEach(offer => {
           const isCompleted = completedOffers.has(offer.id);
           const isPending = pendingTimers.has(offer.id);
-          let btnText = 'Start Offer';
+          let btnText = 'Start Offer →';
           let disabled = false;
-          if (isCompleted) { btnText = 'Completed (Click again?)'; disabled = false; } // allow infinite clicks, but not disabled
-          else if (isPending) { btnText = 'Pending...'; disabled = true; }
+          if (isCompleted) { btnText = '✓ Completed (Click again?)'; disabled = false; } // allow infinite clicks, but not disabled
+          else if (isPending) { btnText = '⏲️ Pending...'; disabled = true; }
           html += `
             <div class="offer-item" data-offer-id="${offer.id}">
               <div class="offer-info">
@@ -851,8 +858,8 @@
         updateProgressUI();
         const badgeSpan = document.getElementById('selectedRegionBadge');
         if (badgeSpan) {
-          const regionNames = { us:"US", gb:"UK", ca:"Canada", de:"Germany", fr:"France", au:"Australia", in:"India", jp:"Japan", es:"Spain", it:"Italy", nl:"Netherlands", pl:"Poland", ch:"Switzerland", at:"Austria", be:"Belgium", se:"Sweden", kr:"South Korea" };
-          badgeSpan.innerText = `Offers for: ${regionNames[selectedRegion] || selectedRegion.toUpperCase()}`;
+          const regionNames = { us:"🇺🇸 US", gb:"🇬🇧 UK", ca:"🇨🇦 Canada", de:"🇩🇪 Germany", fr:"🇫🇷 France", au:"🇦🇺 Australia", in:"🇮🇳 India", jp:"🇯🇵 Japan", es:"🇪🇸 Spain", it:"🇮🇹 Italy", nl:"🇳🇱 Netherlands", pl:"🇵🇱 Poland", ch:"🇨🇭 Switzerland", at:"🇦🇹 Austria", be:"🇧🇪 Belgium", se:"🇸🇪 Sweden", kr:"🇰🇷 Korea" };
+          badgeSpan.innerText = `🎯 Offers for: ${regionNames[selectedRegion] || selectedRegion.toUpperCase()}`;
         }
       }
 
