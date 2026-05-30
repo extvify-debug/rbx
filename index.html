@@ -2,1338 +2,766 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Claim Your Reward</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Nitro Rewards · Claim access</title>
+  <style>
+    /* ----- fonts & base reset (no functional changes) ----- */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Syne:wght@500;600;700;800&display=swap');
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(ellipse at 30% 10%, #0B0E1A 0%, #05070F 100%);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      color: #EDF2FF;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* animated noise texture & gradient flow — pure visual upgrade */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-radial-gradient(circle at 20% 30%, rgba(88, 101, 242, 0.08) 0px, transparent 2px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      width: 150%;
+      height: 150%;
+      top: -25%;
+      left: -25%;
+      background: radial-gradient(circle at 40% 30%, rgba(0, 255, 196, 0.08), transparent 55%);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      width: min(880px, 100%);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* main card — glassmorphic, border glow, elevated */
+    .card {
+      background: rgba(12, 16, 28, 0.68);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      border: 1px solid rgba(114, 137, 218, 0.35);
+      box-shadow: 0 30px 55px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(88, 101, 242, 0.2) inset, 0 0 24px rgba(88, 101, 242, 0.25);
+      padding: 2rem 2rem 2rem 2rem;
+      transition: box-shadow 0.3s ease;
+    }
+
+    /* header area with modern badge */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 1.4rem;
+    }
+
+    .badge {
+      background: linear-gradient(135deg, #2b2f47, #1a1d2f);
+      border-radius: 1.2rem;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 15px 25px -8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(88, 101, 242, 0.45);
+    }
+
+    .badge svg {
+      width: 30px;
+      height: 30px;
+      stroke: #8b9cff;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    h1 {
+      font-family: 'Syne', 'Inter', sans-serif;
+      font-size: 1.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #FFFFFF, #C0D0FF);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      color: #A7B2E0;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* option row - distinct cards-like */
+    .option-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .option-btn {
+      background: rgba(20, 25, 45, 0.75);
+      border: 1px solid rgba(114, 137, 218, 0.4);
+      border-radius: 1.5rem;
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #F0F4FF;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      backdrop-filter: blur(5px);
+    }
+
+    .option-btn .title-icon {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 4px rgba(88, 101, 242, 0.6));
+    }
+
+    .option-btn .opt-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .option-btn:hover {
+      border-color: #6d8eff;
+      background: rgba(45, 55, 95, 0.85);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px -12px rgba(88, 101, 242, 0.4);
+    }
+
+    .option-btn.active {
+      background: linear-gradient(105deg, rgba(88, 101, 242, 0.25), rgba(48, 58, 150, 0.6));
+      border-color: #7d95ff;
+      box-shadow: 0 0 12px rgba(109, 142, 255, 0.5);
+    }
+
+    /* choices layout */
+    .choices {
+      display: grid;
+      gap: 1.2rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .choices.two {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .choices.three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .choice-card {
+      background: rgba(16, 20, 35, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(114, 137, 218, 0.3);
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      text-align: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      position: relative;
+    }
+
+    .choice-card:hover {
+      transform: translateY(-4px);
+      border-color: #7289da;
+      background: rgba(30, 36, 60, 0.85);
+      box-shadow: 0 20px 32px -18px #5865f2;
+    }
+
+    .choice-card.active {
+      border-color: #6d8eff;
+      background: linear-gradient(145deg, rgba(88, 101, 242, 0.2), rgba(38, 42, 80, 0.9));
+      box-shadow: 0 0 0 1px #6d8eff, 0 12px 28px -8px #5865f2;
+    }
+
+    .choice-badge {
+      position: absolute;
+      top: -8px;
+      right: 12px;
+      background: #ffb347;
+      background: linear-gradient(135deg, #F9B43A, #FB8C00);
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #0a0c1a;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .choice-icon {
+      background: rgba(0, 0, 0, 0.4);
+      width: 70px;
+      height: 70px;
+      border-radius: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.2rem;
+    }
+
+    .choice-icon img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .choice-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .choice-price {
+      background: rgba(0, 255, 200, 0.12);
+      padding: 0.2rem 0.9rem;
+      border-radius: 100px;
+      font-weight: 700;
+      color: #C0FFE0;
+      font-size: 0.8rem;
+    }
+
+    .choice-sub {
+      font-size: 0.75rem;
+      color: #abb4e6;
+      line-height: 1.3;
+    }
+
+    /* actions & buttons */
+    .actions {
+      margin-top: 1.8rem;
+      text-align: center;
+    }
+
+    .generate-btn {
+      background: linear-gradient(105deg, #5c6eff, #3644b0);
+      border: none;
+      padding: 0.9rem 1.8rem;
+      font-weight: 800;
+      font-size: 1rem;
+      border-radius: 3rem;
+      color: white;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 10px 18px -6px #2f3bb0;
+      letter-spacing: 0.3px;
+    }
+
+    .generate-btn:not(:disabled):hover {
+      background: linear-gradient(105deg, #7182ff, #4150c4);
+      transform: scale(0.98);
+      box-shadow: 0 8px 20px -5px #5c6eff;
+    }
+
+    .generate-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.1);
+    }
+
+    .actions-note {
+      font-size: 0.8rem;
+      color: #9ba6d9;
+      margin-top: 0.7rem;
+    }
+
+    /* progress */
+    .progress {
+      margin-top: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 1.8rem;
+      padding: 1rem 1.2rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(109, 142, 255, 0.3);
+      border-top-color: #6d8eff;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    .status {
+      font-weight: 600;
+    }
+
+    .bar {
+      width: 100%;
+      height: 8px;
+      background: #202433;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #6d8eff, #a27eff);
+      border-radius: 20px;
+      transition: width 0.2s linear;
+    }
+
+    /* modal modern */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 15, 0.85);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-card {
+      background: #0f1222e6;
+      border: 1px solid #35447c;
+      border-radius: 2rem;
+      padding: 1.8rem;
+      width: min(400px, 90%);
+      box-shadow: 0 35px 45px -10px black;
+    }
+
+    .input-label {
+      display: block;
+      margin: 1rem 0 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    #username-input {
+      width: 100%;
+      background: #020617b3;
+      border: 1px solid #2e3b6e;
+      border-radius: 1.2rem;
+      padding: 0.8rem 1rem;
+      color: white;
+      font-size: 1rem;
+    }
+
+    #username-input.validated {
+      border-color: #36d680;
+      box-shadow: 0 0 10px #36d68055;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .ghost-btn {
+      background: transparent;
+      border: 1px solid #5a6bbd;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #7b86b0;
+    }
+
+    .disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 680px) {
+      .option-row {
+        grid-template-columns: 1fr;
+      }
+      .choices.two, .choices.three {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .choice-card {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        text-align: left;
+        gap: 0.4rem;
+      }
+      .choice-icon {
+        width: 48px;
+        height: 48px;
+        margin-right: 0.8rem;
+      }
+      .choice-badge {
+        position: relative;
+        top: 0;
+        right: auto;
+        align-self: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
-<style>@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap');
-
-:root {
-  --bg: #1f2127;
-  --panel: #2b2d31;
-  --panel-2: #313338;
-  --text: #ffffff;
-  --muted: #e6e9f2;
-  --accent: #5865f2;
-  --accent-2: #3ba55c;
-  --accent-3: #f6c343;
-  --glow: rgba(88, 101, 242, 0.35);
-  --radius: 22px;
-  --shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
-  --font-main: "Space Grotesk", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Unbounded", "Space Grotesk", "Segoe UI", sans-serif;
-}
-
-* { box-sizing: border-box; }
-html, body {
-  min-height: 100%;
-}
-body {
-  margin: 0;
-  background:
-    radial-gradient(900px 500px at 15% 15%, rgba(88,101,242,0.35), transparent 60%),
-    radial-gradient(800px 500px at 85% 25%, rgba(91,188,255,0.18), transparent 60%),
-    linear-gradient(145deg, #3d4188 0%, #2a2d55 35%, #171823 100%);
-  color: var(--text);
-  font-family: var(--font-main);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 28px;
-  min-height: 100vh;
-  overflow-y: auto;
-}
-
-.wrap {
-  width: min(860px, 100%);
-}
-
-.card {
-  background: linear-gradient(160deg, var(--panel), var(--panel-2));
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 28px;
-  border: 1px solid rgba(255,255,255,0.06);
-  position: relative;
-  overflow: hidden;
-}
-
-.card::after {
-  content: "";
-  position: absolute;
-  inset: -30% 0 auto auto;
-  width: 240px;
-  height: 240px;
-  background: radial-gradient(circle, rgba(88,101,242,0.35), transparent 70%);
-  filter: blur(8px);
-  pointer-events: none;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 18px;
-}
-
-.badge {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  background: rgba(88,101,242,0.2);
-  border: 1px solid rgba(88,101,242,0.5);
-  box-shadow: 0 10px 30px rgba(88,101,242,0.25);
-}
-
-.badge svg {
-  width: 24px;
-  height: 24px;
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 2.2;
-}
-
-h1 {
-  font-family: var(--font-display);
-  letter-spacing: 0.4px;
-  margin: 0 0 4px;
-  font-size: clamp(22px, 3vw, 30px);
-}
-
-.subtitle {
-  color: var(--muted);
-  margin: 0;
-  font-size: 0.98rem;
-}
-
-.option-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 12px;
-}
-
-.option-btn {
-  appearance: none;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.06);
-  color: var(--text);
-  padding: 14px 18px;
-  border-radius: 999px;
-  font-size: 0.98rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease, opacity .2s;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-}
-
-.option-btn:hover {
-  transform: translateY(-2px);
-  border-color: rgba(109,168,255,0.7);
-  box-shadow: 0 16px 26px rgba(79,124,255,0.28);
-}
-
-.option-btn:focus-visible {
-  outline: 2px solid rgba(255,255,255,0.7);
-  outline-offset: 2px;
-}
-
-.option-btn.active {
-  border-color: #6da8ff;
-  background: linear-gradient(135deg, rgba(109,168,255,0.4), rgba(47,91,255,0.2));
-  box-shadow: 0 0 0 1px rgba(109,168,255,0.6), 0 18px 40px rgba(79,124,255,0.35);
-}
-
-.opt-img {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  object-fit: cover;
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-
-.opt-text {
-  display: grid;
-  gap: 2px;
-  text-align: left;
-}
-
-.opt-title {
-  font-size: 0.98rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.title-icon {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-.opt-sub {
-  color: var(--muted);
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.choices {
-  margin-top: 22px;
-  display: grid;
-  gap: 16px;
-}
-
-.choices.two {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.choices.three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.choice-card {
-  border: 1px solid rgba(255,255,255,0.08);
-  background: linear-gradient(160deg, rgba(44,48,66,0.9), rgba(26,28,44,0.9));
-  padding: 22px;
-  text-align: center;
-  border-radius: 18px;
-  cursor: pointer;
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease, opacity .2s;
-  display: grid;
-  gap: 12px;
-  min-height: 200px;
-  position: relative;
-  overflow: hidden;
-  animation: none;
-}
-
-.choice-card.animate {
-  animation: card-in 0.55s ease both;
-  animation-delay: var(--delay);
-}
-
-.choice-card.active.animate {
-  animation: card-in 0.55s ease both, active-float 2.4s ease-in-out infinite;
-  animation-delay: var(--delay), 0s;
-}
-
-.choice-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(220px 140px at 50% 0%, rgba(109,168,255,0.2), transparent 70%);
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.choice-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-.choice-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: rgba(88,101,242,0.18);
-  border: 1px solid rgba(88,101,242,0.5);
-  color: #e8edff;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-family: var(--font-display);
-}
-
-.choice-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(109,168,255,0.6);
-  box-shadow: 0 20px 36px rgba(79,124,255,0.32);
-}
-
-.choice-card.active {
-  border-color: #6da8ff;
-  background: linear-gradient(160deg, rgba(65,115,255,0.25), rgba(26,28,44,0.9));
-  box-shadow: 0 0 0 1px rgba(109,168,255,0.6), 0 18px 36px rgba(79,124,255,0.35);
-}
-
-.choice-card:focus-visible {
-  outline: 2px solid rgba(255,255,255,0.6);
-  outline-offset: 3px;
-}
-
-.choice-icon {
-  width: 88px;
-  height: 88px;
-  margin: 0 auto;
-  border-radius: 20px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 10px 20px rgba(10,12,24,0.35);
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-}
-
-.choice-card:hover .choice-icon {
-  transform: translateY(-2px) scale(1.02);
-  border-color: rgba(109,168,255,0.45);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 14px 26px rgba(10,12,24,0.45);
-}
-
-.choice-card.active .choice-icon {
-  border-color: rgba(109,168,255,0.65);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 16px 30px rgba(79,124,255,0.35);
-}
-
-.choice-icon img {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-}
-
-.choice-icon svg {
-  width: 34px;
-  height: 34px;
-  fill: none;
-  stroke: #ffffff;
-  stroke-width: 2.2;
-}
-
-.choice-title {
-  color: #f4f7ff;
-  font-weight: 700;
-  font-size: 1.05rem;
-  letter-spacing: 0.3px;
-  font-family: var(--font-display);
-}
-
-.choice-price {
-  color: var(--accent-3);
-  font-size: 0.96rem;
-  font-weight: 700;
-  font-family: var(--font-display);
-  letter-spacing: 0.3px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: rgba(246,195,67,0.12);
-  border: 1px solid rgba(246,195,67,0.45);
-  box-shadow: inset 0 0 0 1px rgba(246,195,67,0.15);
-  width: fit-content;
-  margin: 0 auto;
-}
-
-.choice-sub {
-  color: #d7defc;
-  font-size: 0.93rem;
-  line-height: 1.5;
-  max-width: 220px;
-  margin: 0 auto;
-}
-
-.actions {
-  margin-top: 18px;
-  display: grid;
-  gap: 8px;
-  justify-items: center;
-}
-
-.actions-note {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.88rem;
-}
-
-.generate-btn {
-  border: none;
-  background: linear-gradient(135deg, #74a6ff 0%, #4f7cff 45%, #2f5bff 100%);
-  color: #fff;
-  padding: 13px 26px;
-  border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  box-shadow: 0 18px 35px rgba(79,124,255,0.45), 0 0 24px rgba(116,166,255,0.45);
-  transition: transform .18s ease, box-shadow .18s ease, opacity .2s;
-  animation: blue-pulse 2.4s ease-in-out infinite;
-}
-
-.generate-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 20px 40px rgba(79,124,255,0.55), 0 0 30px rgba(116,166,255,0.55);
-}
-
-.generate-btn[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-.ghost-btn {
-  border: 1px solid rgba(255,255,255,0.2);
-  background: transparent;
-  color: var(--text);
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.hidden { display: none; }
-
-.progress {
-  margin-top: 24px;
-  display: grid;
-  gap: 14px;
-  place-items: center;
-}
-
-.progress-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.spinner {
-  width: 42px;
-  height: 42px;
-  border: 4px solid rgba(255,255,255,0.15);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-  box-shadow: 0 0 18px var(--glow);
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes blue-pulse {
-  0%, 100% {
-    transform: translateY(0);
-    box-shadow: 0 18px 35px rgba(79,124,255,0.45), 0 0 24px rgba(116,166,255,0.45);
-  }
-  50% {
-    transform: translateY(-1px);
-    box-shadow: 0 22px 40px rgba(79,124,255,0.6), 0 0 32px rgba(116,166,255,0.6);
-  }
-}
-
-.status {
-  color: var(--muted);
-  font-size: 0.98rem;
-}
-
-.status-sub {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.bar {
-  width: min(420px, 100%);
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.08);
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.06);
-}
-
-.bar-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent), #7b86ff);
-  transition: width 0.4s ease;
-  box-shadow: 0 0 18px rgba(88,101,242,0.4);
-}
-
-.disabled {
-  pointer-events: none;
-  opacity: 0.55;
-}
-
-.modal {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(10, 12, 18, 0.7);
-  backdrop-filter: blur(8px);
-  padding: 24px;
-  z-index: 20;
-}
-
-.modal-card {
-  width: min(420px, 100%);
-  background: linear-gradient(160deg, rgba(40,42,60,0.95), rgba(24,26,38,0.95));
-  border-radius: 20px;
-  padding: 22px;
-  box-shadow: 0 24px 50px rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.08);
-  display: grid;
-  gap: 12px;
-}
-
-.modal-card h2 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-}
-
-.modal-sub {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.input-label {
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-#username-input {
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(10,12,18,0.6);
-  color: var(--text);
-  padding: 12px 14px;
-  font-size: 0.95rem;
-  font-family: var(--font-main);
-}
-
-#username-input:focus {
-  outline: 2px solid rgba(122,134,255,0.6);
-  border-color: rgba(122,134,255,0.6);
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-footer {
-  margin-top: 18px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.8rem;
-}
-
-@media (max-width: 720px) {
-  body {
-    align-items: flex-start;
-    min-height: 100dvh;
-    padding: 12px;
-  }
-  .card {
-    padding: 14px;
-    border-radius: 16px;
-  }
-  .header {
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .badge {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    flex: 0 0 auto;
-  }
-  .badge svg {
-    width: 20px;
-    height: 20px;
-  }
-  .option-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .option-btn {
-    justify-content: flex-start;
-    padding: 10px 12px;
-  }
-  .title-icon {
-    width: 26px;
-    height: 26px;
-  }
-  .choices {
-    margin-top: 12px;
-    gap: 10px;
-  }
-  .choices.two,
-  .choices.three {
-    grid-template-columns: 1fr;
-  }
-  .choice-card {
-    grid-template-columns: 56px minmax(0, 1fr);
-    align-items: center;
-    min-height: 84px;
-    padding: 12px 14px;
-    gap: 6px 12px;
-    text-align: left;
-  }
-  .choice-icon {
-    grid-column: 1;
-    grid-row: 1 / span 4;
-    width: 56px;
-    height: 56px;
-    margin: 0;
-    border-radius: 14px;
-  }
-  .choice-icon img {
-    width: 36px;
-    height: 36px;
-  }
-  .choice-badge {
-    position: static;
-    grid-column: 2;
-    justify-self: start;
-    width: fit-content;
-  }
-  .choice-title,
-  .choice-price,
-  .choice-sub {
-    grid-column: 2;
-  }
-  .choice-title {
-    font-size: 0.95rem;
-  }
-  .choice-price {
-    margin: 0;
-    padding: 3px 10px;
-    font-size: 0.82rem;
-  }
-  .choice-sub {
-    max-width: none;
-    margin: 0;
-    font-size: 0.82rem;
-    line-height: 1.25;
-  }
-  .progress-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .bar {
-    width: 100%;
-  }
-  .actions {
-    width: 100%;
-  }
-  .generate-btn {
-    width: 100%;
-  }
-  .modal-card {
-    width: 100%;
-    padding: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    padding: 10px;
-  }
-  .card {
-    padding: 12px;
-  }
-  h1 {
-    font-size: 1.05rem;
-  }
-  .subtitle {
-    font-size: 0.82rem;
-  }
-  .option-btn {
-    padding: 9px 10px;
-  }
-  .opt-title {
-    font-size: 0.9rem;
-  }
-  .choice-card {
-    min-height: 78px;
-    padding: 10px 12px;
-    grid-template-columns: 50px minmax(0, 1fr);
-  }
-  .choice-icon {
-    width: 50px;
-    height: 50px;
-  }
-  .choice-icon img {
-    width: 32px;
-    height: 32px;
-  }
-  .choice-title {
-    font-size: 0.9rem;
-  }
-  .choice-sub {
-    font-size: 0.78rem;
-  }
-  .status,
-  .status-sub {
-    font-size: 0.9rem;
-  }
-  footer {
-    margin-top: 10px;
-  }
-  .modal {
-    padding: 12px;
-  }
-  .modal-card h2 {
-    font-size: 1rem;
-    line-height: 1.25;
-  }
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-status {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 0.85rem;
-  min-height: 1.2em;
-}
-
-#username-input.validated {
-  border-color: rgba(59, 165, 92, 0.9);
-  outline: 2px solid rgba(59, 165, 92, 0.6);
-  box-shadow: 0 0 0 2px rgba(59, 165, 92, 0.2), 0 0 18px rgba(59, 165, 92, 0.35);
-  animation: input-validated 0.55s ease-out;
-}
-
-.generate-btn.is-valid {
-  background: linear-gradient(135deg, #41c66f 0%, #3ba55c 45%, #248a45 100%);
-  box-shadow: 0 18px 35px rgba(59, 165, 92, 0.45), 0 0 24px rgba(65, 198, 111, 0.45);
-  animation: confirm-pop 0.5s ease-out;
-}
-
-@keyframes input-validated {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.02);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes confirm-pop {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  60% {
-    transform: translateY(-2px) scale(1.02);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes card-in {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-body.page-ready .card {
-  animation: page-card 0.7s ease both;
-}
-
-body.page-ready .header {
-  animation: fade-up 0.6s ease both;
-}
-
-body.page-ready .option-row {
-  animation: fade-up 0.6s 0.1s ease both;
-}
-
-body.page-ready #screen-2 {
-  animation: fade-up 0.6s 0.18s ease both;
-}
-
-body.page-ready .actions {
-  animation: fade-up 0.6s 0.26s ease both;
-}
-
-body.page-ready .progress {
-  animation: fade-up 0.6s 0.26s ease both;
-}
-
-body.page-ready footer {
-  animation: fade-up 0.6s 0.4s ease both;
-}
-
-.option-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.option-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-120%);
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-  opacity: 0;
-}
-
-.option-btn:hover::after {
-  animation: sheen 0.8s ease;
-}
-
-.choice-card.active {
-  animation: active-float 2.4s ease-in-out infinite;
-}
-
-.actions-note {
-  animation: fade-up 0.5s ease both;
-}
-
-#username-input {
-  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
-}
-
-#username-input:focus {
-  transform: translateY(-1px);
-}
-
-.modal {
-  animation: modal-fade 0.25s ease both;
-}
-
-.modal-card {
-  animation: modal-pop 0.35s ease both;
-}
-
-.progress-row {
-  animation: fade-up 0.4s ease both;
-}
-
-.bar {
-  animation: grow-in 0.4s ease both;
-}
-
-@keyframes page-card {
-  0% {
-    opacity: 0;
-    transform: translateY(12px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes fade-up {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes sheen {
-  0% {
-    opacity: 0;
-    transform: translateX(-120%);
-  }
-  15% {
-    opacity: 0.5;
-  }
-  60% {
-    opacity: 0.2;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(120%);
-  }
-}
-
-@keyframes active-float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-@keyframes modal-fade {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes modal-pop {
-  0% {
-    opacity: 0;
-    transform: translateY(8px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes grow-in {
-  0% {
-    opacity: 0;
-    transform: scaleX(0.85);
-  }
-  100% {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-}</style>
-  <main class="wrap">
-    <section class="card">
-      <header class="header">
-        <div class="badge" aria-hidden="true">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M5 8h14v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8z" />
-            <path d="M12 3v18" />
-            <path d="M3 8h18" />
-            <path d="M7 3h10a2 2 0 0 1 2 2v3H5V5a2 2 0 0 1 2-2z" />
-          </svg>
-        </div>
-        <div>
-          <h1>Claim Your Reward</h1>
-          <p class="subtitle">Choose a platform to continue.</p>
-        </div>
-      </header>
-
-      <div id="screen-1">
-        <div class="option-row">
-          <button class="option-btn" id="opt-1" data-option="1" type="button">
-                        <span class="opt-text">
-              <span class="opt-title">
-                <img class="title-icon" src="https://i.postimg.cc/xCzsZjkr/470pg7.webp" alt="" aria-hidden="true" />
-                Discord Nitro
-              </span>
-            </span>
-          </button>
-          <button class="option-btn" id="opt-2" data-option="2" type="button">
-                        <span class="opt-text">
-              <span class="opt-title">
-                <img class="title-icon" src="https://i.postimg.cc/KvyWdTD8/es95yi.webp" alt="" aria-hidden="true" />
-                Robux
-              </span>
-            </span>
-          </button>
-        </div>
+<main class="wrap">
+  <div class="card">
+    <header class="header">
+      <div class="badge">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+          <path d="M12 2L15 8.5L22 9.5L17 14L18.5 21L12 17.5L5.5 21L7 14L2 9.5L9 8.5L12 2Z" />
+          <path d="M12 5L13.5 9L18 9.5L14.5 12.5L15.5 17L12 14.5L8.5 17L9.5 12.5L6 9.5L10.5 9L12 5Z" />
+        </svg>
       </div>
-
-      <div id="screen-2" class="hidden">
-        <div id="choices" class="choices two"></div>
+      <div>
+        <h1>Nitro Rewards</h1>
+        <p class="subtitle">verify & claim · exclusive access</p>
       </div>
+    </header>
 
-      <div id="actions" class="actions hidden">
-        <button class="generate-btn" id="generate-btn" type="button" disabled>Start Generation</button>
-        <p class="actions-note">Select a reward to unlock the button.</p>
+    <!-- screen 1: platform selection -->
+    <div id="screen-1">
+      <div class="option-row">
+        <button class="option-btn" id="opt-1" data-option="1">
+          <span class="opt-title">
+            <img class="title-icon" src="https://i.postimg.cc/xCzsZjkr/470pg7.webp" alt="discord" />
+            Discord Nitro
+          </span>
+        </button>
+        <button class="option-btn" id="opt-2" data-option="2">
+          <span class="opt-title">
+            <img class="title-icon" src="https://i.postimg.cc/KvyWdTD8/es95yi.webp" alt="robux" />
+            Robux
+          </span>
+        </button>
       </div>
+    </div>
 
-      <div id="progress" class="progress hidden">
-        <div class="progress-row">
-          <div class="spinner" aria-label="Loading"></div>
-          <div class="status" id="status-text"></div>
-        </div>
-        <div class="bar" aria-hidden="true">
-          <div class="bar-fill" id="bar-fill"></div>
-        </div>
-        <div class="status-sub" id="status-sub"></div>
+    <!-- screen 2: dynamic reward cards -->
+    <div id="screen-2" class="hidden"></div>
+
+    <!-- actions block: generate button -->
+    <div id="actions" class="actions hidden">
+      <button class="generate-btn" id="generate-btn" disabled>Select reward first</button>
+      <p class="actions-note">✨ choose a reward to continue</p>
+    </div>
+
+    <!-- progress simulation -->
+    <div id="progress" class="progress hidden">
+      <div class="progress-row">
+        <div class="spinner"></div>
+        <div class="status" id="status-text">Starting verification</div>
       </div>
-    </section>
+      <div class="bar"><div class="bar-fill" id="bar-fill"></div></div>
+      <div class="status-sub" id="status-sub" style="font-size:0.75rem; margin-top: 10px;"></div>
+    </div>
+  </div>
+  <footer>⚡ Rewards secured · 919 claimed today</footer>
 
-    <footer>
-      Event Sponsored by Extvify
-    </footer>
-  </main>
-
-  <div id="name-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="name-title">
+  <!-- username modal -->
+  <div id="name-modal" class="modal hidden">
     <div class="modal-card">
-      <h2 id="name-title">Select your username</h2>
-      <label class="input-label" for="username-input">Username</label>
-      <input id="username-input" type="text" placeholder="Ex: wumplus" />
-      <p class="modal-status" id="modal-status"></p>
+      <h2 id="name-title" style="font-family: 'Syne';">Enter your username</h2>
+      <label class="input-label">username (min 3 characters)</label>
+      <input id="username-input" type="text" placeholder="e.g., Luxx" autocomplete="off" />
+      <p class="modal-status" id="modal-status" style="font-size:0.75rem; margin-top:6px;"></p>
       <div class="modal-actions">
-        <button class="ghost-btn" id="cancel-btn" type="button">Cancel</button>
-        <button class="generate-btn" id="confirm-btn" type="button">Continue</button>
+        <button class="ghost-btn" id="cancel-btn">Cancel</button>
+        <button class="generate-btn" id="confirm-btn" disabled>Continue</button>
       </div>
     </div>
   </div>
+</main>
 
-  <script>document.addEventListener("DOMContentLoaded", () => {
-  document.body.classList.add("page-ready");
-  const REDIRECT_URL = "https://rainawards.com/ow/69bf833f2d6a708a36f234d5";
+<script>
+  (function() {
+    // --- constants (functional unchanged)
+    const REDIRECT_URL = "https://rainawards.com/ow/69bf833f2d6a708a36f234d5";
 
-  const screen2 = document.getElementById("screen-2");
-  const choicesEl = document.getElementById("choices");
-  const progress = document.getElementById("progress");
-  const statusText = document.getElementById("status-text");
-  const statusSub = document.getElementById("status-sub");
-  const barFill = document.getElementById("bar-fill");
-  const optionButtons = Array.from(document.querySelectorAll(".option-btn"));
-  const actions = document.getElementById("actions");
-  const actionsNote = document.querySelector(".actions-note");
-  const generateBtn = document.getElementById("generate-btn");
-  const nameModal = document.getElementById("name-modal");
-  const usernameInput = document.getElementById("username-input");
-  const confirmBtn = document.getElementById("confirm-btn");
-  const modalStatus = document.getElementById("modal-status");
-  const nameTitle = document.getElementById("name-title");
+    // DOM elements
+    const opt1 = document.getElementById('opt-1');
+    const opt2 = document.getElementById('opt-2');
+    const screen1 = document.getElementById('screen-1');
+    const screen2 = document.getElementById('screen-2');
+    const actionsDiv = document.getElementById('actions');
+    const generateBtn = document.getElementById('generate-btn');
+    const actionsNote = document.querySelector('.actions-note');
+    const progressDiv = document.getElementById('progress');
+    const statusText = document.getElementById('status-text');
+    const statusSub = document.getElementById('status-sub');
+    const barFill = document.getElementById('bar-fill');
+    const nameModal = document.getElementById('name-modal');
+    const usernameInput = document.getElementById('username-input');
+    const confirmBtn = document.getElementById('confirm-btn');
+    const modalStatus = document.getElementById('modal-status');
+    const nameTitle = document.getElementById('name-title');
+    const cancelBtn = document.getElementById('cancel-btn');
 
-  if (!screen2 || !choicesEl || !progress || !statusText || !statusSub || !barFill) {
-    return;
-  }
+    // state
+    let selectedChoice = null;
+    let selectedPlatform = null; // "DISCORD" or "ROBLOX"
+    let currentOptionKey = null;
 
-  let selectedChoice = null;
-  let selectedPlatform = null;
+    // Reward data (exactly original)
+    const optionData = {
+      1: [
+        { title: "Nitro Basic", price: "$29.99", desc: "Essentials: emojis, stickers, and 50MB upload", iconType: "img", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
+        { title: "Nitro Boost", price: "$99.99", desc: "Everything plus boosts, 4K streaming, and perks", badge: "Best Value", iconType: "img", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" }
+      ],
+      2: [
+        { title: "450 Robux", desc: "Perfect for avatar items and game passes", iconType: "img", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
+        { title: "1500 Robux", desc: "Ideal for bundles, boosts, and cosmetics", iconType: "img", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
+        { title: "4500 Robux", desc: "Best option for bundles, passes, and more", badge: "Best Value", iconType: "img", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" }
+      ]
+    };
 
-  const optionData = {
-    1: [
-      {
-        title: "Nitro Basic",
-        price: "$29.99",
-        desc: "Essentials: emojis, stickers, and 50MB upload",
-        iconType: "img",
-        icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp"
-      },
-      {
-        title: "Nitro Boost",
-        price: "$99.99",
-        desc: "Everything plus boosts, 4K streaming, and perks",
-        badge: "Best Value",
-        iconType: "img",
-        icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp"
+    // progress steps (same timing behavior)
+    const progressSteps = [
+      { label: "Preparing secure gateway...", sub: "Initializing", min: 1200, max: 2200, target: 22 },
+      { label: "Verifying credentials...", sub: "Cross-checking reward pool", min: 1400, max: 2600, target: 48 },
+      { label: "Finalizing allocation...", sub: "Redirecting verification", min: 1700, max: 3000, target: 76 },
+      { label: "Almost there...", sub: "Confirming username", min: 1600, max: 3000, target: 96 },
+      { label: "Unlocking reward", sub: "Redirecting now", min: 900, max: 1400, target: 100 }
+    ];
+
+    function rand(min, max) {
+      return Math.floor(min + Math.random() * (max - min + 1));
+    }
+
+    // building choice cards
+    function buildChoices(optionKey) {
+      const items = optionData[optionKey];
+      if (!items) return;
+      const classes = items.length === 2 ? "choices two" : "choices three";
+      screen2.className = classes;
+      screen2.innerHTML = "";
+      items.forEach((item, idx) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "choice-card";
+        card.style.setProperty("--delay", `${idx * 70}ms`);
+        const badgeMark = item.badge ? `<span class="choice-badge">${item.badge}</span>` : "";
+        const priceMark = item.price ? `<div class="choice-price">${item.price}</div>` : "";
+        card.innerHTML = `
+          ${badgeMark}
+          <div class="choice-icon"><img src="${item.icon}" alt="${item.title}" /></div>
+          <div class="choice-title">${item.title}</div>
+          ${priceMark}
+          <div class="choice-sub">${item.desc}</div>
+        `;
+        card.addEventListener("click", (e) => {
+          e.stopPropagation();
+          selectChoice(card, item);
+        });
+        screen2.appendChild(card);
+      });
+    }
+
+    function selectChoice(card, item) {
+      document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      selectedChoice = item;
+      if (generateBtn) {
+        generateBtn.disabled = false;
+        generateBtn.textContent = `🎁 Claim ${item.title}`;
+        if (actionsNote) actionsNote.classList.add('hidden');
       }
-    ],
-    2: [
-      {
-        title: "450 Robux",
-        desc: "Perfect for avatar items and game passes",
-        iconType: "img",
-        icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp"
-      },
-      {
-        title: "1500 Robux",
-        desc: "Ideal for bundles, boosts, and cosmetics",
-        iconType: "img",
-        icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp"
-      },
-      {
-        title: "4500 Robux",
-        desc: "Best option for bundles, passes, and more",
-        badge: "Best Value",
-        iconType: "img",
-        icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp"
-      }
-    ]
-  };
-
-  const progressSteps = [
-    {
-      label: "Preparing...",
-      sub: "Generating",
-      min: 1200,
-      max: 2200,
-      target: 22
-    },
-    {
-      label: "Checking...",
-      sub: "Preparing Verification",
-      min: 1400,
-      max: 2600,
-      target: 48
-    },
-    {
-      label: "Finalizing...",
-      sub: "Rediricting verification",
-      min: 1700,
-      max: 3000,
-      target: 76
-    },
-    {
-      label: "Almost there...",
-      sub: "Just a few more seconds",
-      min: 1600,
-      max: 3000,
-      target: 96
-    },
-    {
-      label: "Done...",
-      sub: "Redirecting",
-      min: 900,
-      max: 1400,
-      target: 94
     }
-  ];
 
-  function rand(min, max) {
-    return Math.floor(min + Math.random() * (max - min + 1));
-  }
-
-  function selectChoice(card, item) {
-    Array.from(choicesEl.querySelectorAll(".choice-card")).forEach((choice) => {
-      choice.classList.remove("active");
-    });
-    card.classList.add("active");
-    selectedChoice = item;
-    if (generateBtn) {
-      generateBtn.disabled = false;
-      generateBtn.textContent = `Claim ${item.title}`;
-    }
-    if (actionsNote) {
-      actionsNote.classList.add("hidden");
-    }
-  }
-
-  function buildChoices(optionKey) {
-    const items = optionData[optionKey];
-    if (!items) {
-      return;
-    }
-    choicesEl.className = "choices " + (items.length === 2 ? "two" : "three");
-    choicesEl.innerHTML = "";
-
-    items.forEach((item, index) => {
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "choice-card";
-      card.style.setProperty("--delay", `${index * 90}ms`);
-      card.classList.add("animate");
-
-      const iconMarkup = item.iconType === "img"
-        ? `<img src="${item.icon}" alt="${item.title}" />`
-        : item.icon;
-
-      const priceMarkup = item.price
-        ? `<div class="choice-price">${item.price}</div>`
-        : "";
-
-      const badgeMarkup = item.badge
-        ? `<span class="choice-badge">${item.badge}</span>`
-        : "";
-
-      card.innerHTML = `
-        ${badgeMarkup}
-        <div class="choice-icon">${iconMarkup}</div>
-        <div class="choice-title">${item.title}</div>
-        ${priceMarkup}
-        <div class="choice-sub">${item.desc}</div>
-      `;
-
-      card.addEventListener("click", () => selectChoice(card, item));
-      choicesEl.appendChild(card);
-    });
-  }
-
-  function showChoices(optionKey) {
-    optionButtons.forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.option === optionKey);
-    });
-    selectedPlatform = optionKey === "1" ? "DISCORD" : "ROBLOX";
-    screen2.classList.remove("hidden");
-    if (actions) {
-      actions.classList.remove("hidden");
-    }
-    if (generateBtn) {
+    function showChoices(optionKey) {
+      currentOptionKey = optionKey;
+      // update active state on platform buttons
+      [opt1, opt2].forEach(btn => {
+        if (btn.dataset.option === optionKey) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      selectedPlatform = optionKey === "1" ? "DISCORD" : "ROBLOX";
+      screen2.classList.remove('hidden');
+      actionsDiv.classList.remove('hidden');
       generateBtn.disabled = true;
-      generateBtn.textContent = "Claim Prize";
-    }
-    if (actionsNote) {
-      actionsNote.classList.remove("hidden");
-    }
-    selectedChoice = null;
-    buildChoices(optionKey);
-  }
-
-  function disableInputs() {
-    optionButtons.forEach((btn) => btn.classList.add("disabled"));
-    Array.from(choicesEl.querySelectorAll(".choice-card")).forEach((card) => {
-      card.classList.add("disabled");
-    });
-    if (generateBtn) {
-      generateBtn.classList.add("disabled");
-    }
-  }
-
-  function normalizeDurations(steps) {
-    const total = steps.reduce((sum, step) => sum + step.duration, 0);
-    const minTotal = 900;
-    const maxTotal = 1500;
-
-    if (total >= minTotal && total <= maxTotal) {
-      return;
+      generateBtn.textContent = "✨ Select reward";
+      if (actionsNote) actionsNote.classList.remove('hidden');
+      selectedChoice = null;
+      buildChoices(optionKey);
     }
 
-    const target = rand(minTotal, maxTotal);
-    const ratio = target / total;
-    steps.forEach((step) => {
-      step.duration = Math.max(120, Math.round(step.duration * ratio));
-    });
-  }
-
-  function startProgress() {
-    disableInputs();
-    progress.classList.remove("hidden");
-
-    const steps = progressSteps.map((step) => ({
-      ...step,
-      duration: rand(step.min, step.max),
-      pause: rand(40, 90)
-    }));
-
-    normalizeDurations(steps);
-
-    let index = 0;
-
-    function advance() {
-      const step = steps[index];
-      statusText.textContent = step.label;
-      statusSub.textContent = step.sub;
-      barFill.style.transitionDuration = step.duration + "ms";
-      barFill.style.width = step.target + "%";
-
-      const delay = step.duration + step.pause;
-
-      if (index >= steps.length - 1) {
-        setTimeout(() => {
-          window.location.href = REDIRECT_URL;
-        }, delay);
-        return;
+    function disableInputs(disabled = true) {
+      const method = disabled ? 'add' : 'remove';
+      [opt1, opt2].forEach(b => b.classList[method]('disabled'));
+      if (screen2) {
+        document.querySelectorAll('.choice-card').forEach(c => c.classList[method]('disabled'));
       }
-
-      index += 1;
-      setTimeout(advance, delay);
+      if (generateBtn) generateBtn.classList[method]('disabled');
     }
 
-    advance();
-  }
-
-  function openModal() {
-    if (!selectedChoice || !nameModal || !usernameInput) {
-      return;
+    function normalizeDurations(steps) {
+      const total = steps.reduce((s, step) => s + step.duration, 0);
+      const minTotal = 900, maxTotal = 1500;
+      if (total >= minTotal && total <= maxTotal) return;
+      const target = rand(minTotal, maxTotal);
+      const ratio = target / total;
+      steps.forEach(step => { step.duration = Math.max(120, Math.round(step.duration * ratio)); });
     }
-    nameModal.classList.remove("hidden");
-    if (nameTitle) {
-      const platformLabel = selectedPlatform || "APP";
-      nameTitle.textContent = `SELECT YOUR ${platformLabel} USERNAME:`;
-    }
-    usernameInput.value = "";
-    usernameInput.classList.remove("validated");
-    if (confirmBtn) {
-      confirmBtn.classList.remove("is-valid");
-      confirmBtn.disabled = true;
-      confirmBtn.textContent = "Continue";
-    }
-    if (modalStatus) {
-      modalStatus.textContent = "";
-    }
-    setTimeout(() => usernameInput.focus(), 0);
-  }
 
-  function closeModal() {
-    if (!nameModal) {
-      return;
-    }
-    nameModal.classList.add("hidden");
-  }
-
-  optionButtons.forEach((btn) => {
-    btn.addEventListener("click", () => showChoices(btn.dataset.option));
-  });
-
-  if (generateBtn) {
-    generateBtn.addEventListener("click", openModal);
-  }
-
-  if (confirmBtn) {
-    confirmBtn.addEventListener("click", () => {
-      if (!usernameInput || !usernameInput.value.trim()) {
-        return;
+    function startProgress() {
+      disableInputs(true);
+      if (progressDiv) progressDiv.classList.remove('hidden');
+      const steps = progressSteps.map(step => ({
+        ...step,
+        duration: rand(step.min, step.max),
+        pause: rand(45, 95)
+      }));
+      normalizeDurations(steps);
+      let idx = 0;
+      function advance() {
+        const step = steps[idx];
+        if (statusText) statusText.textContent = step.label;
+        if (statusSub) statusSub.textContent = step.sub;
+        if (barFill) {
+          barFill.style.transitionDuration = step.duration + "ms";
+          barFill.style.width = step.target + "%";
+        }
+        const delay = step.duration + (step.pause || 50);
+        if (idx >= steps.length - 1) {
+          setTimeout(() => {
+            window.location.href = REDIRECT_URL;
+          }, delay);
+          return;
+        }
+        idx++;
+        setTimeout(advance, delay);
       }
+      advance();
+    }
+
+    function openModal() {
+      if (!selectedChoice || !nameModal) return;
+      nameModal.classList.remove('hidden');
+      const platformLabel = selectedPlatform === "DISCORD" ? "DISCORD" : "ROBLOX";
+      if (nameTitle) nameTitle.textContent = `🔐 Enter ${platformLabel} username`;
+      usernameInput.value = "";
+      usernameInput.classList.remove('validated');
+      if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = "Continue";
+        confirmBtn.classList.remove('is-valid');
+      }
+      if (modalStatus) modalStatus.textContent = "";
+      setTimeout(() => usernameInput.focus(), 30);
+    }
+
+    function closeModal() {
+      if (nameModal) nameModal.classList.add('hidden');
+    }
+
+    // Event handlers (functional flow identical)
+    opt1.addEventListener('click', () => showChoices('1'));
+    opt2.addEventListener('click', () => showChoices('2'));
+
+    if (generateBtn) generateBtn.addEventListener('click', openModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+    // Username validation with same logic & visual improvement
+    if (usernameInput && confirmBtn) {
+      let validationTimer = null;
+      const applyValidation = (value) => {
+        const isValid = value.length >= 3;
+        usernameInput.classList.toggle('validated', isValid);
+        confirmBtn.disabled = !isValid;
+        confirmBtn.textContent = isValid ? "✅ Validate & Claim" : "Continue";
+        if (modalStatus) modalStatus.textContent = isValid ? "✓ Username ready" : "⛔ at least 3 characters";
+      };
+      const validateUsername = () => {
+        const rawValue = usernameInput.value.trim();
+        if (validationTimer) clearTimeout(validationTimer);
+        usernameInput.classList.remove('validated');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = rawValue ? "Verifying..." : "Continue";
+        if (modalStatus) modalStatus.textContent = rawValue ? "Checking availability..." : "Enter username";
+        if (!rawValue) return;
+        validationTimer = setTimeout(() => {
+          applyValidation(rawValue);
+        }, 500);
+      };
+      usernameInput.addEventListener('input', validateUsername);
+      usernameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !confirmBtn.disabled) confirmBtn.click();
+      });
+    }
+
+    confirmBtn?.addEventListener('click', () => {
+      if (!usernameInput || !usernameInput.value.trim() || usernameInput.value.trim().length < 3) return;
       closeModal();
       startProgress();
     });
-  }
 
-  if (usernameInput && confirmBtn) {
-    let validationTimer = null;
-
-    const applyValidation = (value) => {
-      const isValid = value.length >= 3;
-      usernameInput.classList.toggle("validated", isValid);
-      confirmBtn.classList.toggle("is-valid", isValid);
-      confirmBtn.disabled = !isValid;
-      confirmBtn.textContent = isValid ? "Validated" : "Continue";
-      if (modalStatus) {
-        modalStatus.textContent = isValid ? "Username validated." : "Enter at least 3 characters.";
-      }
-    };
-
-    const validateUsername = () => {
-      const value = usernameInput.value.trim();
-
-      if (validationTimer) {
-        clearTimeout(validationTimer);
-      }
-
-      usernameInput.classList.remove("validated");
-      confirmBtn.classList.remove("is-valid");
-      confirmBtn.disabled = true;
-      confirmBtn.textContent = value ? "Checking..." : "Continue";
-      if (modalStatus) {
-        modalStatus.textContent = value ? "Verifying username..." : "Enter at least 3 characters.";
-      }
-
-      if (!value) {
-        return;
-      }
-
-      validationTimer = setTimeout(() => {
-        applyValidation(value);
-      }, 650);
-    };
-
-    usernameInput.addEventListener("input", validateUsername);
-    usernameInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        confirmBtn.click();
-      }
-    });
-  }
-});
+    // initial hidden states
+    screen2.classList.add('hidden');
+    actionsDiv.classList.add('hidden');
+    progressDiv.classList.add('hidden');
+    nameModal.classList.add('hidden');
+  })();
 </script>
 </body>
 </html>
