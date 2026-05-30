@@ -40,7 +40,7 @@
     }
 
     .wrap {
-      width: min(840px, 100%);
+      width: min(820px, 100%);
       position: relative;
       z-index: 2;
     }
@@ -49,7 +49,7 @@
     .lang-switcher {
       display: flex;
       justify-content: flex-end;
-      gap: 0.75rem;
+      gap: 0.5rem;
       margin-bottom: 1.25rem;
       flex-wrap: wrap;
     }
@@ -59,7 +59,7 @@
       text-decoration: none;
       font-size: 0.7rem;
       font-weight: 500;
-      padding: 0.25rem 0.75rem;
+      padding: 0.25rem 0.7rem;
       border-radius: 2rem;
       transition: all 0.2s;
       background: rgba(255, 255, 255, 0.04);
@@ -68,7 +68,7 @@
 
     .lang-link:hover {
       color: white;
-      background: rgba(88, 101, 242, 0.35);
+      background: rgba(88, 101, 242, 0.3);
     }
 
     .lang-link.active {
@@ -79,45 +79,23 @@
     /* Main Card */
     .card {
       background: #0f1119;
-      border-radius: 1.75rem;
+      border-radius: 1.5rem;
       border: 1px solid rgba(88, 101, 242, 0.12);
-      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.4);
       padding: 2rem;
     }
 
     .header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .badge {
-      background: #1a1c28;
-      border-radius: 1rem;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(88, 101, 242, 0.3);
-    }
-
-    .badge svg {
-      width: 24px;
-      height: 24px;
-      stroke: #8b9cff;
-      stroke-width: 1.8;
-      fill: none;
+      margin-bottom: 1rem;
     }
 
     h1 {
       font-family: 'Unbounded', 'Space Grotesk', sans-serif;
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 700;
       letter-spacing: -0.3px;
       color: #fff;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.3rem;
     }
 
     .subtitle {
@@ -134,15 +112,15 @@
       font-size: 0.7rem;
       font-weight: 500;
       color: #8b9cff;
-      margin: 0.5rem 0 1.5rem 0;
+      margin: 0.75rem 0 1.5rem 0;
     }
 
-    /* Choices Grid - Exactly 2 cards */
+    /* Choices Grid - Exactly 2 cards side by side */
     .choices {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1.25rem;
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.5rem;
     }
 
     .choice-card {
@@ -315,26 +293,52 @@
       margin-bottom: 1rem;
     }
 
-    .faq-list details {
-      background: #0f1119;
-      border-radius: 0.75rem;
-      padding: 0.7rem 1rem;
-      margin-top: 0.6rem;
-      border: 1px solid rgba(88, 101, 242, 0.1);
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
     }
 
-    .faq-list summary {
+    .faq-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 0.6rem;
+    }
+
+    .faq-question {
       font-weight: 600;
-      cursor: pointer;
       color: #e0e5ff;
       font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .faq-list p {
-      margin-top: 0.5rem;
+    .faq-question:hover {
+      color: #8b9cff;
+    }
+
+    .faq-answer {
       font-size: 0.75rem;
       color: #9a9fc0;
       line-height: 1.4;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-question::after {
+      content: "▼";
+      font-size: 0.6rem;
+      color: #6a6f90;
+      transition: transform 0.2s;
+    }
+
+    .faq-item.open .faq-question::after {
+      transform: rotate(180deg);
     }
 
     footer {
@@ -344,7 +348,7 @@
       margin-top: 1.5rem;
     }
 
-    /* Activity Toasts - Clean bottom left */
+    /* Activity Toasts */
     .activity-toasts {
       position: fixed;
       bottom: 24px;
@@ -449,30 +453,19 @@
     <div id="google_translate_element" style="display: none;"></div>
 
     <section class="card">
-      <header class="header">
-        <div class="badge">
-          <svg viewBox="0 0 24 24">
-            <path d="M5 8h14v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8z" />
-            <path d="M12 3v18" />
-            <path d="M3 8h18" />
-            <path d="M7 3h10a2 2 0 0 1 2 2v3H5V5a2 2 0 0 1 2-2z" />
-          </svg>
-        </div>
-        <div>
-          <h1>Daily Reward Options</h1>
-          <p class="subtitle">Explore available rewards and continue to the verification step to claim access.</p>
-        </div>
-      </header>
+      <div class="header">
+        <h1>Daily Reward Options</h1>
+        <p class="subtitle">Explore available rewards in English and continue to the verification step to claim access.</p>
+      </div>
       <p class="trust-note">No password required.</p>
 
       <div class="choices">
         <button type="button" class="choice-card" data-choice="Nitro Boost">
-          <span class="choice-badge">Best Value</span>
+          <span class="choice-badge">BEST VALUE</span>
           <div class="choice-icon">
             <img src="https://i.postimg.cc/3JgsR1xh/nitroboost.webp" alt="Nitro Boost" />
           </div>
           <div class="choice-title">Nitro Boost</div>
-          <div class="choice-price">$99.99</div>
           <div class="choice-sub">Top Nitro option with boosts, streaming perks, and profile extras.</div>
         </button>
         <button type="button" class="choice-card" data-choice="4500 Robux">
@@ -480,7 +473,6 @@
             <img src="https://i.postimg.cc/1RgP9DFD/robux-1.webp" alt="4500 Robux" />
           </div>
           <div class="choice-title">4500 Robux</div>
-          <div class="choice-price">$49.99</div>
           <div class="choice-sub">Large Robux pack for upgrades, passes, and future drops.</div>
         </button>
       </div>
@@ -498,25 +490,25 @@
     </section>
 
     <section class="seo-content">
-      <div class="eyebrow">Questions</div>
+      <div class="eyebrow">QUESTIONS</div>
       <h2>Reward access FAQ</h2>
       <div class="faq-list">
-        <details>
-          <summary>Do I need to enter my password?</summary>
-          <p>No. This page does not ask for your password. Never share your Discord, Roblox, email, or account password.</p>
-        </details>
-        <details>
-          <summary>Which reward options are available today?</summary>
-          <p>Available rewards may include Discord Nitro and Robux, depending on the current reward page and verification flow.</p>
-        </details>
-        <details>
-          <summary>What does verification check?</summary>
-          <p>The verification step helps confirm device and offer eligibility before you continue to claim access.</p>
-        </details>
-        <details>
-          <summary>Can I come back later?</summary>
-          <p>Yes. You can return to the reward page later to review daily events and available options again.</p>
-        </details>
+        <div class="faq-item">
+          <div class="faq-question">Do I need to enter my password?</div>
+          <div class="faq-answer">No. This page does not ask for your password. Never share your Discord, Roblox, email, or account password.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Which reward options are available today?</div>
+          <div class="faq-answer">Available rewards may include Discord Nitro and Robux, depending on the current reward page and verification flow.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What does verification check?</div>
+          <div class="faq-answer">The verification step helps confirm device and offer eligibility before you continue to claim access.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Can I come back later?</div>
+          <div class="faq-answer">Yes. You can return to the reward page later to review daily events and available options again.</div>
+        </div>
       </div>
     </section>
 
@@ -538,6 +530,14 @@
       function getRandomRedirect() {
         return REDIRECT_URLS[Math.floor(Math.random() * REDIRECT_URLS.length)];
       }
+
+      // FAQ accordion
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+          item.classList.toggle('open');
+        });
+      });
 
       // Google Translate integration
       const langMap = { en: 'en', fr: 'fr', es: 'es', pt: 'pt', id: 'id' };
@@ -653,7 +653,7 @@
 
       generateBtn.addEventListener('click', startProgress);
 
-      // Activity toasts (clean, no emojis)
+      // Activity toasts
       const toastContainer = document.getElementById('toastContainer');
       const countries = [
         { flag: "🇬🇧", name: "UK" }, { flag: "🇺🇸", name: "USA" }, { flag: "🇨🇦", name: "Canada" },
