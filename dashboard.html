@@ -12,14 +12,23 @@
     }
     body {
       background: #0a0c15;
-      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 2rem;
     }
-    .login-container, .dashboard-container {
+    .dashboard-container {
+      background: #0f1119;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(88, 101, 242, 0.2);
+      padding: 2rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
+    }
+    .login-container {
       background: #0f1119;
       border-radius: 1.5rem;
       border: 1px solid rgba(88, 101, 242, 0.2);
@@ -27,26 +36,34 @@
       width: 100%;
       max-width: 400px;
       text-align: center;
-      box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
     }
     h1 {
       font-family: 'Unbounded', sans-serif;
       font-size: 1.5rem;
+      font-weight: 600;
       background: linear-gradient(135deg, #fff, #b0c0ff);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.2px;
     }
     input {
       width: 100%;
-      padding: 0.8rem;
+      padding: 0.8rem 1rem;
       margin: 0.5rem 0;
       background: #13161f;
-      border: 1px solid rgba(88,101,242,0.3);
+      border: 1px solid rgba(88, 101, 242, 0.3);
       border-radius: 0.8rem;
       color: white;
       font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input:focus {
+      border-color: #5865f2;
     }
     button {
       width: 100%;
@@ -57,21 +74,28 @@
       border-radius: 2rem;
       color: white;
       font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
+      transition: transform 0.1s, background 0.2s;
+    }
+    button:hover {
+      background: linear-gradient(105deg, #6d7eff, #535fdb);
+      transform: scale(0.98);
     }
     .stats {
       margin: 1.5rem 0;
-      text-align: left;
     }
     .stat-card {
       background: #13161f;
-      padding: 1rem;
+      padding: 1rem 1.2rem;
       border-radius: 1rem;
       margin-bottom: 1rem;
       border-left: 3px solid #5865f2;
     }
     .stat-label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       color: #9a9fc0;
       margin-bottom: 0.3rem;
     }
@@ -79,16 +103,27 @@
       font-size: 2rem;
       font-weight: 700;
       color: white;
+      line-height: 1.2;
     }
     .error {
       color: #ff6b6b;
       font-size: 0.8rem;
-      margin-top: 0.5rem;
+      margin-top: 0.8rem;
     }
     .logout {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       margin-top: 0.5rem;
+    }
+    .logout:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: scale(0.98);
+    }
+    .footer-note {
+      font-size: 0.7rem;
+      color: #5a5f80;
+      text-align: center;
+      margin-top: 1.5rem;
     }
   </style>
 </head>
@@ -105,15 +140,10 @@
     return { views, redirects };
   }
 
-  function saveStats(views, redirects) {
-    localStorage.setItem('extvify_pageViews', views);
-    localStorage.setItem('extvify_redirects', redirects);
-  }
-
   function renderLogin() {
     document.getElementById('app').innerHTML = `
       <div class="login-container">
-        <h1>🔐 Admin Login</h1>
+        <h1>Admin Access</h1>
         <input type="text" id="username" placeholder="Username" autocomplete="off">
         <input type="password" id="password" placeholder="Password">
         <button id="loginBtn">Login</button>
@@ -132,31 +162,52 @@
     });
   }
 
+  let refreshInterval = null;
+
+  function updateStatsDisplay() {
+    const { views, redirects } = getStats();
+    const viewsElem = document.getElementById('stat-views');
+    const redirectsElem = document.getElementById('stat-redirects');
+    if (viewsElem) viewsElem.innerText = views.toLocaleString();
+    if (redirectsElem) redirectsElem.innerText = redirects.toLocaleString();
+  }
+
   function renderDashboard() {
+    // stop any previous interval
+    if (refreshInterval) clearInterval(refreshInterval);
+    
     const { views, redirects } = getStats();
     document.getElementById('app').innerHTML = `
       <div class="dashboard-container">
-        <h1>📊 Extvify Dashboard</h1>
+        <h1>Extvify Dashboard</h1>
         <div class="stats">
           <div class="stat-card">
-            <div class="stat-label">👁️ Total Page Views</div>
-            <div class="stat-number">${views.toLocaleString()}</div>
+            <div class="stat-label">Total Page Views</div>
+            <div class="stat-number" id="stat-views">${views.toLocaleString()}</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">🔄 Total Redirects</div>
-            <div class="stat-number">${redirects.toLocaleString()}</div>
+            <div class="stat-label">Total Redirects</div>
+            <div class="stat-number" id="stat-redirects">${redirects.toLocaleString()}</div>
           </div>
         </div>
         <button id="logoutBtn" class="logout">Logout</button>
+        <div class="footer-note">Live updates every 3 seconds</div>
       </div>
     `;
+    
+    // start live updates (poll every 3 seconds)
+    refreshInterval = setInterval(() => {
+      updateStatsDisplay();
+    }, 3000);
+    
     document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (refreshInterval) clearInterval(refreshInterval);
       sessionStorage.removeItem('extvify_auth');
       renderLogin();
     });
   }
 
-  // Check authentication status
+  // Check authentication
   if (sessionStorage.getItem('extvify_auth') === 'true') {
     renderDashboard();
   } else {
