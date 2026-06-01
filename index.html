@@ -189,7 +189,7 @@
     .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
     footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
 
-    /* ----- FIXED SIZE TOASTS (PC / LAPTOP / iPad) - HIDDEN ON MOBILE ----- */
+    /* ----- TOAST CONTAINER WITH STACK LIMIT (max 3) + SMOOTH ANIMATIONS ----- */
     .activity-toasts {
       position: fixed;
       bottom: 24px;
@@ -199,6 +199,8 @@
       flex-direction: column;
       gap: 12px;
       pointer-events: none;
+      max-height: 400px;
+      overflow: visible;
     }
     .activity-toast {
       background: #1a1c2a;
@@ -212,6 +214,7 @@
       animation: slideInLeft 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
       border-left: 4px solid;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
     .toast-nitro { border-left-color: #5865f2; }
     .toast-robux { border-left-color: #f5b042; }
@@ -254,17 +257,16 @@
       color: #8a8fb0;
     }
     @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-40px); }
+      from { opacity: 0; transform: translateX(-30px); }
       to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Hide toasts completely on mobile devices (screen width < 768px) */
+    /* Hide toasts on mobile */
     @media (max-width: 767px) {
       .activity-toasts {
         display: none !important;
       }
     }
-
     @media (max-width: 500px) {
       body { padding: 1rem; }
       .card { padding: 1.2rem; }
@@ -367,13 +369,11 @@
     }
 
     // ----- PER-DEVICE DAILY ROTATION FOR ROBUX -----
-    // Static Nitro rewards
     const nitroRewards = [
       { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload, custom profile themes", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
       { id: "nitro_boost", title: "Nitro Boost", desc: "2 Server Boosts, 1080p streaming, animated avatar, profile banner", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" }
     ];
 
-    // 10 different Robux options (title + description)
     const robuxOptions = [
       { amount: "800", desc: "Small pack for avatar items, accessories, and game passes" },
       { amount: "1,200", desc: "Great for a few game passes or a full outfit" },
@@ -387,12 +387,9 @@
       { amount: "12,000", desc: "Ultimate Robux pack for everything you need" }
     ];
 
-    // Get today's date as string (YYYY-MM-DD)
     const todayStr = new Date().toISOString().slice(0,10);
     const storageKey = 'extvify_robux_day';
     let storedRobux = null;
-
-    // Check if we have a stored pair for today
     const storedData = localStorage.getItem(storageKey);
     if (storedData) {
       try {
@@ -402,9 +399,7 @@
         }
       } catch(e) {}
     }
-
     if (!storedRobux) {
-      // Pick two different random Robux options
       const shuffled = [...robuxOptions];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -414,18 +409,15 @@
       localStorage.setItem(storageKey, JSON.stringify({ date: todayStr, robux: selected }));
       storedRobux = selected;
     }
-
     const robux1 = storedRobux[0];
     const robux2 = storedRobux[1];
 
-    // Build dynamic rewards array: two Nitro + two selected Robux
     const rewards = [
       ...nitroRewards,
       { id: "robux_daily1", title: `${robux1.amount} Robux`, desc: robux1.desc, icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
       { id: "robux_daily2", title: `${robux2.amount} Robux`, desc: robux2.desc, icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" }
     ];
 
-    // For activity toasts, include these two amounts
     const activityRewards = [
       { name: "Nitro Boost", type: "nitro", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
       { name: `${robux2.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
@@ -521,7 +513,8 @@
       });
     });
 
-    // Social proof toasts
+    // --- STACKED TOASTS WITH COOL FADE-OUT + SLIDE ANIMATION (max 3) ---
+    const toastContainer = document.getElementById('activity-toasts');
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
@@ -541,9 +534,13 @@
       return `${minutes} minute${minutes===1?'':'s'} and ${remainder} seconds ago`;
     }
     function showActivityToast() {
-      const toastContainer = document.getElementById('activity-toasts');
       if (!toastContainer) return;
       if (window.innerWidth < 768) return;
+      // limit to 3 toasts
+      while (toastContainer.children.length >= 3) {
+        const oldest = toastContainer.lastElementChild;
+        if (oldest) oldest.remove();
+      }
       let available = countryNames.filter(c => c !== lastCountry);
       if (available.length === 0) available = countryNames.slice();
       const country = available[Math.floor(Math.random() * available.length)];
@@ -562,12 +559,14 @@
         </div>
       `;
       toastContainer.prepend(toast);
-      while (toastContainer.children.length > 3) toastContainer.lastElementChild.remove();
+      // schedule fade-out + slide
       setTimeout(() => {
         toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.3s';
-        setTimeout(() => toast.remove(), 300);
-      }, 6000);
+        toast.style.transform = 'translateX(-15px)';
+        setTimeout(() => {
+          if (toast.parentNode) toast.remove();
+        }, 300);
+      }, 5500);
     }
 
     if (window.innerWidth >= 768) {
