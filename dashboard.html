@@ -1,1 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extvify Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0a0c15;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .login-container, .dashboard-container {
+      background: #0f1119;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(88, 101, 242, 0.2);
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+    }
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, #fff, #b0c0ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      background: #13161f;
+      border: 1px solid rgba(88,101,242,0.3);
+      border-radius: 0.8rem;
+      color: white;
+      font-family: inherit;
+    }
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      background: linear-gradient(105deg, #5865f2, #4752c4);
+      border: none;
+      border-radius: 2rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .stats {
+      margin: 1.5rem 0;
+      text-align: left;
+    }
+    .stat-card {
+      background: #13161f;
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #5865f2;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: #9a9fc0;
+      margin-bottom: 0.3rem;
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+    }
+    .error {
+      color: #ff6b6b;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    .logout {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
 
+<script>
+  const VALID_USER = "extvify";
+  const VALID_PASS = "extvify12345";
+
+  function getStats() {
+    const views = parseInt(localStorage.getItem('extvify_pageViews') || 0);
+    const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
+    return { views, redirects };
+  }
+
+  function saveStats(views, redirects) {
+    localStorage.setItem('extvify_pageViews', views);
+    localStorage.setItem('extvify_redirects', redirects);
+  }
+
+  function renderLogin() {
+    document.getElementById('app').innerHTML = `
+      <div class="login-container">
+        <h1>🔐 Admin Login</h1>
+        <input type="text" id="username" placeholder="Username" autocomplete="off">
+        <input type="password" id="password" placeholder="Password">
+        <button id="loginBtn">Login</button>
+        <div id="errorMsg" class="error"></div>
+      </div>
+    `;
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if (user === VALID_USER && pass === VALID_PASS) {
+        sessionStorage.setItem('extvify_auth', 'true');
+        renderDashboard();
+      } else {
+        document.getElementById('errorMsg').innerText = 'Invalid credentials. Access denied.';
+      }
+    });
+  }
+
+  function renderDashboard() {
+    const { views, redirects } = getStats();
+    document.getElementById('app').innerHTML = `
+      <div class="dashboard-container">
+        <h1>📊 Extvify Dashboard</h1>
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-label">👁️ Total Page Views</div>
+            <div class="stat-number">${views.toLocaleString()}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">🔄 Total Redirects</div>
+            <div class="stat-number">${redirects.toLocaleString()}</div>
+          </div>
+        </div>
+        <button id="logoutBtn" class="logout">Logout</button>
+      </div>
+    `;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('extvify_auth');
+      renderLogin();
+    });
+  }
+
+  // Check authentication status
+  if (sessionStorage.getItem('extvify_auth') === 'true') {
+    renderDashboard();
+  } else {
+    renderLogin();
+  }
+</script>
+</body>
+</html>
