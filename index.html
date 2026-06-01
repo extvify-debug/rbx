@@ -308,7 +308,7 @@
     <h3>Claim Your Reward — FAQ</h3>
     <div class="faq-list">
       <div class="faq-item"><div class="faq-question">Do I need to enter my password?</div><div class="faq-answer">Absolutely not! We never ask for your email or password. Your account stays 100% secure.</div></div>
-      <div class="faq-item"><div class="faq-question">Which rewards are available?</div><div class="faq-answer">Discord Nitro (Basic / Boost) and Robux packs (2,500 & 4,500). Availability may vary by region but restocks happen daily.</div></div>
+      <div class="faq-item"><div class="faq-question">Which rewards are available?</div><div class="faq-answer">Discord Nitro (Basic / Boost) and rotating Robux packs (2 options change daily). Availability may vary by region.</div></div>
       <div class="faq-item"><div class="faq-question">How does verification work?</div><div class="faq-answer">After you select a reward, you'll be redirected to a simple verification page to confirm eligibility – takes less than 5 minutes.</div></div>
       <div class="faq-item"><div class="faq-question">Can I return later?</div><div class="faq-answer">Yes! Rewards refresh every 24 hours, so you can claim again tomorrow. Bookmark this page.</div></div>
     </div>
@@ -366,12 +366,42 @@
       } catch(e) {}
     }
 
-    // Rewards data
-    const rewards = [
+    // ----- REWARD DATA WITH 24-HOUR ROTATION FOR ROBUX -----
+    // Static Nitro rewards
+    const nitroRewards = [
       { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload, custom profile themes", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
-      { id: "nitro_boost", title: "Nitro Boost", desc: "2 Server Boosts, 1080p streaming, animated avatar, profile banner", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
-      { id: "robux_2500", title: "2,500 Robux", desc: "Unlock game passes, avatar items, and boost your favorite experiences", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
-      { id: "robux_4500", title: "4,500 Robux", desc: "Best for limited items, bulk purchases, and supporting creators", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" }
+      { id: "nitro_boost", title: "Nitro Boost", desc: "2 Server Boosts, 1080p streaming, animated avatar, profile banner", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" }
+    ];
+
+    // 10 different Robux options (title + description)
+    const robuxOptions = [
+      { amount: "800", desc: "Small pack for avatar items, accessories, and game passes" },
+      { amount: "1,200", desc: "Great for a few game passes or a full outfit" },
+      { amount: "2,000", desc: "Unlock multiple game passes or limited items" },
+      { amount: "2,500", desc: "Unlock game passes, avatar items, and boost your favorite experiences" },
+      { amount: "3,600", desc: "Perfect for bundle purchases and supporting creators" },
+      { amount: "4,500", desc: "Best for limited items, bulk purchases, and supporting creators" },
+      { amount: "6,000", desc: "Large pack for serious collectors and game advantages" },
+      { amount: "8,000", desc: "Premium amount for high-value limiteds and group funds" },
+      { amount: "10,000", desc: "Massive value for top-tier items and community contributions" },
+      { amount: "12,000", desc: "Ultimate Robux pack for everything you need" }
+    ];
+
+    // Get today's index (changes every 24 hours)
+    const today = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+    const totalRobuxOptions = robuxOptions.length;
+    let startIndex = today % totalRobuxOptions;
+    // Ensure we pick two different indexes (if only one option, fallback but we have 10)
+    let secondIndex = (startIndex + 1) % totalRobuxOptions;
+    // To avoid duplicate when list size is small, but 10 is fine
+    const robux1 = robuxOptions[startIndex];
+    const robux2 = robuxOptions[secondIndex];
+
+    // Build dynamic rewards array: two Nitro + two selected Robux
+    const rewards = [
+      ...nitroRewards,
+      { id: "robux_daily1", title: `${robux1.amount} Robux`, desc: robux1.desc, icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
+      { id: "robux_daily2", title: `${robux2.amount} Robux`, desc: robux2.desc, icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" }
     ];
 
     const rewardList = document.getElementById('rewardList');
@@ -474,8 +504,8 @@
     ];
     const activityRewards = [
       { name: "Nitro Boost", type: "nitro", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
-      { name: "4,500 Robux", type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
-      { name: "2,500 Robux", type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
+      { name: `${robux2.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
+      { name: `${robux1.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
       { name: "Nitro Basic", type: "nitro", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" }
     ];
     let lastCountry = null;
@@ -490,8 +520,6 @@
     function showActivityToast() {
       const toastContainer = document.getElementById('activity-toasts');
       if (!toastContainer) return;
-      // On mobile, the container is hidden by CSS, so we don't need to create toasts.
-      // But we can still check screen width to avoid creating them unnecessarily.
       if (window.innerWidth < 768) return;
       let available = countryNames.filter(c => c !== lastCountry);
       if (available.length === 0) available = countryNames.slice();
