@@ -24,6 +24,7 @@
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
       touch-action: pan-x pan-y;
+      font-size: 16px; /* base for rem */
     }
     button, .reward-card, .claim-btn, .faq-question { touch-action: manipulation; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -188,55 +189,55 @@
     .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
     footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
 
-    /* ----- FULLY RESPONSIVE TOASTS (scales with zoom & screen size) ----- */
+    /* ----- ROBUST TOASTS - WORKS AT 33% ZOOM ----- */
     .activity-toasts {
       position: fixed;
-      bottom: max(12px, 2vh);
-      left: max(12px, 2vw);
+      bottom: 20px;
+      left: 20px;
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: max(8px, 1.5vh);
+      gap: 12px;
       pointer-events: none;
     }
     .activity-toast {
       background: #1a1c2a;
       backdrop-filter: blur(14px);
-      border-radius: max(0.75rem, 2vw);
-      padding: max(0.6rem, 1.8vh) max(0.8rem, 2.5vw);
-      width: min(400px, 80vw);
-      max-width: 420px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      width: 320px;
+      max-width: 85vw;
       display: flex;
       align-items: center;
-      gap: max(0.7rem, 2vw);
+      gap: 12px;
       animation: slideInLeft 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
-      border-left: max(3px, 0.5vw) solid;
+      border-left: 4px solid;
     }
     .toast-nitro { border-left-color: #5865f2; }
     .toast-robux { border-left-color: #f5b042; }
     .toast-icon {
-      width: max(40px, 6vw);
-      height: max(40px, 6vw);
+      width: 48px;
+      height: 48px;
       background: #0f1119;
-      border-radius: max(0.7rem, 1.5vw);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .toast-icon img {
-      width: max(28px, 4vw);
-      height: max(28px, 4vw);
+      width: 34px;
+      height: 34px;
       object-fit: contain;
     }
     .toast-content {
       flex: 1;
     }
     .toast-header {
-      font-size: max(0.7rem, 1.8vw);
+      font-size: 0.85rem;
       color: #c0c5e0;
-      margin-bottom: max(2px, 0.5vh);
+      margin-bottom: 4px;
     }
     .toast-header strong {
       color: #fff;
@@ -244,18 +245,31 @@
     }
     .toast-reward {
       font-weight: 700;
-      font-size: max(0.85rem, 2.2vw);
+      font-size: 1rem;
       color: #fff;
-      margin-bottom: max(2px, 0.5vh);
+      margin-bottom: 4px;
       line-height: 1.3;
     }
     .toast-time {
-      font-size: max(0.6rem, 1.5vw);
+      font-size: 0.7rem;
       color: #8a8fb0;
     }
     @keyframes slideInLeft {
       from { opacity: 0; transform: translateX(-40px); }
       to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Responsive: on very small screens, reduce width slightly */
+    @media (max-width: 450px) {
+      .activity-toast {
+        width: 280px;
+        padding: 10px 12px;
+      }
+      .toast-icon { width: 40px; height: 40px; }
+      .toast-icon img { width: 28px; height: 28px; }
+      .toast-header { font-size: 0.75rem; }
+      .toast-reward { font-size: 0.9rem; }
+      .toast-time { font-size: 0.65rem; }
     }
 
     @media (max-width: 500px) {
@@ -455,7 +469,7 @@
       });
     });
 
-    // Social proof toasts (responsive)
+    // Social proof toasts – fixed size (no zoom issues)
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
@@ -511,15 +525,6 @@
     setTimeout(showActivityToast, 2000);
     setInterval(showActivityToast, 25000);
     buildRewardList();
-
-    // Force repaint on window resize to ensure zoom responsiveness
-    window.addEventListener('resize', () => {
-      const toasts = document.querySelectorAll('.activity-toast');
-      toasts.forEach(toast => {
-        toast.style.transform = 'scale(0.99)';
-        setTimeout(() => { toast.style.transform = ''; }, 50);
-      });
-    });
   })();
 </script>
 </body>
