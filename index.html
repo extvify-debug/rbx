@@ -24,7 +24,7 @@
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
       touch-action: pan-x pan-y;
-      font-size: 16px; /* base for rem */
+      font-size: 16px;
     }
     button, .reward-card, .claim-btn, .faq-question { touch-action: manipulation; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -189,11 +189,11 @@
     .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
     footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
 
-    /* ----- ROBUST TOASTS - WORKS AT 33% ZOOM ----- */
+    /* ----- FIXED SIZE TOASTS (PC / LAPTOP / iPad) - HIDDEN ON MOBILE ----- */
     .activity-toasts {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
+      bottom: 24px;
+      left: 24px;
       z-index: 1000;
       display: flex;
       flex-direction: column;
@@ -204,12 +204,11 @@
       background: #1a1c2a;
       backdrop-filter: blur(14px);
       border-radius: 16px;
-      padding: 12px 16px;
-      width: 320px;
-      max-width: 85vw;
+      padding: 14px 18px;
+      width: 340px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       animation: slideInLeft 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
       border-left: 4px solid;
@@ -217,8 +216,8 @@
     .toast-nitro { border-left-color: #5865f2; }
     .toast-robux { border-left-color: #f5b042; }
     .toast-icon {
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       background: #0f1119;
       border-radius: 12px;
       display: flex;
@@ -227,8 +226,8 @@
       flex-shrink: 0;
     }
     .toast-icon img {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       object-fit: contain;
     }
     .toast-content {
@@ -237,7 +236,7 @@
     .toast-header {
       font-size: 0.85rem;
       color: #c0c5e0;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
     .toast-header strong {
       color: #fff;
@@ -247,7 +246,7 @@
       font-weight: 700;
       font-size: 1rem;
       color: #fff;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
       line-height: 1.3;
     }
     .toast-time {
@@ -259,17 +258,11 @@
       to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Responsive: on very small screens, reduce width slightly */
-    @media (max-width: 450px) {
-      .activity-toast {
-        width: 280px;
-        padding: 10px 12px;
+    /* Hide toasts completely on mobile devices (screen width < 768px) */
+    @media (max-width: 767px) {
+      .activity-toasts {
+        display: none !important;
       }
-      .toast-icon { width: 40px; height: 40px; }
-      .toast-icon img { width: 28px; height: 28px; }
-      .toast-header { font-size: 0.75rem; }
-      .toast-reward { font-size: 0.9rem; }
-      .toast-time { font-size: 0.65rem; }
     }
 
     @media (max-width: 500px) {
@@ -469,7 +462,7 @@
       });
     });
 
-    // Social proof toasts – fixed size (no zoom issues)
+    // Social proof toasts – fixed size, hidden on mobile via CSS
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
@@ -497,6 +490,9 @@
     function showActivityToast() {
       const toastContainer = document.getElementById('activity-toasts');
       if (!toastContainer) return;
+      // On mobile, the container is hidden by CSS, so we don't need to create toasts.
+      // But we can still check screen width to avoid creating them unnecessarily.
+      if (window.innerWidth < 768) return;
       let available = countryNames.filter(c => c !== lastCountry);
       if (available.length === 0) available = countryNames.slice();
       const country = available[Math.floor(Math.random() * available.length)];
@@ -522,8 +518,13 @@
         setTimeout(() => toast.remove(), 300);
       }, 6000);
     }
-    setTimeout(showActivityToast, 2000);
-    setInterval(showActivityToast, 25000);
+
+    // Start toasts only on non-mobile devices
+    if (window.innerWidth >= 768) {
+      setTimeout(showActivityToast, 2000);
+      setInterval(showActivityToast, 25000);
+    }
+
     buildRewardList();
   })();
 </script>
