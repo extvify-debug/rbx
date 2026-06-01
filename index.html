@@ -189,7 +189,7 @@
     .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
     footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
 
-    /* ----- TOAST CONTAINER WITH STACK LIMIT (max 3) + SMOOTH ANIMATIONS ----- */
+    /* ----- FIXED SIZE TOASTS (PC / LAPTOP / iPad) - HIDDEN ON MOBILE ----- */
     .activity-toasts {
       position: fixed;
       bottom: 24px;
@@ -261,7 +261,7 @@
       to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Hide toasts on mobile */
+    /* Hide toasts completely on mobile devices (screen width < 768px) */
     @media (max-width: 767px) {
       .activity-toasts {
         display: none !important;
@@ -405,12 +405,24 @@
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
-      const selected = [shuffled[0], shuffled[1]];
+      let selected = [shuffled[0], shuffled[1]];
+      // Sort selected options by amount (ascending numeric)
+      selected.sort((a, b) => {
+        const numA = parseInt(a.amount.replace(/,/g, ''), 10);
+        const numB = parseInt(b.amount.replace(/,/g, ''), 10);
+        return numA - numB;
+      });
       localStorage.setItem(storageKey, JSON.stringify({ date: todayStr, robux: selected }));
       storedRobux = selected;
     }
-    const robux1 = storedRobux[0];
-    const robux2 = storedRobux[1];
+    // Ensure storedRobux is sorted (in case old data was not)
+    const sortedRobux = [...storedRobux].sort((a, b) => {
+      const numA = parseInt(a.amount.replace(/,/g, ''), 10);
+      const numB = parseInt(b.amount.replace(/,/g, ''), 10);
+      return numA - numB;
+    });
+    const robux1 = sortedRobux[0]; // smaller amount
+    const robux2 = sortedRobux[1]; // larger amount
 
     const rewards = [
       ...nitroRewards,
@@ -513,7 +525,7 @@
       });
     });
 
-    // --- STACKED TOASTS WITH COOL FADE-OUT + SLIDE ANIMATION (max 3) ---
+    // --- STACKED TOASTS (max 3) ---
     const toastContainer = document.getElementById('activity-toasts');
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
@@ -536,7 +548,6 @@
     function showActivityToast() {
       if (!toastContainer) return;
       if (window.innerWidth < 768) return;
-      // limit to 3 toasts
       while (toastContainer.children.length >= 3) {
         const oldest = toastContainer.lastElementChild;
         if (oldest) oldest.remove();
@@ -559,7 +570,6 @@
         </div>
       `;
       toastContainer.prepend(toast);
-      // schedule fade-out + slide
       setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(-15px)';
