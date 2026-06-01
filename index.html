@@ -308,7 +308,7 @@
     <h3>Claim Your Reward — FAQ</h3>
     <div class="faq-list">
       <div class="faq-item"><div class="faq-question">Do I need to enter my password?</div><div class="faq-answer">Absolutely not! We never ask for your email or password. Your account stays 100% secure.</div></div>
-      <div class="faq-item"><div class="faq-question">Which rewards are available?</div><div class="faq-answer">Discord Nitro (Basic / Boost) and rotating Robux packs (2 options change daily). Availability may vary by region.</div></div>
+      <div class="faq-item"><div class="faq-question">Which rewards are available?</div><div class="faq-answer">Discord Nitro (Basic / Boost) and rotating Robux packs (2 options change daily per device).</div></div>
       <div class="faq-item"><div class="faq-question">How does verification work?</div><div class="faq-answer">After you select a reward, you'll be redirected to a simple verification page to confirm eligibility – takes less than 5 minutes.</div></div>
       <div class="faq-item"><div class="faq-question">Can I return later?</div><div class="faq-answer">Yes! Rewards refresh every 24 hours, so you can claim again tomorrow. Bookmark this page.</div></div>
     </div>
@@ -366,7 +366,7 @@
       } catch(e) {}
     }
 
-    // ----- REWARD DATA WITH 24-HOUR ROTATION FOR ROBUX -----
+    // ----- PER-DEVICE DAILY ROTATION FOR ROBUX -----
     // Static Nitro rewards
     const nitroRewards = [
       { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload, custom profile themes", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
@@ -387,21 +387,50 @@
       { amount: "12,000", desc: "Ultimate Robux pack for everything you need" }
     ];
 
-    // Get today's index (changes every 24 hours)
-    const today = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
-    const totalRobuxOptions = robuxOptions.length;
-    let startIndex = today % totalRobuxOptions;
-    // Ensure we pick two different indexes (if only one option, fallback but we have 10)
-    let secondIndex = (startIndex + 1) % totalRobuxOptions;
-    // To avoid duplicate when list size is small, but 10 is fine
-    const robux1 = robuxOptions[startIndex];
-    const robux2 = robuxOptions[secondIndex];
+    // Get today's date as string (YYYY-MM-DD)
+    const todayStr = new Date().toISOString().slice(0,10);
+    const storageKey = 'extvify_robux_day';
+    let storedRobux = null;
+
+    // Check if we have a stored pair for today
+    const storedData = localStorage.getItem(storageKey);
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+        if (parsed.date === todayStr && Array.isArray(parsed.robux) && parsed.robux.length === 2) {
+          storedRobux = parsed.robux;
+        }
+      } catch(e) {}
+    }
+
+    if (!storedRobux) {
+      // Pick two different random Robux options
+      const shuffled = [...robuxOptions];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      const selected = [shuffled[0], shuffled[1]];
+      localStorage.setItem(storageKey, JSON.stringify({ date: todayStr, robux: selected }));
+      storedRobux = selected;
+    }
+
+    const robux1 = storedRobux[0];
+    const robux2 = storedRobux[1];
 
     // Build dynamic rewards array: two Nitro + two selected Robux
     const rewards = [
       ...nitroRewards,
       { id: "robux_daily1", title: `${robux1.amount} Robux`, desc: robux1.desc, icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
       { id: "robux_daily2", title: `${robux2.amount} Robux`, desc: robux2.desc, icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" }
+    ];
+
+    // For activity toasts, include these two amounts
+    const activityRewards = [
+      { name: "Nitro Boost", type: "nitro", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
+      { name: `${robux2.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
+      { name: `${robux1.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
+      { name: "Nitro Basic", type: "nitro", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" }
     ];
 
     const rewardList = document.getElementById('rewardList');
@@ -492,7 +521,7 @@
       });
     });
 
-    // Social proof toasts – fixed size, hidden on mobile via CSS
+    // Social proof toasts
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
@@ -501,12 +530,6 @@
       "Bangladesh", "Thailand", "Vietnam", "Philippines", "Indonesia", "Malaysia", "Singapore", "Taiwan",
       "Argentina", "Chile", "Colombia", "Peru", "Venezuela", "Jamaica", "Iceland", "Austria", "Belgium",
       "Finland", "Denmark", "Czech Republic", "Hungary", "Romania"
-    ];
-    const activityRewards = [
-      { name: "Nitro Boost", type: "nitro", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
-      { name: `${robux2.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
-      { name: `${robux1.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
-      { name: "Nitro Basic", type: "nitro", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" }
     ];
     let lastCountry = null;
     function getRandomTimeAgo() {
@@ -547,7 +570,6 @@
       }, 6000);
     }
 
-    // Start toasts only on non-mobile devices
     if (window.innerWidth >= 768) {
       setTimeout(showActivityToast, 2000);
       setInterval(showActivityToast, 25000);
