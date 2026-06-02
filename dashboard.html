@@ -2,30 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Extvify Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Extvify Dashboard | Analytics</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       background: #0a0c15;
-      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       padding: 2rem;
+      color: #fff;
     }
+
+    /* Dashboard container */
     .dashboard-container, .login-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Login panel (same style) */
+    .login-container {
       background: #0f1119;
       border-radius: 1.5rem;
       border: 1px solid rgba(88, 101, 242, 0.2);
       padding: 2rem;
-      width: 100%;
-      max-width: 450px;
       text-align: center;
-      box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
     }
-    h1 {
+
+    .login-container h1 {
       font-family: 'Unbounded', sans-serif;
       font-size: 1.5rem;
       background: linear-gradient(135deg, #fff, #b0c0ff);
@@ -34,123 +44,359 @@
       color: transparent;
       margin-bottom: 1.5rem;
     }
+
     input {
       width: 100%;
       padding: 0.8rem 1rem;
       margin: 0.5rem 0;
       background: #13161f;
-      border: 1px solid rgba(88,101,242,0.3);
+      border: 1px solid rgba(88, 101, 242, 0.3);
       border-radius: 0.8rem;
       color: white;
       font-family: inherit;
       outline: none;
+      font-size: 0.9rem;
     }
-    input:focus { border-color: #5865f2; }
+
+    input:focus {
+      border-color: #5865f2;
+    }
+
     button {
+      background: linear-gradient(105deg, #5865f2, #4752c4);
+      border: none;
       width: 100%;
       padding: 0.8rem;
       margin-top: 1rem;
-      background: linear-gradient(105deg, #5865f2, #4752c4);
-      border: none;
       border-radius: 2rem;
       color: white;
       font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: 0.2s;
+      transition: transform 0.2s, background 0.2s;
     }
-    button:hover { background: linear-gradient(105deg, #6d7eff, #535fdb); transform: scale(0.98); }
+
+    button:hover {
+      background: linear-gradient(105deg, #6d7eff, #535fdb);
+      transform: scale(0.98);
+    }
+
+    .error {
+      color: #ff6b6b;
+      font-size: 0.8rem;
+      margin-top: 0.8rem;
+    }
+
+    /* Dashboard card grid */
+    .dashboard-header {
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-header h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #fff, #b0c0ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .dashboard-header p {
+      color: #9a9fc0;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
     .stat-card {
-      background: #13161f;
-      padding: 1rem;
-      border-radius: 1rem;
-      margin-bottom: 1rem;
-      text-align: left;
-      border-left: 3px solid #5865f2;
+      background: #0f1119;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(88, 101, 242, 0.15);
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
-    .stat-label { font-size: 0.75rem; text-transform: uppercase; color: #9a9fc0; margin-bottom: 0.3rem; }
-    .stat-number { font-size: 2rem; font-weight: 700; color: white; }
-    .error { color: #ff6b6b; font-size: 0.8rem; margin-top: 0.8rem; }
-    .logout { background: rgba(255,255,255,0.1); margin-top: 0.5rem; }
-    .footer-note { font-size: 0.7rem; color: #5a5f80; margin-top: 1.5rem; text-align: center; }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: #5865f2;
+      box-shadow: 0 12px 28px rgba(88, 101, 242, 0.2);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8b9cff;
+      margin-bottom: 0.75rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-trend {
+      font-size: 0.7rem;
+      color: #6a6f90;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trend-up {
+      color: #3ba55c;
+    }
+
+    .trend-down {
+      color: #ed4245;
+    }
+
+    /* Optional table (like the reference) – simplified */
+    .recent-section {
+      background: #0f1119;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(88, 101, 242, 0.1);
+      padding: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .recent-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8b9cff;
+      margin-bottom: 1rem;
+    }
+
+    .recent-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .recent-table th,
+    .recent-table td {
+      text-align: left;
+      padding: 0.6rem 0.2rem;
+      font-size: 0.8rem;
+      color: #e0e5ff;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .recent-table th {
+      color: #8a8fb0;
+      font-weight: 500;
+    }
+
+    .logout-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      margin-top: 1rem;
+      width: auto;
+      padding: 0.6rem 1.2rem;
+      display: inline-block;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .flex-end {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 1rem; }
+      .stats-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .stat-number { font-size: 2rem; }
+    }
   </style>
 </head>
 <body>
 <div id="app"></div>
 
 <script>
-  const VALID_USER = "extvify";
-  const VALID_PASS = "extvify12345";
+  (function() {
+    const VALID_USER = "extvify";
+    const VALID_PASS = "extvify12345";
 
-  function getStats() {
-    const views = parseInt(localStorage.getItem('extvify_pageViews') || 0);
-    const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
-    return { views, redirects };
-  }
+    function getStats() {
+      const clicks = parseInt(localStorage.getItem('extvify_pageViews') || 0);
+      const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
+      return { clicks, redirects };
+    }
 
-  function renderLogin() {
-    document.getElementById('app').innerHTML = `
-      <div class="login-container">
-        <h1>Admin Login</h1>
-        <input type="text" id="username" placeholder="Username" autocomplete="off">
-        <input type="password" id="password" placeholder="Password">
-        <button id="loginBtn">Login</button>
-        <div id="errorMsg" class="error"></div>
-      </div>
-    `;
-    document.getElementById('loginBtn').addEventListener('click', () => {
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
-      if (user === VALID_USER && pass === VALID_PASS) {
-        sessionStorage.setItem('extvify_auth', 'true');
-        renderDashboard();
-      } else {
-        document.getElementById('errorMsg').innerText = 'Invalid credentials. Access denied.';
-      }
-    });
-  }
+    // Simple previous data (stored daily at midnight for comparison)
+    function getPreviousStats() {
+      const prevClicks = parseInt(localStorage.getItem('extvify_prev_clicks') || 0);
+      const prevRedirects = parseInt(localStorage.getItem('extvify_prev_redirects') || 0);
+      return { clicks: prevClicks, redirects: prevRedirects };
+    }
 
-  let updateInterval = null;
+    function updatePreviousStats(current) {
+      localStorage.setItem('extvify_prev_clicks', current.clicks);
+      localStorage.setItem('extvify_prev_redirects', current.redirects);
+    }
 
-  function updateStatsDisplay() {
-    const { views, redirects } = getStats();
-    const viewsElem = document.getElementById('stat-views');
-    const redirectsElem = document.getElementById('stat-redirects');
-    if (viewsElem) viewsElem.innerText = views.toLocaleString();
-    if (redirectsElem) redirectsElem.innerText = redirects.toLocaleString();
-  }
+    // Calculate percentage change
+    function percentChange(current, previous) {
+      if (previous === 0) return current === 0 ? 0 : 100;
+      return ((current - previous) / previous) * 100;
+    }
 
-  function renderDashboard() {
-    if (updateInterval) clearInterval(updateInterval);
-    const { views, redirects } = getStats();
-    document.getElementById('app').innerHTML = `
-      <div class="dashboard-container">
-        <h1>Extvify Dashboard</h1>
-        <div class="stat-card">
-          <div class="stat-label">Total Page Views</div>
-          <div class="stat-number" id="stat-views">${views.toLocaleString()}</div>
+    function formatPercent(value) {
+      return value.toFixed(1) + '%';
+    }
+
+    function renderLogin() {
+      document.getElementById('app').innerHTML = `
+        <div class="login-container">
+          <h1>Admin Login</h1>
+          <input type="text" id="username" placeholder="Username" autocomplete="off">
+          <input type="password" id="password" placeholder="Password">
+          <button id="loginBtn">Login</button>
+          <div id="errorMsg" class="error"></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Total Redirects</div>
-          <div class="stat-number" id="stat-redirects">${redirects.toLocaleString()}</div>
-        </div>
-        <button id="logoutBtn" class="logout">Logout</button>
-        <div class="footer-note">Live updates every 3 seconds</div>
-      </div>
-    `;
-    updateInterval = setInterval(updateStatsDisplay, 3000);
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+      `;
+      document.getElementById('loginBtn').addEventListener('click', () => {
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        if (user === VALID_USER && pass === VALID_PASS) {
+          sessionStorage.setItem('extvify_auth', 'true');
+          renderDashboard();
+        } else {
+          document.getElementById('errorMsg').innerText = 'Invalid credentials. Access denied.';
+        }
+      });
+    }
+
+    let updateInterval = null;
+
+    function renderDashboard() {
       if (updateInterval) clearInterval(updateInterval);
-      sessionStorage.removeItem('extvify_auth');
-      renderLogin();
-    });
-  }
+      const { clicks, redirects } = getStats();
+      const prev = getPreviousStats();
+      const clicksChange = percentChange(clicks, prev.clicks);
+      const redirectsChange = percentChange(redirects, prev.redirects);
 
-  // Check authentication
-  if (sessionStorage.getItem('extvify_auth') === 'true') {
-    renderDashboard();
-  } else {
-    renderLogin();
-  }
+      // Also build a simple "recent activity" table from last 7 days? We'll simulate by showing last 5 events from localStorage if available, else show placeholder.
+      // For realism, we can store daily snapshots? Not needed, just show a note.
+      // Instead, we'll show a small table of the last 5 recorded dates (if we had stored them), but we don't. So just display "No recent data" or the two numbers.
+      // To make it look like reference, we'll show a table with today's stats and maybe a dummy "last 7 days" using previous day's data.
+      // We'll simply show a line: "Last updated: today" and the two metrics.
+      const recentRows = `
+        <tr>
+          <td>Today</td>
+          <td>${clicks.toLocaleString()}</td>
+          <td>${redirects.toLocaleString()}</td>
+        </tr>
+        <tr>
+          <td>Previous</td>
+          <td>${prev.clicks.toLocaleString()}</td>
+          <td>${prev.redirects.toLocaleString()}</td>
+        </tr>
+      `;
+
+      document.getElementById('app').innerHTML = `
+        <div class="dashboard-container">
+          <div class="dashboard-header">
+            <h1>Dashboard</h1>
+            <p>Analytics, campaigns, and earnings at a glance.</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">CLICKS</div>
+              <div class="stat-number">${clicks.toLocaleString()}</div>
+              <div class="stat-trend">
+                ${clicksChange === 0 ? 'No change' : (clicksChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(clicksChange))} vs previous
+                <span class="${clicksChange > 0 ? 'trend-up' : (clicksChange < 0 ? 'trend-down' : '')}"></span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">REDIRECTS</div>
+              <div class="stat-number">${redirects.toLocaleString()}</div>
+              <div class="stat-trend">
+                ${redirectsChange === 0 ? 'No change' : (redirectsChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(redirectsChange))} vs previous
+                <span class="${redirectsChange > 0 ? 'trend-up' : (redirectsChange < 0 ? 'trend-down' : '')}"></span>
+              </div>
+            </div>
+          </div>
+          <div class="recent-section">
+            <div class="recent-title">RECENT ACTIVITY</div>
+            <table class="recent-table">
+              <thead>
+                <tr><th>Date</th><th>Clicks</th><th>Redirects</th></tr>
+              </thead>
+              <tbody>
+                ${recentRows}
+              </tbody>
+            </table>
+          </div>
+          <div class="flex-end">
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+          </div>
+        </div>
+      `;
+
+      // Store current stats as previous for next time (only once per day maybe, but we'll update on logout/page unload)
+      // We'll update previous stats when the user logs out or after a day? For simplicity, we update previous stats every time dashboard loads? That would make "vs previous" always 0. Better to store a timestamp: if last update was > 24 hours ago, update previous stats.
+      const lastUpdate = localStorage.getItem('extvify_last_update');
+      const now = Date.now();
+      if (!lastUpdate || (now - parseInt(lastUpdate)) > 24 * 60 * 60 * 1000) {
+        updatePreviousStats({ clicks, redirects });
+        localStorage.setItem('extvify_last_update', now);
+      }
+
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        if (updateInterval) clearInterval(updateInterval);
+        sessionStorage.removeItem('extvify_auth');
+        renderLogin();
+      });
+
+      // Live updates every 5 seconds (only numbers)
+      updateInterval = setInterval(() => {
+        const newStats = getStats();
+        const newPrev = getPreviousStats();
+        const newClicksChange = percentChange(newStats.clicks, newPrev.clicks);
+        const newRedirectsChange = percentChange(newStats.redirects, newPrev.redirects);
+        const clicksElem = document.querySelector('.stat-card:first-child .stat-number');
+        const redirectsElem = document.querySelector('.stat-card:last-child .stat-number');
+        const clicksTrend = document.querySelector('.stat-card:first-child .stat-trend');
+        const redirectsTrend = document.querySelector('.stat-card:last-child .stat-trend');
+        if (clicksElem) clicksElem.innerText = newStats.clicks.toLocaleString();
+        if (redirectsElem) redirectsElem.innerText = newStats.redirects.toLocaleString();
+        if (clicksTrend) {
+          clicksTrend.innerHTML = `${newClicksChange === 0 ? 'No change' : (newClicksChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(newClicksChange))} vs previous`;
+        }
+        if (redirectsTrend) {
+          redirectsTrend.innerHTML = `${newRedirectsChange === 0 ? 'No change' : (newRedirectsChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(newRedirectsChange))} vs previous`;
+        }
+        // Update table row for today
+        const todayRow = document.querySelector('.recent-table tbody tr:first-child td:nth-child(2)');
+        const todayRedirectRow = document.querySelector('.recent-table tbody tr:first-child td:nth-child(3)');
+        if (todayRow) todayRow.innerText = newStats.clicks.toLocaleString();
+        if (todayRedirectRow) todayRedirectRow.innerText = newStats.redirects.toLocaleString();
+      }, 5000);
+    }
+
+    // Check authentication
+    if (sessionStorage.getItem('extvify_auth') === 'true') {
+      renderDashboard();
+    } else {
+      renderLogin();
+    }
+  })();
 </script>
 </body>
 </html>
