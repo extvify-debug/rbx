@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Extvify Dashboard | Analytics</title>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -21,35 +19,29 @@
       color: #fff;
     }
 
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-
     /* Container */
     .dashboard-container, .login-container {
-      max-width: 1300px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
-    /* Login panel – premium look */
+    /* Login panel */
     .login-container {
-      background: rgba(18, 22, 32, 0.9);
+      background: rgba(18, 22, 32, 0.95);
       backdrop-filter: blur(12px);
       border-radius: 2rem;
-      border: 1px solid rgba(88, 101, 242, 0.25);
+      border: 1px solid rgba(88, 101, 242, 0.3);
       padding: 2.5rem;
       text-align: center;
       box-shadow: 0 30px 45px rgba(0, 0, 0, 0.5);
-      max-width: 460px;
-      margin: 0 auto;
+      max-width: 420px;
     }
 
     .login-container h1 {
       font-family: 'Unbounded', sans-serif;
       font-size: 1.8rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #ffffff, #9b8cff);
+      background: linear-gradient(135deg, #fff, #9b8cff);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
@@ -67,7 +59,6 @@
       font-family: inherit;
       outline: none;
       font-size: 0.95rem;
-      transition: all 0.2s;
     }
 
     input:focus {
@@ -86,14 +77,13 @@
       font-weight: 600;
       font-size: 1rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
       box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
     }
 
     button:hover {
       background: linear-gradient(105deg, #6d7eff, #4752c4);
       transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
     }
 
     .error {
@@ -104,29 +94,28 @@
 
     /* Dashboard header */
     .dashboard-header {
-      margin-bottom: 2.5rem;
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: center;
       flex-wrap: wrap;
       gap: 1rem;
+      margin-bottom: 2rem;
     }
 
-    .header-left h1 {
+    .dashboard-header h1 {
       font-family: 'Unbounded', sans-serif;
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       background: linear-gradient(135deg, #fff, #b0c0ff);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      letter-spacing: -0.3px;
     }
 
-    .header-left p {
+    .dashboard-header p {
       color: #a0a5c5;
-      font-size: 0.9rem;
-      margin-top: 0.3rem;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
     }
 
     .logout-btn {
@@ -136,8 +125,8 @@
       border-radius: 2rem;
       font-size: 0.8rem;
       font-weight: 500;
-      backdrop-filter: blur(4px);
-      transition: all 0.2s;
+      width: auto;
+      margin: 0;
     }
 
     .logout-btn:hover {
@@ -145,12 +134,12 @@
       transform: translateY(-1px);
     }
 
-    /* Stats cards grid */
+    /* Stats cards grid – only 2 cards */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1.8rem;
-      margin-bottom: 2.5rem;
+      margin-top: 0.5rem;
     }
 
     .stat-card {
@@ -166,7 +155,6 @@
     .stat-card:hover {
       transform: translateY(-3px);
       border-color: rgba(88, 101, 242, 0.5);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     }
 
     .stat-label {
@@ -192,7 +180,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
       margin-top: 0.5rem;
     }
 
@@ -210,86 +197,12 @@
       color: #9a9fc0;
     }
 
-    /* Chart container */
-    .chart-container {
-      background: rgba(18, 22, 36, 0.7);
-      backdrop-filter: blur(8px);
-      border-radius: 1.75rem;
-      border: 1px solid rgba(88, 101, 242, 0.12);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      transition: all 0.2s;
-    }
-
-    .chart-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #8b9cff;
-      margin-bottom: 1.2rem;
-      font-weight: 600;
-    }
-
-    canvas {
-      max-height: 320px;
-      width: 100%;
-    }
-
-    /* Recent activity table */
-    .recent-section {
-      background: rgba(18, 22, 36, 0.7);
-      backdrop-filter: blur(8px);
-      border-radius: 1.75rem;
-      border: 1px solid rgba(88, 101, 242, 0.1);
-      padding: 1.5rem;
-    }
-
-    .recent-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #8b9cff;
-      margin-bottom: 1.2rem;
-      font-weight: 600;
-    }
-
-    .recent-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .recent-table th,
-    .recent-table td {
-      text-align: left;
-      padding: 0.75rem 0.3rem;
-      font-size: 0.85rem;
-      color: #e0e5ff;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .recent-table th {
-      color: #8a8fb0;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-    }
-
-    .recent-table tr:last-child td {
-      border-bottom: none;
-    }
-
     /* Responsive */
-    @media (max-width: 700px) {
-      body { padding: 1.2rem; }
+    @media (max-width: 600px) {
+      body { padding: 1rem; }
       .stats-grid { grid-template-columns: 1fr; gap: 1rem; }
       .stat-number { font-size: 2.2rem; }
       .dashboard-header { flex-direction: column; align-items: flex-start; }
-      .chart-container { padding: 1rem; }
-    }
-
-    @media (max-width: 480px) {
-      .stat-card { padding: 1.2rem; }
-      .recent-section { padding: 1rem; }
-      .recent-table th, .recent-table td { font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -301,13 +214,14 @@
     const VALID_USER = "extvify";
     const VALID_PASS = "extvify12345";
 
-    // ----- Helper functions -----
+    // Get current stats
     function getStats() {
       const clicks = parseInt(localStorage.getItem('extvify_pageViews') || 0);
       const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
       return { clicks, redirects };
     }
 
+    // Get previous day's stats
     function getPreviousStats() {
       const prevClicks = parseInt(localStorage.getItem('extvify_prev_clicks') || 0);
       const prevRedirects = parseInt(localStorage.getItem('extvify_prev_redirects') || 0);
@@ -319,40 +233,6 @@
       localStorage.setItem('extvify_prev_redirects', current.redirects);
     }
 
-    function getDailyHistory() {
-      const stored = localStorage.getItem('extvify_daily_history');
-      if (stored) {
-        try {
-          return JSON.parse(stored);
-        } catch(e) { return []; }
-      }
-      return [];
-    }
-
-    function saveDailyHistory(history) {
-      localStorage.setItem('extvify_daily_history', JSON.stringify(history));
-    }
-
-    function updateDailyHistory() {
-      const todayStr = new Date().toISOString().slice(0,10);
-      const history = getDailyHistory();
-      const { clicks, redirects } = getStats();
-      const existingIndex = history.findIndex(entry => entry.date === todayStr);
-      if (existingIndex !== -1) {
-        history[existingIndex] = { date: todayStr, clicks, redirects };
-      } else {
-        history.push({ date: todayStr, clicks, redirects });
-      }
-      while (history.length > 30) history.shift();
-      saveDailyHistory(history);
-    }
-
-    function getLast7DaysHistory() {
-      const history = getDailyHistory();
-      history.sort((a,b) => new Date(a.date) - new Date(b.date));
-      return history.slice(-7);
-    }
-
     function percentChange(current, previous) {
       if (previous === 0) return current === 0 ? 0 : 100;
       return ((current - previous) / previous) * 100;
@@ -362,67 +242,6 @@
       return value.toFixed(1) + '%';
     }
 
-    // ----- Chart instance -----
-    let clicksChart = null;
-
-    function renderChart() {
-      const ctx = document.getElementById('clicksChart')?.getContext('2d');
-      if (!ctx) return;
-      const history = getLast7DaysHistory();
-      const labels = history.map(entry => entry.date.slice(5));
-      const clicksData = history.map(entry => entry.clicks);
-      const redirectsData = history.map(entry => entry.redirects);
-
-      if (clicksChart) clicksChart.destroy();
-      clicksChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Clicks',
-              data: clicksData,
-              borderColor: '#5865f2',
-              backgroundColor: 'rgba(88, 101, 242, 0.05)',
-              borderWidth: 2.5,
-              tension: 0.3,
-              fill: true,
-              pointBackgroundColor: '#5865f2',
-              pointBorderColor: '#fff',
-              pointRadius: 3.5,
-              pointHoverRadius: 6,
-            },
-            {
-              label: 'Redirects',
-              data: redirectsData,
-              borderColor: '#f5b042',
-              backgroundColor: 'rgba(245, 176, 66, 0.03)',
-              borderWidth: 2.5,
-              tension: 0.3,
-              fill: true,
-              pointBackgroundColor: '#f5b042',
-              pointBorderColor: '#fff',
-              pointRadius: 3.5,
-              pointHoverRadius: 6,
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          plugins: {
-            legend: { labels: { color: '#e0e5ff', font: { family: 'Space Grotesk', size: 11, weight: '500' }, boxWidth: 12 } },
-            tooltip: { mode: 'index', intersect: false, backgroundColor: '#1a1c2a', titleColor: '#fff', bodyColor: '#c0c5e0', borderColor: '#5865f2', borderWidth: 1 }
-          },
-          scales: {
-            x: { ticks: { color: '#9a9fc0', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
-            y: { ticks: { color: '#9a9fc0', stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.05)' } }
-          }
-        }
-      });
-    }
-
-    // ----- Dashboard live update -----
     let updateInterval = null;
 
     function updateDashboardNumbers() {
@@ -444,7 +263,7 @@
           <span class="${clicksChange > 0 ? 'trend-up' : (clicksChange < 0 ? 'trend-down' : 'trend-neutral')}">
             ${clicksChange === 0 ? '→' : (clicksChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(clicksChange))}
           </span>
-          <span style="color:#6a6f90">vs previous period</span>
+          <span style="color:#6a6f90">vs previous day</span>
         `;
       }
       if (redirectsTrend) {
@@ -452,34 +271,18 @@
           <span class="${redirectsChange > 0 ? 'trend-up' : (redirectsChange < 0 ? 'trend-down' : 'trend-neutral')}">
             ${redirectsChange === 0 ? '→' : (redirectsChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(redirectsChange))}
           </span>
-          <span style="color:#6a6f90">vs previous period</span>
+          <span style="color:#6a6f90">vs previous day</span>
         `;
       }
-
-      // Update table rows
-      const todayRowClicks = document.querySelector('.recent-table tbody tr:first-child td:nth-child(2)');
-      const todayRowRedirects = document.querySelector('.recent-table tbody tr:first-child td:nth-child(3)');
-      if (todayRowClicks) todayRowClicks.innerText = clicks.toLocaleString();
-      if (todayRowRedirects) todayRowRedirects.innerText = redirects.toLocaleString();
-
-      const prevRowClicks = document.querySelector('.recent-table tbody tr:nth-child(2) td:nth-child(2)');
-      const prevRowRedirects = document.querySelector('.recent-table tbody tr:nth-child(2) td:nth-child(3)');
-      if (prevRowClicks) prevRowClicks.innerText = prev.clicks.toLocaleString();
-      if (prevRowRedirects) prevRowRedirects.innerText = prev.redirects.toLocaleString();
-
-      // Update chart with latest history
-      updateDailyHistory();
-      renderChart();
     }
 
-    // ----- Render login -----
     function renderLogin() {
       document.getElementById('app').innerHTML = `
         <div class="login-container">
-          <h1>🔐 Admin Access</h1>
+          <h1>Admin Access</h1>
           <input type="text" id="username" placeholder="Username" autocomplete="off">
           <input type="password" id="password" placeholder="Password">
-          <button id="loginBtn">Login to Dashboard</button>
+          <button id="loginBtn">Login</button>
           <div id="errorMsg" class="error"></div>
         </div>
       `;
@@ -495,62 +298,38 @@
       });
     }
 
-    // ----- Render main dashboard -----
     function renderDashboard() {
       if (updateInterval) clearInterval(updateInterval);
       const { clicks, redirects } = getStats();
       const prev = getPreviousStats();
 
-      updateDailyHistory();
-      const todayStr = new Date().toISOString().slice(0,10);
-      const prevDate = new Date();
-      prevDate.setDate(prevDate.getDate() - 1);
-      const prevDateStr = prevDate.toISOString().slice(0,10);
-
       document.getElementById('app').innerHTML = `
         <div class="dashboard-container">
           <div class="dashboard-header">
-            <div class="header-left">
+            <div>
               <h1>Analytics Dashboard</h1>
-              <p>Monitor your reward campaign performance</p>
+              <p>Campaign performance at a glance</p>
             </div>
-            <button id="logoutBtn" class="logout-btn">← Logout</button>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
           </div>
           <div class="stats-grid">
             <div class="stat-card">
-              <div class="stat-label">TOTAL CLICKS</div>
+              <div class="stat-label">CLICKS</div>
               <div class="stat-number">${clicks.toLocaleString()}</div>
               <div class="stat-trend"></div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">TOTAL REDIRECTS</div>
+              <div class="stat-label">REDIRECTS</div>
               <div class="stat-number">${redirects.toLocaleString()}</div>
               <div class="stat-trend"></div>
             </div>
           </div>
-          <div class="chart-container">
-            <div class="chart-title">📈 PERFORMANCE TREND (LAST 7 DAYS)</div>
-            <canvas id="clicksChart"></canvas>
-          </div>
-          <div class="recent-section">
-            <div class="recent-title">📋 RECENT ACTIVITY</div>
-            <table class="recent-table">
-              <thead>
-                <tr><th>Date</th><th>Clicks</th><th>Redirects</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>${todayStr}</td><td>${clicks.toLocaleString()}</td><td>${redirects.toLocaleString()}</td></tr>
-                <tr><td>${prevDateStr}</td><td>${prev.clicks.toLocaleString()}</td><td>${prev.redirects.toLocaleString()}</td></tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       `;
 
-      // Update trend texts and chart
       updateDashboardNumbers();
 
-      // Daily previous stats update
+      // Update previous day's stats once every 24 hours (midnight)
       const lastUpdate = localStorage.getItem('extvify_last_update');
       const now = Date.now();
       if (!lastUpdate || (now - parseInt(lastUpdate)) > 24 * 60 * 60 * 1000) {
@@ -570,7 +349,6 @@
       }, 8000);
     }
 
-    // Initial authentication check
     if (sessionStorage.getItem('extvify_auth') === 'true') {
       renderDashboard();
     } else {
