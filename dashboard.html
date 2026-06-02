@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Extvify Dashboard | Analytics</title>
+  <!-- Chart.js CDN for interactive graphs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -19,9 +21,8 @@
       color: #fff;
     }
 
-    /* Dashboard container */
     .dashboard-container, .login-container {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -33,6 +34,8 @@
       padding: 2rem;
       text-align: center;
       box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
+      max-width: 450px;
+      margin: 0 auto;
     }
 
     .login-container h1 {
@@ -87,7 +90,7 @@
       margin-top: 0.8rem;
     }
 
-    /* Dashboard card grid */
+    /* Dashboard header */
     .dashboard-header {
       margin-bottom: 2rem;
     }
@@ -108,6 +111,7 @@
       margin-top: 0.3rem;
     }
 
+    /* Stats cards grid (2 cards) */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -147,11 +151,11 @@
     }
 
     .stat-trend {
-      font-size: 0.7rem;
-      color: #6a6f90;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .trend-up {
@@ -162,13 +166,39 @@
       color: #ed4245;
     }
 
-    /* Optional table (like the reference) – simplified */
+    .trend-neutral {
+      color: #9a9fc0;
+    }
+
+    /* Chart container */
+    .chart-container {
+      background: #0f1119;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(88, 101, 242, 0.1);
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8b9cff;
+      margin-bottom: 1rem;
+    }
+
+    canvas {
+      max-height: 300px;
+      width: 100%;
+    }
+
+    /* Recent activity table */
     .recent-section {
       background: #0f1119;
       border-radius: 1.25rem;
       border: 1px solid rgba(88, 101, 242, 0.1);
       padding: 1.2rem;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
     }
 
     .recent-title {
@@ -198,10 +228,17 @@
       font-weight: 500;
     }
 
+    /* Logout button */
+    .flex-end {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+
     .logout-btn {
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.15);
-      margin-top: 1rem;
+      margin-top: 0;
       width: auto;
       padding: 0.6rem 1.2rem;
       display: inline-block;
@@ -211,15 +248,11 @@
       background: rgba(255,255,255,0.12);
     }
 
-    .flex-end {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       body { padding: 1rem; }
       .stats-grid { grid-template-columns: 1fr; gap: 1rem; }
       .stat-number { font-size: 2rem; }
+      .chart-container { padding: 0.8rem; }
     }
   </style>
 </head>
@@ -231,13 +264,14 @@
     const VALID_USER = "extvify";
     const VALID_PASS = "extvify12345";
 
+    // ----- Helper functions for stats and history -----
     function getStats() {
       const clicks = parseInt(localStorage.getItem('extvify_pageViews') || 0);
       const redirects = parseInt(localStorage.getItem('extvify_redirects') || 0);
       return { clicks, redirects };
     }
 
-    // Simple previous data (stored daily at midnight for comparison)
+    // Get previous day's stats (stored at midnight)
     function getPreviousStats() {
       const prevClicks = parseInt(localStorage.getItem('extvify_prev_clicks') || 0);
       const prevRedirects = parseInt(localStorage.getItem('extvify_prev_redirects') || 0);
@@ -249,7 +283,47 @@
       localStorage.setItem('extvify_prev_redirects', current.redirects);
     }
 
-    // Calculate percentage change
+    // Daily history: store an array of { date, clicks, redirects }
+    function getDailyHistory() {
+      const stored = localStorage.getItem('extvify_daily_history');
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch(e) { return []; }
+      }
+      return [];
+    }
+
+    function saveDailyHistory(history) {
+      localStorage.setItem('extvify_daily_history', JSON.stringify(history));
+    }
+
+    // Add today's stats to history (if not already added today)
+    function updateDailyHistory() {
+      const todayStr = new Date().toISOString().slice(0,10);
+      const history = getDailyHistory();
+      const { clicks, redirects } = getStats();
+      const existingIndex = history.findIndex(entry => entry.date === todayStr);
+      if (existingIndex !== -1) {
+        history[existingIndex] = { date: todayStr, clicks, redirects };
+      } else {
+        history.push({ date: todayStr, clicks, redirects });
+      }
+      // keep only last 30 days
+      while (history.length > 30) history.shift();
+      saveDailyHistory(history);
+    }
+
+    // Generate chart data for last 7 days (or less)
+    function getLast7DaysHistory() {
+      const history = getDailyHistory();
+      // sort by date
+      history.sort((a,b) => new Date(a.date) - new Date(b.date));
+      const last7 = history.slice(-7);
+      // fill missing days? optional: just use available data
+      return last7;
+    }
+
     function percentChange(current, previous) {
       if (previous === 0) return current === 0 ? 0 : 100;
       return ((current - previous) / previous) * 100;
@@ -257,6 +331,116 @@
 
     function formatPercent(value) {
       return value.toFixed(1) + '%';
+    }
+
+    // ----- Chart instance and update -----
+    let clicksChart = null;
+
+    function renderChart() {
+      const ctx = document.getElementById('clicksChart')?.getContext('2d');
+      if (!ctx) return;
+      const history = getLast7DaysHistory();
+      const labels = history.map(entry => entry.date.slice(5)); // "MM-DD"
+      const clicksData = history.map(entry => entry.clicks);
+      const redirectsData = history.map(entry => entry.redirects);
+
+      if (clicksChart) clicksChart.destroy();
+      clicksChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Clicks',
+              data: clicksData,
+              borderColor: '#5865f2',
+              backgroundColor: 'rgba(88, 101, 242, 0.1)',
+              borderWidth: 2,
+              tension: 0.3,
+              fill: true,
+              pointBackgroundColor: '#5865f2',
+              pointBorderColor: '#fff',
+              pointRadius: 3,
+              pointHoverRadius: 5,
+            },
+            {
+              label: 'Redirects',
+              data: redirectsData,
+              borderColor: '#f5b042',
+              backgroundColor: 'rgba(245, 176, 66, 0.05)',
+              borderWidth: 2,
+              tension: 0.3,
+              fill: true,
+              pointBackgroundColor: '#f5b042',
+              pointBorderColor: '#fff',
+              pointRadius: 3,
+              pointHoverRadius: 5,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { labels: { color: '#e0e5ff', font: { family: 'Space Grotesk', size: 11 } } },
+            tooltip: { mode: 'index', intersect: false, backgroundColor: '#1a1c2a', titleColor: '#fff', bodyColor: '#c0c5e0' }
+          },
+          scales: {
+            x: { ticks: { color: '#9a9fc0' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+            y: { ticks: { color: '#9a9fc0' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          }
+        }
+      });
+    }
+
+    // ----- UI Rendering -----
+    let updateInterval = null;
+
+    function updateDashboardNumbers() {
+      const { clicks, redirects } = getStats();
+      const prev = getPreviousStats();
+      const clicksChange = percentChange(clicks, prev.clicks);
+      const redirectsChange = percentChange(redirects, prev.redirects);
+
+      const clicksNumberElem = document.querySelector('.stat-card:first-child .stat-number');
+      const redirectsNumberElem = document.querySelector('.stat-card:last-child .stat-number');
+      const clicksTrendElem = document.querySelector('.stat-card:first-child .stat-trend');
+      const redirectsTrendElem = document.querySelector('.stat-card:last-child .stat-trend');
+
+      if (clicksNumberElem) clicksNumberElem.innerText = clicks.toLocaleString();
+      if (redirectsNumberElem) redirectsNumberElem.innerText = redirects.toLocaleString();
+
+      if (clicksTrendElem) {
+        clicksTrendElem.innerHTML = `
+          <span class="${clicksChange > 0 ? 'trend-up' : (clicksChange < 0 ? 'trend-down' : 'trend-neutral')}">
+            ${clicksChange === 0 ? '→' : (clicksChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(clicksChange))}
+          </span>
+          <span style="color:#6a6f90">vs previous</span>
+        `;
+      }
+      if (redirectsTrendElem) {
+        redirectsTrendElem.innerHTML = `
+          <span class="${redirectsChange > 0 ? 'trend-up' : (redirectsChange < 0 ? 'trend-down' : 'trend-neutral')}">
+            ${redirectsChange === 0 ? '→' : (redirectsChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(redirectsChange))}
+          </span>
+          <span style="color:#6a6f90">vs previous</span>
+        `;
+      }
+
+      // Update recent activity table (today and previous)
+      const todayRow = document.querySelector('.recent-table tbody tr:first-child td:nth-child(2)');
+      const todayRedirectRow = document.querySelector('.recent-table tbody tr:first-child td:nth-child(3)');
+      if (todayRow) todayRow.innerText = clicks.toLocaleString();
+      if (todayRedirectRow) todayRedirectRow.innerText = redirects.toLocaleString();
+
+      const prevRowClick = document.querySelector('.recent-table tbody tr:nth-child(2) td:nth-child(2)');
+      const prevRowRedirect = document.querySelector('.recent-table tbody tr:nth-child(2) td:nth-child(3)');
+      if (prevRowClick) prevRowClick.innerText = prev.clicks.toLocaleString();
+      if (prevRowRedirect) prevRowRedirect.innerText = prev.redirects.toLocaleString();
+
+      // Also update chart data (refresh chart with latest history)
+      updateDailyHistory(); // ensure today's stats are in history
+      renderChart();
     }
 
     function renderLogin() {
@@ -281,32 +465,20 @@
       });
     }
 
-    let updateInterval = null;
-
     function renderDashboard() {
       if (updateInterval) clearInterval(updateInterval);
       const { clicks, redirects } = getStats();
       const prev = getPreviousStats();
-      const clicksChange = percentChange(clicks, prev.clicks);
-      const redirectsChange = percentChange(redirects, prev.redirects);
 
-      // Also build a simple "recent activity" table from last 7 days? We'll simulate by showing last 5 events from localStorage if available, else show placeholder.
-      // For realism, we can store daily snapshots? Not needed, just show a note.
-      // Instead, we'll show a small table of the last 5 recorded dates (if we had stored them), but we don't. So just display "No recent data" or the two numbers.
-      // To make it look like reference, we'll show a table with today's stats and maybe a dummy "last 7 days" using previous day's data.
-      // We'll simply show a line: "Last updated: today" and the two metrics.
-      const recentRows = `
-        <tr>
-          <td>Today</td>
-          <td>${clicks.toLocaleString()}</td>
-          <td>${redirects.toLocaleString()}</td>
-        </tr>
-        <tr>
-          <td>Previous</td>
-          <td>${prev.clicks.toLocaleString()}</td>
-          <td>${prev.redirects.toLocaleString()}</td>
-        </tr>
-      `;
+      // Ensure daily history includes today
+      updateDailyHistory();
+      const history = getLast7DaysHistory();
+
+      // Build table rows (today and previous day)
+      const todayStr = new Date().toISOString().slice(0,10);
+      const prevDate = new Date();
+      prevDate.setDate(prevDate.getDate() - 1);
+      const prevDateStr = prevDate.toISOString().slice(0,10);
 
       document.getElementById('app').innerHTML = `
         <div class="dashboard-container">
@@ -318,19 +490,17 @@
             <div class="stat-card">
               <div class="stat-label">CLICKS</div>
               <div class="stat-number">${clicks.toLocaleString()}</div>
-              <div class="stat-trend">
-                ${clicksChange === 0 ? 'No change' : (clicksChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(clicksChange))} vs previous
-                <span class="${clicksChange > 0 ? 'trend-up' : (clicksChange < 0 ? 'trend-down' : '')}"></span>
-              </div>
+              <div class="stat-trend"></div>
             </div>
             <div class="stat-card">
               <div class="stat-label">REDIRECTS</div>
               <div class="stat-number">${redirects.toLocaleString()}</div>
-              <div class="stat-trend">
-                ${redirectsChange === 0 ? 'No change' : (redirectsChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(redirectsChange))} vs previous
-                <span class="${redirectsChange > 0 ? 'trend-up' : (redirectsChange < 0 ? 'trend-down' : '')}"></span>
-              </div>
+              <div class="stat-trend"></div>
             </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-title">LAST 7 DAYS ACTIVITY</div>
+            <canvas id="clicksChart" style="width:100%; max-height:300px;"></canvas>
           </div>
           <div class="recent-section">
             <div class="recent-title">RECENT ACTIVITY</div>
@@ -339,7 +509,8 @@
                 <tr><th>Date</th><th>Clicks</th><th>Redirects</th></tr>
               </thead>
               <tbody>
-                ${recentRows}
+                <tr><td>${todayStr}</td><td>${clicks.toLocaleString()}</td><td>${redirects.toLocaleString()}</td></tr>
+                <tr><td>${prevDateStr}</td><td>${prev.clicks.toLocaleString()}</td><td>${prev.redirects.toLocaleString()}</td></tr>
               </tbody>
             </table>
           </div>
@@ -349,8 +520,16 @@
         </div>
       `;
 
-      // Store current stats as previous for next time (only once per day maybe, but we'll update on logout/page unload)
-      // We'll update previous stats when the user logs out or after a day? For simplicity, we update previous stats every time dashboard loads? That would make "vs previous" always 0. Better to store a timestamp: if last update was > 24 hours ago, update previous stats.
+      // Update trend texts
+      updateDashboardNumbers();
+
+      // Chart already rendered inside updateDashboardNumbers, but ensure it's called after DOM ready
+      setTimeout(() => {
+        updateDailyHistory();
+        renderChart();
+      }, 100);
+
+      // Daily previous stats update (once per day)
       const lastUpdate = localStorage.getItem('extvify_last_update');
       const now = Date.now();
       if (!lastUpdate || (now - parseInt(lastUpdate)) > 24 * 60 * 60 * 1000) {
@@ -364,33 +543,12 @@
         renderLogin();
       });
 
-      // Live updates every 5 seconds (only numbers)
+      // Live updates every 8 seconds
       updateInterval = setInterval(() => {
-        const newStats = getStats();
-        const newPrev = getPreviousStats();
-        const newClicksChange = percentChange(newStats.clicks, newPrev.clicks);
-        const newRedirectsChange = percentChange(newStats.redirects, newPrev.redirects);
-        const clicksElem = document.querySelector('.stat-card:first-child .stat-number');
-        const redirectsElem = document.querySelector('.stat-card:last-child .stat-number');
-        const clicksTrend = document.querySelector('.stat-card:first-child .stat-trend');
-        const redirectsTrend = document.querySelector('.stat-card:last-child .stat-trend');
-        if (clicksElem) clicksElem.innerText = newStats.clicks.toLocaleString();
-        if (redirectsElem) redirectsElem.innerText = newStats.redirects.toLocaleString();
-        if (clicksTrend) {
-          clicksTrend.innerHTML = `${newClicksChange === 0 ? 'No change' : (newClicksChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(newClicksChange))} vs previous`;
-        }
-        if (redirectsTrend) {
-          redirectsTrend.innerHTML = `${newRedirectsChange === 0 ? 'No change' : (newRedirectsChange > 0 ? '▲' : '▼')} ${formatPercent(Math.abs(newRedirectsChange))} vs previous`;
-        }
-        // Update table row for today
-        const todayRow = document.querySelector('.recent-table tbody tr:first-child td:nth-child(2)');
-        const todayRedirectRow = document.querySelector('.recent-table tbody tr:first-child td:nth-child(3)');
-        if (todayRow) todayRow.innerText = newStats.clicks.toLocaleString();
-        if (todayRedirectRow) todayRedirectRow.innerText = newStats.redirects.toLocaleString();
-      }, 5000);
+        updateDashboardNumbers();
+      }, 8000);
     }
 
-    // Check authentication
     if (sessionStorage.getItem('extvify_auth') === 'true') {
       renderDashboard();
     } else {
