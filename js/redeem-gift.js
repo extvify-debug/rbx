@@ -12,6 +12,62 @@
     seconds: document.getElementById("seconds")
   };
 
+  // Initial countdown duration: 5 days, 19 hours, 3 minutes, 19 seconds
+  var INITIAL_SECONDS = (5 * 86400) + (19 * 3600) + (3 * 60) + 19; // = 500,599 seconds
+
+  // Get stored target timestamp or create a new one
+  function getTargetTimestamp() {
+    var stored = localStorage.getItem("countdownTarget");
+    if (stored) {
+      var target = parseInt(stored, 10);
+      if (!isNaN(target) && target > Date.now()) {
+        return target;
+      }
+    }
+    // No valid stored target, create a new one
+    return Date.now() + (INITIAL_SECONDS * 1000);
+  }
+
+  // Save target timestamp to localStorage
+  function saveTargetTimestamp(timestamp) {
+    localStorage.setItem("countdownTarget", timestamp);
+  }
+
+  // Update the countdown display and handle reset when zero
+  function updateCountdown() {
+    var now = Date.now();
+    var target = getTargetTimestamp();
+    var remainingMs = target - now;
+
+    if (remainingMs <= 0) {
+      // Countdown reached zero -> reset to initial duration
+      var newTarget = now + (INITIAL_SECONDS * 1000);
+      saveTargetTimestamp(newTarget);
+      target = newTarget;
+      remainingMs = INITIAL_SECONDS * 1000;
+    }
+
+    var remainingSeconds = Math.floor(remainingMs / 1000);
+    var days = Math.floor(remainingSeconds / 86400);
+    var hours = Math.floor((remainingSeconds % 86400) / 3600);
+    var minutes = Math.floor((remainingSeconds % 3600) / 60);
+    var seconds = remainingSeconds % 60;
+
+    countdownEls.days.textContent = String(days);
+    countdownEls.hours.textContent = String(hours);
+    countdownEls.minutes.textContent = String(minutes);
+    countdownEls.seconds.textContent = String(seconds).padStart(2, "0");
+  }
+
+  // Initialize countdown interval and run immediately
+  function initCountdown() {
+    // Ensure target is saved on first load if not present
+    var target = getTargetTimestamp();
+    saveTargetTimestamp(target);
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+
   function openModal() {
     form.hidden = false;
     statusSpan.textContent = "";
@@ -57,16 +113,6 @@
     setTimeout(goRedirect, 700);
   });
 
-  var remaining = 1 * 86400 + 12 * 3600 + 17 * 60 + 56;
-  setInterval(function () {
-    remaining = Math.max(0, remaining - 1);
-    var days = Math.floor(remaining / 86400);
-    var hours = Math.floor((remaining % 86400) / 3600);
-    var minutes = Math.floor((remaining % 3600) / 60);
-    var seconds = remaining % 60;
-    countdownEls.days.textContent = String(days);
-    countdownEls.hours.textContent = String(hours);
-    countdownEls.minutes.textContent = String(minutes);
-    countdownEls.seconds.textContent = String(seconds).padStart(2, "0");
-  }, 1000);
+  // Start the countdown
+  initCountdown();
 })();
