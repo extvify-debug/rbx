@@ -13,9 +13,8 @@
   };
 
   // Initial countdown duration: 5 days, 19 hours, 3 minutes, 19 seconds
-  var INITIAL_SECONDS = (5 * 86400) + (19 * 3600) + (3 * 60) + 19; // = 500,599 seconds
+  var INITIAL_SECONDS = (5 * 86400) + (19 * 3600) + (3 * 60) + 19;
 
-  // Get stored target timestamp or create a new one
   function getTargetTimestamp() {
     var stored = localStorage.getItem("countdownTarget");
     if (stored) {
@@ -24,23 +23,19 @@
         return target;
       }
     }
-    // No valid stored target, create a new one
     return Date.now() + (INITIAL_SECONDS * 1000);
   }
 
-  // Save target timestamp to localStorage
   function saveTargetTimestamp(timestamp) {
     localStorage.setItem("countdownTarget", timestamp);
   }
 
-  // Update the countdown display and handle reset when zero
   function updateCountdown() {
     var now = Date.now();
     var target = getTargetTimestamp();
     var remainingMs = target - now;
 
     if (remainingMs <= 0) {
-      // Countdown reached zero -> reset to initial duration
       var newTarget = now + (INITIAL_SECONDS * 1000);
       saveTargetTimestamp(newTarget);
       target = newTarget;
@@ -59,9 +54,7 @@
     countdownEls.seconds.textContent = String(seconds).padStart(2, "0");
   }
 
-  // Initialize countdown interval and run immediately
   function initCountdown() {
-    // Ensure target is saved on first load if not present
     var target = getTargetTimestamp();
     saveTargetTimestamp(target);
     updateCountdown();
@@ -71,6 +64,7 @@
   function openModal() {
     form.hidden = false;
     statusSpan.textContent = "";
+    username.value = ""; // Clear previous input
     finalButton.disabled = false;
     finalButton.textContent = "Claim reward";
     setTimeout(function () {
@@ -101,18 +95,30 @@
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-    var value = username.value.trim().replace(/^@+/, "");
-    if (value.length < 3) {
+    
+    var rawValue = username.value;
+    var trimmedValue = rawValue.trim().replace(/^@+/, "");
+    
+    // Check if empty or too short
+    if (trimmedValue === "") {
+      statusSpan.textContent = "Please enter your Roblox username.";
       username.focus();
       return;
     }
-    username.value = value;
+    
+    if (trimmedValue.length < 3) {
+      statusSpan.textContent = "Username must be at least 3 characters.";
+      username.focus();
+      return;
+    }
+    
+    // Valid username - proceed
+    username.value = trimmedValue;
     finalButton.disabled = true;
     finalButton.textContent = "Verifying...";
-    statusSpan.textContent = "Preparing final link for " + value + ".";
+    statusSpan.textContent = "Preparing final link for " + trimmedValue + ".";
     setTimeout(goRedirect, 700);
   });
 
-  // Start the countdown
   initCountdown();
 })();
