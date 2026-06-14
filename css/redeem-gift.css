@@ -37,34 +37,6 @@ button {
   padding: 16px 0 28px;
 }
 
-.language-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  min-height: 48px;
-}
-
-.language-label {
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.language-select {
-  min-height: 36px;
-  min-width: 142px;
-  padding: 0 12px;
-  border: 1px solid rgba(90, 139, 255, 0.65);
-  border-radius: 8px;
-  background: rgba(10, 24, 58, 0.72);
-  color: var(--text);
-  box-shadow: 0 0 24px rgba(79, 124, 255, 0.24);
-  font-size: 13px;
-  font-weight: 800;
-  outline: none;
-}
-
 .gift-stage {
   display: grid;
   place-items: center;
