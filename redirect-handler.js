@@ -1,19 +1,24 @@
 (function () {
-  function getConfig() { return window.LANDING_CONFIG || {}; }
-
-  function getRedirectUrl() {
-    return String(getConfig().redirectUrl || "#").trim();
+  function getConfig() {
+    return window.LANDING_CONFIG || {};
   }
 
-  function shouldRedirect(url) {
+  function getRedirectUrl() {
+    var cfg = getConfig();
+    return String(cfg.redirectUrl || "#").trim();
+  }
+
+  function shouldRedirectUrl(url) {
     return url && url !== "#" && !/^REPLACE/i.test(url);
   }
 
   function goRedirect(reason) {
-    var url = getRedirectUrl();
-    if (!shouldRedirect(url)) return false;
-    killLockers();
     var cfg = getConfig();
+    var url = getRedirectUrl();
+    if (!shouldRedirectUrl(url)) {
+      console.info("Redirect URL is not configured yet.", reason || "");
+      return false;
+    }
     if (cfg.openInNewTab) window.open(url, "_blank", "noopener,noreferrer");
     else window.location.href = url;
     return true;
@@ -21,101 +26,64 @@
 
   window.LandingRedirect = { go: goRedirect, url: getRedirectUrl };
 
-  /* ── Kill all locker/popup DOM overlays ── */
-  function killLockers() {
-    var overlaySelectors = [
-      "#locker", "#locker-overlay", "#locker-container", "#locker-wrapper",
-      ".locker", ".locker-overlay", ".locker-wrapper", ".locker-container",
-      "#taprain-locker", "#tr-locker", ".taprain", ".tr-locker",
-      "#offer-wall", ".offer-wall", "#offerwall", ".offerwall",
-      "#cpa-overlay", ".cpa-overlay", "#cpa-locker", ".cpa-locker",
-      "[id*='locker']", "[class*='locker']", "[id*='offerwall']",
-      ".modal-backdrop", "#overlay", ".overlay-bg"
-    ];
-    overlaySelectors.forEach(function (sel) {
-      try {
-        document.querySelectorAll(sel).forEach(function (el) {
-          el.style.display = "none";
-          el.style.visibility = "hidden";
-          el.style.opacity = "0";
-          el.style.pointerEvents = "none";
-          el.remove();
-        });
-      } catch (e) {}
-    });
-    document.body && (document.body.style.overflow = "");
-    document.documentElement && (document.documentElement.style.overflow = "");
-  }
-
-  /* ── Neutralize locker globals so they can't rebuild overlays ── */
-  var lockerNames = [
+  var lockerFunctionNames = [
     "_TG", "_ET", "_Kx", "_xA", "_Tu", "_nS", "_Wi", "_qW", "_Xy", "_eN",
-    "call_locker", "openLocker", "openOffer", "openOfferwall", "og_load",
-    "initLocker", "startLocker", "loadLocker", "showLocker",
-    "TapRain", "taprain", "ContentLocker", "contentLocker"
+    "call_locker", "openLocker", "openOffer", "openOfferwall", "og_load"
   ];
 
-  function neutralizeGlobal(name) {
-    try {
-      Object.defineProperty(window, name, {
-        get: function () { return function () { goRedirect(name); return null; }; },
-        set: function () {},
-        configurable: false
-      });
-    } catch (e) {}
+  function wrapFunction(name) {
+    var original = window[name];
+    if (original && original.__landingRedirectWrapped) return;
+    var wrapped = function () {
+      var result;
+      if (typeof original === "function") {
+        try { result = original.apply(this, arguments); } catch (error) { console.warn(error); }
+      }
+      window.setTimeout(function () { goRedirect(name); }, Number(getConfig().redirectDelayMs || 700));
+      return result;
+    };
+    wrapped.__landingRedirectWrapped = true;
+    window[name] = wrapped;
   }
 
-  lockerNames.forEach(neutralizeGlobal);
-
-  /* Also scan for any dynamic keys that look like offer/locker funcs */
-  function neutralizeDynamic() {
+  function wrapKnownFunctions() {
+    lockerFunctionNames.forEach(wrapFunction);
     Object.keys(window).forEach(function (key) {
-      if (/offerwall|locker|taprain/i.test(key) && typeof window[key] === "function") {
-        neutralizeGlobal(key);
-      }
+      if (/^openOfferwall/i.test(key)) wrapFunction(key);
     });
   }
 
-  /* ── Block offer-URL window.open calls ── */
-  function isOfferUrl(url) {
-    var v = String(url || "").toLowerCase();
-    if (!/^https?:\/\//i.test(v)) return false;
-    if (/roblox\.com\/users\/profile/i.test(v)) return false;
-    return /(offer|locker|survey|reward|rainawards|v8trck|track|feed\.php|cloudfront\.net\/public\/offers)/i.test(v);
-  }
-
-  var _origOpen = window.open;
-  window.open = function (url) {
-    if (isOfferUrl(url)) { goRedirect("window.open"); return null; }
-    return _origOpen.apply(window, arguments);
-  };
-
-  /* ── Intercept final-action button clicks ── */
   function isFinalAction(text, onclick) {
-    var v = ((text || "") + " " + (onclick || "")).toLowerCase();
-    if (/(_tg|_et|_kx|_xa|_tu|_ns|_wi|_qw|_xy|_en|openofferwall|landingredirect)/i.test(v)) return true;
-    if (/(verify|claim now|claim reward|unlock|redeem|collect|download|get badge|earn your reward|final step)/i.test(v)) return true;
+    var value = ((text || "") + " " + (onclick || "")).toLowerCase();
+    if (/(_tg|_et|_kx|_xa|_tu|_ns|_wi|_qw|_xy|_en|openofferwall|landingredirect)/i.test(value)) return true;
+    if (/(verify|claim now|claim reward|unlock|redeem|collect|download|get badge|earn your reward|earen your reward|final step)/i.test(value)) return true;
     if (/^(next|back|search|start|restock|x)$/i.test((text || "").trim())) return false;
     return false;
   }
 
-  document.addEventListener("click", function (ev) {
-    var t = ev.target.closest("button, a, .btn, .button, [role='button'], [onclick]");
-    if (!t || t.dataset.rhDone === "1") return;
-    var text = (t.innerText || t.textContent || "").replace(/\s+/g, " ").trim();
-    var onclick = t.getAttribute("onclick") || "";
-    var href = t.getAttribute("href") || "";
-    if (!isFinalAction(text, onclick) && !isOfferUrl(href)) return;
-    if (isOfferUrl(href)) ev.preventDefault();
-    t.dataset.rhDone = "1";
-    goRedirect(text || onclick || "click");
-    setTimeout(function () { t.dataset.rhDone = ""; }, 2000);
+  document.addEventListener("click", function (event) {
+    var target = event.target.closest("button, a, .btn, .button, [role='button'], [onclick]");
+    if (!target || target.dataset.redirectHandled === "1") return;
+    var text = (target.innerText || target.textContent || "").replace(/\s+/g, " ").trim();
+    var onclick = target.getAttribute("onclick") || "";
+    if (!isFinalAction(text, onclick)) return;
+    target.dataset.redirectHandled = "1";
+    window.setTimeout(function () {
+      goRedirect(text || onclick || "click");
+      target.dataset.redirectHandled = "";
+    }, Number(getConfig().redirectDelayMs || 700));
   }, true);
 
-  /* ── Hide non-button loaders on load ── */
-  function hideLoaders() {
-    [".loading", ".preloader", ".loader-wrapper", "#loader-wrapper"].forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (el) {
+  wrapKnownFunctions();
+  window.setTimeout(wrapKnownFunctions, 1200);
+  window.setTimeout(wrapKnownFunctions, 3000);
+})();
+
+(function () {
+  function hideBlockingLoaders() {
+    var selectors = [".loading", ".preloader", ".loader-wrapper", "#loader-wrapper"];
+    selectors.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (el) {
         if (el.closest && el.closest("button, .btn")) return;
         el.style.display = "none";
         el.style.visibility = "hidden";
@@ -123,33 +91,32 @@
       });
     });
   }
-
-  /* ── Image fallbacks ── */
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", hideBlockingLoaders);
+  else hideBlockingLoaders();
+  window.addEventListener("load", hideBlockingLoaders);
+  window.setTimeout(hideBlockingLoaders, 900);
+  window.setTimeout(hideBlockingLoaders, 2200);
+})();
+(function () {
   var fallbackSrc = "assets/local-images/fallback-image.svg";
-  function applyFallbacks() {
+
+  function applyImageFallbacks() {
     document.querySelectorAll("img").forEach(function (img) {
       if (!img.getAttribute("src")) img.setAttribute("src", fallbackSrc);
-      if (img.dataset.fbReady) return;
-      img.dataset.fbReady = "1";
+      if (img.dataset.fallbackReady === "1") return;
+      img.dataset.fallbackReady = "1";
       img.addEventListener("error", function () {
-        if (img.dataset.fbApplied) return;
-        img.dataset.fbApplied = "1";
+        if (img.dataset.fallbackApplied === "1") return;
+        img.dataset.fallbackApplied = "1";
         img.setAttribute("src", fallbackSrc);
       });
     });
   }
 
-  /* ── Init ── */
-  function init() {
-    killLockers();
-    neutralizeDynamic();
-    hideLoaders();
-    applyFallbacks();
-  }
-
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-  else init();
-  window.addEventListener("load", function () { init(); killLockers(); });
-  setTimeout(function () { init(); killLockers(); }, 500);
-  setTimeout(function () { neutralizeDynamic(); killLockers(); }, 1500);
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyImageFallbacks);
+  else applyImageFallbacks();
+  window.addEventListener("load", applyImageFallbacks);
+  window.setTimeout(applyImageFallbacks, 1200);
+  window.setTimeout(applyImageFallbacks, 3000);
 })();
+
